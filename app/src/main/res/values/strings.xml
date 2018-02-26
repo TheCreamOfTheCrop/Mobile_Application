@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BmyBank</string>
+    <string name="validate">Valider</string>
+    <string name="emailPlaceholder">Email</string>
+    <string name="passwordPlaceholder">Mot de passe</string>
+    <string name="inscription">Inscription</string>
+    <string name="lorem">Lorem ipsum dolor sit amet</string>
+    <string name="passwordForgotten"><u>Mot de passe oublié ?</u></string>
+</resources>
