@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="GeneralContainer">
+        <item name="android:padding">@dimen/generalPadding</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
 
     <style name="RoundedEditText" parent="Base.V7.Widget.AppCompat.EditText">
         <item name="android:background">@drawable/rounded_edit_text</item>
@@ -16,16 +21,23 @@
         <item name="android:padding">10dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
     <style name="CustomButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:paddingRight">30dp</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
-    <style name="ErrorLabel">
+    <style name="NormalText">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
+    </style>
+
+    <style name="ErrorLabel" parent="NormalText">
         <item name="android:textColor">@color/red</item>
     </style>
 
@@ -34,6 +46,7 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:textColor">@color/linked_text</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
 </resources>
