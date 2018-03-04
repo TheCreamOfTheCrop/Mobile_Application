@@ -1,8 +1,11 @@
 package ecalle.com.bmybank.custom_components
 
+import android.animation.Animator
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.animation.Animation
 import ecalle.com.bmybank.R
 import kotlinx.android.synthetic.main.dialog_bemybank.*
 
@@ -58,10 +61,33 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_bemybank)
 
+        setCancelable(false)
+
         val animationJSON: String = if (type == TYPE.SUCCESS) "success.json" else "failure.json"
 
         animation.setAnimation(animationJSON)
         animation.loop(false)
+
+        animation.addAnimatorListener(object : Animator.AnimatorListener
+        {
+            override fun onAnimationRepeat(p0: Animator?)
+            {
+            }
+
+            override fun onAnimationEnd(p0: Animator?)
+            {
+                setCancelable(true)
+            }
+
+            override fun onAnimationCancel(p0: Animator?)
+            {
+            }
+
+            override fun onAnimationStart(p0: Animator?)
+            {
+            }
+
+        })
         animation.playAnimation()
 
 
