@@ -1,4 +1,4 @@
-package ecalle.com.bmybank.components
+package ecalle.com.bmybank.custom_components
 
 import android.content.Context
 import android.support.v7.widget.CardView

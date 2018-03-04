@@ -8,17 +8,13 @@ import org.jetbrains.anko.startActivity
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener
 {
-    companion object
-    {
-        val TAG = "ThomasEcalle"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         passwordForgotten.setOnClickListener(this)
+        inscription.setOnClickListener(this)
     }
 
     override fun onClick(view: View?)
@@ -26,7 +22,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         when (view?.id)
         {
             passwordForgotten.id -> startActivity<PasswordForgottenActivity>()
-
+            inscription.id -> startActivity<InscriptionActivity>()
         }
     }
 }

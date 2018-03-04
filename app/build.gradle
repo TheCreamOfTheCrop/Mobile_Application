@@ -39,4 +39,7 @@ dependencies {
     compile("org.jetbrains.anko:anko-appcompat-v7-commons:${anko_version}")
     compile("org.jetbrains.anko:anko-support-v4:${anko_version}")
 
+    // Stepper for inscription
+    compile 'com.stepstone.stepper:material-stepper:4.3.1'
+
 }

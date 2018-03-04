@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PasswordForgottenActivity"/>
+        <activity android:name=".InscriptionActivity"/>
     </application>
 
 </manifest>
