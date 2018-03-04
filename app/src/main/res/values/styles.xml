@@ -6,6 +6,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="ms_stepperStyle">@style/StepperStyle</item>
+    </style>
+
+    <style name="StepperStyle">
+        <item name="ms_stepperType">tabs</item>
+        <item name="ms_activeStepColor">@color/colorPrimary</item>
+        <item name="ms_inactiveStepColor">@color/grey</item>
+        <item name="ms_backButtonColor">@color/black</item>
+        <item name="ms_nextButtonColor">@color/black</item>
+        <item name="ms_errorColor">@color/ms_errorColor</item>
+        <item name="ms_completeButtonColor">@color/black</item>
+        <item name="ms_showErrorStateEnabled">true</item>
+        <item name="ms_showBackButtonOnFirstStep">true</item>
+        <item name="ms_stepperFeedbackType">tabs|disabled_bottom_navigation</item>
+        <!-- <item name="ms_showErrorMessageEnabled">true</item> -->
+
     </style>
 
     <style name="GeneralContainer">

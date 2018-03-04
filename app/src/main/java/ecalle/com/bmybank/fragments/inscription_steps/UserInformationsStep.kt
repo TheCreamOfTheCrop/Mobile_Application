@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.R
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * Created by thoma on 04/03/2018.
@@ -27,6 +28,7 @@ class UserInformationsStep : Fragment(), Step
 
     override fun verifyStep(): VerificationError?
     {
+
         return null
     }
 

@@ -32,9 +32,21 @@ class InscriptionStepperAdapter(fm: FragmentManager, context: Context) : Abstrac
             {
                 return when (position)
                 {
-                    0 -> StepViewModel.Builder(context).setTitle(R.string.stepper_informations).create()
-                    1 -> StepViewModel.Builder(context).setTitle(R.string.stepper_avatar).create()
-                    else -> StepViewModel.Builder(context).setTitle(R.string.stepper_identity_scanner).create()
+                    0 ->
+                        StepViewModel.Builder(context)
+                                .setBackButtonLabel(R.string.connection)
+                                .setEndButtonLabel(R.string.stepper_avatar)
+                                .setTitle(R.string.stepper_informations).create()
+                    1 ->
+                        StepViewModel.Builder(context)
+                                .setBackButtonLabel(R.string.stepper_informations)
+                                .setEndButtonLabel(R.string.stepper_identity_scanner)
+                                .setTitle(R.string.stepper_avatar).create()
+                    else ->
+                        StepViewModel.Builder(context)
+                                .setBackButtonLabel(R.string.stepper_avatar)
+                                .setEndButtonLabel(R.string.validate)
+                                .setTitle(R.string.stepper_identity_scanner).create()
                 }
             }
 

@@ -27,7 +27,7 @@ class AvatarStep : Fragment(), Step
 
     override fun verifyStep(): VerificationError?
     {
-        return null;
+        return null
     }
 
     override fun onError(error: VerificationError)

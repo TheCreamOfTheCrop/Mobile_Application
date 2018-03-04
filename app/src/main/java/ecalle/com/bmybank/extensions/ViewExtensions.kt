@@ -2,6 +2,7 @@ package ecalle.com.bmybank.extensions
 
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 
 /**
  * Created by thoma on 04/03/2018.
@@ -21,5 +22,3 @@ fun View.slideEnter()
 {
     if (translationY < 0f) animate().translationY(0f)
 }
-
-fun View.getTag() = "thomasecalle"
