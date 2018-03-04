@@ -4,8 +4,6 @@ import android.animation.Animator
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.animation.Animation
 import ecalle.com.bmybank.R
 import kotlinx.android.synthetic.main.dialog_bemybank.*
 
@@ -13,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_bemybank.*
 /**
  * Created by thoma on 04/03/2018.
  */
-class BeMyDialog private constructor(context: Context?, message: String, type: TYPE) : Dialog(context)
+class BeMyDialog private constructor(context: Context?, message: String, type: TYPE) : Dialog(context), Animator.AnimatorListener
 {
     private var message: String
     private var type: TYPE
@@ -68,29 +66,30 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
         animation.setAnimation(animationJSON)
         animation.loop(false)
 
-        animation.addAnimatorListener(object : Animator.AnimatorListener
-        {
-            override fun onAnimationRepeat(p0: Animator?)
-            {
-            }
-
-            override fun onAnimationEnd(p0: Animator?)
-            {
-                setCancelable(true)
-            }
-
-            override fun onAnimationCancel(p0: Animator?)
-            {
-            }
-
-            override fun onAnimationStart(p0: Animator?)
-            {
-            }
-
-        })
+        animation.addAnimatorListener(this)
         animation.playAnimation()
 
 
         messageTextView.text = message
+    }
+
+    override fun onAnimationRepeat(p0: Animator?)
+    {
+
+    }
+
+    override fun onAnimationEnd(p0: Animator?)
+    {
+        setCancelable(true)
+    }
+
+    override fun onAnimationCancel(p0: Animator?)
+    {
+
+    }
+
+    override fun onAnimationStart(p0: Animator?)
+    {
+
     }
 }
