@@ -27,7 +27,7 @@ class CustomLinkedCard @JvmOverloads constructor(
             val typedArray = context.obtainStyledAttributes(it, R.styleable.custom_linked_card, 0, 0)
             val value = resources.getText(typedArray.getResourceId(R.styleable.custom_linked_card_text, R.string.lorem))
 
-            text.text = value
+            messageTextView.text = value
 
             cardElevation = resources.getDimension(R.dimen.generalCardElevation)
 

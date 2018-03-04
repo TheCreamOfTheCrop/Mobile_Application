@@ -57,6 +57,10 @@
         <item name="android:textColor">@color/red</item>
     </style>
 
+    <style name="SuccessLabel" parent="NormalText">
+        <item name="android:textColor">@color/green</item>
+    </style>
+
     <style name="LinkedText">
         <item name="android:padding">10dp</item>
         <item name="android:focusable">true</item>

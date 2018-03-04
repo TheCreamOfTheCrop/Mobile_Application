@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import ecalle.com.bmybank.extensions.customAlert
 import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startActivityForResult
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener
 {
@@ -31,8 +33,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         {
             when (resultCode)
             {
-                Activity.RESULT_OK -> alert(getString(R.string.validated_inscription_message)) { yesButton { this.cancelButton {  } } }.show()
-
+                Activity.RESULT_OK -> customAlert(message = R.string.validated_inscription_message)
             }
         }
     }

@@ -15,9 +15,9 @@ import org.jetbrains.anko.support.v4.toast
  */
 class UserInformationsStep : Fragment(), Step
 {
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        val view = inflater?.inflate(R.layout.fragment_user_information_step, container, false)
+        val view = inflater.inflate(R.layout.fragment_user_information_step, container, false)
 
         return view
     }
