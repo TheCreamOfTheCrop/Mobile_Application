@@ -50,13 +50,14 @@ class ScannerStep : Fragment(), BlockingStep
     override fun onCompleteClicked(callback: StepperLayout.OnCompleteClickedCallback?)
     {
         log("Scanner Step on Complete clicked")
-        callback?.stepperLayout?.showProgress("Inscription en cours, veuillez patienter ...")
+        callback?.stepperLayout?.showProgress(getString(R.string.inscription_loading_message))
         Handler().postDelayed(
                 {
                     callback?.stepperLayout?.hideProgress()
                     log("Scanner Step finished loading")
                     callback?.complete()
-                }, 2000L)
+                },
+                2000L)
     }
 
     @UiThread

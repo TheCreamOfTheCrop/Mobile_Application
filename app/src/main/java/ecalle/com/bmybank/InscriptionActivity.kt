@@ -1,5 +1,6 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -44,6 +45,8 @@ class InscriptionActivity : AppCompatActivity(), ToolbarManager, StepperLayout.S
     override fun onCompleted(completeButton: View?)
     {
         log("on complete stepper")
+
+        setResult(Activity.RESULT_OK)
         finish()
     }
 

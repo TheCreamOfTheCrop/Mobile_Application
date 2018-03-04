@@ -12,4 +12,6 @@
     <string name="stepper_informations">Infos</string>
     <string name="stepper_avatar">Avatar</string>
     <string name="stepper_identity_scanner">Scanner</string>
+    <string name="inscription_loading_message">Inscription en cours, veuillez patienter ...</string>
+    <string name="validated_inscription_message">Inscription validée</string>
 </resources>
