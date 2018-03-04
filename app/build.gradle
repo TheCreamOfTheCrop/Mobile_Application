@@ -32,4 +32,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     compile 'com.android.support:cardview-v7:26.1.0'
+
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+
+    // Anko
+    compile("org.jetbrains.anko:anko-appcompat-v7-commons:${anko_version}")
+    compile("org.jetbrains.anko:anko-support-v4:${anko_version}")
+
 }
