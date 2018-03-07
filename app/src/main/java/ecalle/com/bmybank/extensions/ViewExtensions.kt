@@ -15,17 +15,15 @@ var TextView.textColor: Int
 
 fun EditText.isEmpty(): Boolean
 {
-    return text.isEmpty()
+    return textValue.isEmpty()
 }
 
-fun EditText.text(): String
-{
-    return text.toString()
-}
+val EditText.textValue: String
+    get() = text.toString()
 
 fun EditText.hasOnlyLetters(): Boolean
 {
-    return text.matches(Regex("[a-zA-Z]+"));
+    return textValue.matches(Regex("[a-zA-Z]+"));
 }
 
 fun View.slideExit()

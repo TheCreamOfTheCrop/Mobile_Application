@@ -14,6 +14,7 @@ import ecalle.com.bmybank.R
 import ecalle.com.bmybank.extensions.hasOnlyLetters
 import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.extensions.textValue
 import org.jetbrains.anko.find
 
 /**
@@ -59,21 +60,22 @@ class UserInformationsStep : Fragment(), Step
 
         log("Voici les etats des edit text : \nemail: ${email.text}\npassword: ${password.text}\n" +
                 "confirmPassword: ${confirmPassword.text}\nfirstName: ${firstName.text}\nlastName: ${lastName.text}" +
-                "\ndescription: ${description.text}")
+                "\ndescription: ${description.text}" +
+                "\nPasswords are equals ? ${password.textValue == confirmPassword.textValue}")
 
         if (isAFieldEmpty())
         {
             return VerificationError(getString(R.string.form_all_fields_not_complete))
         }
-        else if (isNotValidEmailAdress())
+        if (isNotValidEmailAdress())
         {
             return VerificationError(getString(R.string.not_valid_email_adress))
         }
-        else if (passwordAreDifferent())
+        if (passwordAreDifferent())
         {
             return VerificationError(getString(R.string.passwords_not_equals))
         }
-        else if (namesAreNotWellFormat())
+        if (namesAreNotWellFormat())
         {
             return VerificationError(getString(R.string.not_well_format_names))
         }
@@ -95,12 +97,12 @@ class UserInformationsStep : Fragment(), Step
 
     private fun passwordAreDifferent(): Boolean
     {
-        return password.text != confirmPassword.text
+        return password.textValue != confirmPassword.textValue
     }
 
     private fun isNotValidEmailAdress(): Boolean
     {
-        return !android.util.Patterns.EMAIL_ADDRESS.matcher(email.text).matches();
+        return !android.util.Patterns.EMAIL_ADDRESS.matcher(email.textValue).matches();
     }
 
     private fun namesAreNotWellFormat(): Boolean
