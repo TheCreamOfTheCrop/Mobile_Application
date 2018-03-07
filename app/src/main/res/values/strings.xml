@@ -14,4 +14,12 @@
     <string name="stepper_identity_scanner">Scanner</string>
     <string name="inscription_loading_message">Inscription en cours, veuillez patienter ...</string>
     <string name="validated_inscription_message">Inscription validée</string>
+    <string name="avatarChoiceTitle">Choisissez une image de profil</string>
+    <string name="fromGallery">Depuis la gallerie</string>
+    <string name="fromCamera">Prendre une photo</string>
+    <string name="cameraRationalMessage">L\'application necessite l\'utilisation de votre caméra pour prendre une photo.</string>
+    <string name="onCameraDenied">Nous n\'accederons pas à votre caméra.</string>
+    <string name="askForCamera">Nous souhaitons pour cela avoir accès à votre appareil photo.</string>
+    <string name="autorization">Autoriser</string>
+    <string name="refuse">Refuser</string>
 </resources>

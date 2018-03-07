@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: "kotlin-kapt"
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -22,9 +24,14 @@ android {
     }
 }
 
+kapt
+{
+    generateStubs = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
@@ -45,4 +52,14 @@ dependencies {
 
     // Lottie
     compile 'com.airbnb.android:lottie:2.5.0-rc1'
+
+    // Image Cropper
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
+
+    // Circle Imageview
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
+    // Permission Dispatcher
+    kapt("com.github.hotchemi:permissionsdispatcher-processor:3.0.1")
+    compile("com.github.hotchemi:permissionsdispatcher:3.0.1")
 }
