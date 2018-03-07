@@ -1,8 +1,8 @@
 package ecalle.com.bmybank.extensions
 
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 
 /**
  * Created by thoma on 04/03/2018.
@@ -12,6 +12,21 @@ import android.widget.Toast
 var TextView.textColor: Int
     get() = currentTextColor
     set(v) = setTextColor(v)
+
+fun EditText.isEmpty(): Boolean
+{
+    return text.isEmpty()
+}
+
+fun EditText.text(): String
+{
+    return text.toString()
+}
+
+fun EditText.hasOnlyLetters(): Boolean
+{
+    return text.matches(Regex("[a-zA-Z]+"));
+}
 
 fun View.slideExit()
 {

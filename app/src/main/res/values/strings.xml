@@ -22,4 +22,14 @@
     <string name="askForCamera">Nous souhaitons pour cela avoir accès à votre appareil photo.</string>
     <string name="autorization">Autoriser</string>
     <string name="refuse">Refuser</string>
+    <string name="identifiers">Identifiants</string>
+    <string name="confirmPasswordPlaceholder">Confirmez le mot de passe</string>
+    <string name="informations">Informations</string>
+    <string name="firstNamePlaceholder">Prénom</string>
+    <string name="lastNamePlaceholder">Nom</string>
+    <string name="descriptionPlaceholder">Une description en quelques mots ?</string>
+    <string name="form_all_fields_not_complete">Tous les champs ne sont pas renseignés</string>
+    <string name="passwords_not_equals">Vos mots de passe ne sont pas identiques</string>
+    <string name="not_valid_email_adress">Adresse Email invalide</string>
+    <string name="not_well_format_names">Nom et Prénom ne doivent contenir que des lettres</string>
 </resources>

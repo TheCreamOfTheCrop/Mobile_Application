@@ -2,4 +2,5 @@
 <resources>
     <dimen name="generalPadding">30dp</dimen>
     <dimen name="generalCardElevation">10dp</dimen>
+    <dimen name="linedTitleMargin">30dp</dimen>
 </resources>
