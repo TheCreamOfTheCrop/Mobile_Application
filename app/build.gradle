@@ -62,4 +62,10 @@ dependencies {
     // Permission Dispatcher
     kapt("com.github.hotchemi:permissionsdispatcher-processor:3.0.1")
     compile("com.github.hotchemi:permissionsdispatcher:3.0.1")
+
+    // Retrofit + JSON converter
+    compile "com.squareup.retrofit2:retrofit:2.3.0"
+    compile "com.squareup.okhttp3:logging-interceptor:3.10.0"
+
+    compile "com.squareup.retrofit2:converter-moshi:2.0.0"
 }

@@ -2,7 +2,9 @@ package ecalle.com.bmybank.fragments.inscription_steps
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -16,6 +18,7 @@ import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
 import org.jetbrains.anko.find
+
 
 /**
  * Created by thoma on 04/03/2018.
@@ -46,7 +49,27 @@ class UserInformationsStep : Fragment(), Step
         lastName = view.find<EditText>(R.id.lastName)
         description = view.find<EditText>(R.id.description)
 
+        makeDescriptionScrollable()
+
         return view
+    }
+
+    private fun makeDescriptionScrollable()
+    {
+        description.setVerticalScrollBarEnabled(true)
+        description.setOverScrollMode(View.OVER_SCROLL_ALWAYS)
+        description.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
+        description.setMovementMethod(ScrollingMovementMethod.getInstance())
+
+        description.setOnTouchListener(
+                { view, motionEvent ->
+                    view.parent.requestDisallowInterceptTouchEvent(true)
+                    if (motionEvent.action and MotionEvent.ACTION_UP != 0 && motionEvent.actionMasked and MotionEvent.ACTION_UP != 0)
+                    {
+                        view.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                    false
+                })
     }
 
     override fun onSelected()

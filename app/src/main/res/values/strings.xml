@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BmyBank</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
     <string name="validate">Valider</string>
     <string name="connection">connexion</string>
     <string name="emailPlaceholder">Email</string>

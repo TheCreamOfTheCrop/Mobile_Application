@@ -71,12 +71,12 @@ class InscriptionActivity : AppCompatActivity(), ToolbarManager, StepperLayout.S
     {
         alert {
             message = getString(R.string.quitting_inscription_validation)
-            positiveButton(R.string.validate) {
+            positiveButton(R.string.yes) {
                 super.onBackPressed()
                 finish()
             }
 
-            negativeButton(R.string.cancel) {}
+            negativeButton(R.string.no) {}
         }.show()
     }
 }
