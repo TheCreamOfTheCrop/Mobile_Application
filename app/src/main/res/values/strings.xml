@@ -32,4 +32,6 @@
     <string name="passwords_not_equals">Vos mots de passe ne sont pas identiques</string>
     <string name="not_valid_email_adress">Adresse Email invalide</string>
     <string name="not_well_format_names">Nom et Prénom ne doivent contenir que des lettres</string>
+    <string name="quitting_inscription_validation">Êtes-vous sûr de vouloir annuler l\'inscription ?</string>
+    <string name="cancel">Annuler</string>
 </resources>

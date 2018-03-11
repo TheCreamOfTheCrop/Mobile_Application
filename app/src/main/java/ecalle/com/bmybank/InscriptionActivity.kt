@@ -10,8 +10,8 @@ import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.adapters.InscriptionStepperAdapter
 import ecalle.com.bmybank.extensions.log
-import ecalle.com.bmybank.fragments.inscription_steps.AvatarStep
 import kotlinx.android.synthetic.main.activity_inscription.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
 
 /**
@@ -53,7 +53,13 @@ class InscriptionActivity : AppCompatActivity(), ToolbarManager, StepperLayout.S
     override fun onReturn()
     {
         log("on return stepper")
-        finish()
+        confirmStoppingInscription()
+    }
+
+    override fun onBackPressed()
+    {
+        log("on back pressed")
+        confirmStoppingInscription()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
@@ -61,4 +67,16 @@ class InscriptionActivity : AppCompatActivity(), ToolbarManager, StepperLayout.S
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    private fun confirmStoppingInscription()
+    {
+        alert {
+            message = getString(R.string.quitting_inscription_validation)
+            positiveButton(R.string.validate) {
+                super.onBackPressed()
+                finish()
+            }
+
+            negativeButton(R.string.cancel) {}
+        }.show()
+    }
 }
