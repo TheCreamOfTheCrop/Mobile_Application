@@ -1,12 +1,15 @@
-package ecalle.com.bmybank
+package ecalle.com.bmybank.services
 
-import ecalle.com.bmybank.bo.dummy.Course
+import ecalle.com.bmybank.BuildConfig
+import ecalle.com.bmybank.bo.User
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 /**
  * Created by thoma on 11/03/2018.
@@ -14,12 +17,13 @@ import retrofit2.http.GET
 interface BmyBankApi
 {
 
-    @GET("/courses")
-    fun listCourses(): Call<List<Course>>
+    @FormUrlEncoded
+    @POST("/user/login")
+    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<User>
 
     companion object
     {
-        private val url = "http://mobile-courses-server.herokuapp.com/"
+        private val url = "http://127.0.0.1:9001"
 
         fun getInstance(): BmyBankApi
         {

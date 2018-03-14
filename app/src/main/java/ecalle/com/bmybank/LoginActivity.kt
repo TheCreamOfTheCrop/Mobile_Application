@@ -5,9 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import ecalle.com.bmybank.bo.dummy.Course
+import android.widget.EditText
+import ecalle.com.bmybank.bo.User
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.services.BmyBankApi
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
@@ -18,6 +21,9 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener
 {
+
+    private val email: EditText? = null
+    private val password: EditText? = null
 
     companion object
     {
@@ -51,31 +57,31 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         {
             passwordForgotten.id -> startActivity<PasswordForgottenActivity>()
             inscription.id -> startActivityForResult<InscriptionActivity>(INSCRIPTION_REQUEST)
-            validate.id -> fakeLogin()
+            validate.id -> login()
         }
     }
 
-    private fun fakeLogin()
+    private fun login()
     {
         log("start loading function")
         val api = BmyBankApi.getInstance()
-        val coursesRequest = api.listCourses()
+        val loginRequest = api.login(email?.textValue, password?.textValue)
 
 
-        coursesRequest.enqueue(object : Callback<List<Course>>
+        loginRequest.enqueue(object : Callback<User>
         {
-            override fun onResponse(call: Call<List<Course>>, response: Response<List<Course>>)
+            override fun onResponse(call: Call<User>, response: Response<User>)
             {
-                val allCourse = response.body()
-                if (allCourse != null)
+                val user = response.body()
+                if (user != null)
                 {
-                    toast("all courses from api are : $allCourse")
+                    toast("user : $user")
                 }
             }
 
-            override fun onFailure(call: Call<List<Course>>, t: Throwable)
+            override fun onFailure(call: Call<User>, t: Throwable)
             {
-                toast("Failure getting courses from server")
+                toast("Failure getting user from server, throwable message : ${t.message}")
             }
         })
 
