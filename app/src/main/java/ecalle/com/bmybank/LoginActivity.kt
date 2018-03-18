@@ -42,6 +42,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         password = find(R.id.password)
         error = find(R.id.error)
 
+        login.setText("thomasecalle@hotmail.fr")
+        password.setText("totoro")
+
         passwordForgotten.setOnClickListener(this)
         inscription.setOnClickListener(this)
         validate.setOnClickListener(this)
@@ -86,7 +89,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 {
                     showError(false)
                     val loginResponse = response.body()
-                    toast("login completed $loginResponse")
+                    if (loginResponse?.user != null)
+                    {
+                        goToMainActivity(loginResponse)
+                    }
+                    else
+                    {
+                        toast(R.string.server_issue)
+                    }
                 }
 
 
@@ -100,6 +110,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
         log("end loading function")
 
+    }
+
+    private fun goToMainActivity(loginResponse: LoginResponse)
+    {
+        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to loginResponse.user)
+        finish()
     }
 
     private fun showError(show: Boolean = true)

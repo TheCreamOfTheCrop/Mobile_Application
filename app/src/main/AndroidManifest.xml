@@ -33,6 +33,10 @@
         <activity
             android:name=".InscriptionActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

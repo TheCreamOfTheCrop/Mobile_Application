@@ -37,4 +37,12 @@
     <string name="quitting_inscription_validation">Êtes-vous sûr de vouloir annuler l\'inscription ?</string>
     <string name="cancel">Annuler</string>
     <string name="wrong_email_or_password">Mauvais email ou mot de passe</string>
+    <string name="valid_account_label">Compte validé</string>
+    <string name="server_issue">Une erreur est survenur côté serveur, veuillez réessayer ultérieurement</string>
+    <string name="navigation_drawer_open">ouvrir drawer</string>
+    <string name="navigation_drawer_close">Fermet drawer</string>
+    <string name="bmyBank">BmyBank</string>
+    <string name="personel_informations_menu_title">Informations personnelles</string>
+    <string name="consult">Consulter</string>
+    <string name="modify">Modifier</string>
 </resources>
