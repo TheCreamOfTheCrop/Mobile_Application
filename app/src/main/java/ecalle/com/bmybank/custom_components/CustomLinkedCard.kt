@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.custom_simple_linked_card.view.*
 
 
 /**
- * Created by thoma on 26/02/2018.
+ * Created by Thomas Ecalle on 26/02/2018.
  */
 class CustomLinkedCard @JvmOverloads constructor(
         context: Context,

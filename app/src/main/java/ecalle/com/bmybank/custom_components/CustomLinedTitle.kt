@@ -8,7 +8,7 @@ import ecalle.com.bmybank.R
 import kotlinx.android.synthetic.main.custom_lined_title.view.*
 
 /**
- * Created by thoma on 07/03/2018.
+ * Created by Thomas Ecalle on 07/03/2018.
  */
 class CustomLinedTitle @JvmOverloads constructor(
         context: Context,

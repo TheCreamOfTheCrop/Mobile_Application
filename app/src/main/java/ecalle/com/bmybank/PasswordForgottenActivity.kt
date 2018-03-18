@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar
 import org.jetbrains.anko.find
 
 /**
- * Created by thoma on 01/03/2018.
+ * Created by Thomas Ecalle on 01/03/2018.
  */
 class PasswordForgottenActivity : AppCompatActivity(), ToolbarManager
 {

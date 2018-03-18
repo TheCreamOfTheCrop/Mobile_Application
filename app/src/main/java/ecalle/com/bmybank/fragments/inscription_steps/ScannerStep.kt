@@ -14,7 +14,7 @@ import ecalle.com.bmybank.R
 import ecalle.com.bmybank.extensions.log
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 class ScannerStep : Fragment(), BlockingStep
 {

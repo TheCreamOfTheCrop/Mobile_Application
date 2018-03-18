@@ -45,7 +45,7 @@
 
             <EditText
                 android:id="@+id/login"
-                style="@style/RoundedEditText"
+                style="@style/SmallRoundedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/emailPlaceholder"
@@ -54,7 +54,7 @@
 
             <EditText
                 android:id="@+id/password"
-                style="@style/RoundedEditText"
+                style="@style/SmallRoundedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/passwordPlaceholder"

@@ -7,7 +7,7 @@ import ecalle.com.bmybank.extensions.slideEnter
 import ecalle.com.bmybank.extensions.slideExit
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 interface ToolbarManager
 {

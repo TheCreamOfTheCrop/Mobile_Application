@@ -11,7 +11,7 @@ import ecalle.com.bmybank.fragments.inscription_steps.ScannerStep
 import ecalle.com.bmybank.fragments.inscription_steps.UserInformationsStep
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 class InscriptionStepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm, context)
 {

@@ -23,7 +23,7 @@ import permissions.dispatcher.*
 
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 
 @RuntimePermissions

@@ -9,7 +9,7 @@ import ecalle.com.bmybank.custom_components.BeMyDialog
 
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 

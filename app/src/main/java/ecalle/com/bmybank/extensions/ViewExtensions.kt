@@ -5,7 +5,7 @@ import android.widget.EditText
 import android.widget.TextView
 
 /**
- * Created by thoma on 04/03/2018.
+ * Created by Thomas Ecalle on 04/03/2018.
  */
 
 

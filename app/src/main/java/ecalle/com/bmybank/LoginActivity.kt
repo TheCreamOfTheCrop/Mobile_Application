@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
-import ecalle.com.bmybank.bo.User
+import ecalle.com.bmybank.bo.LoginResponse
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
@@ -63,23 +63,21 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     private fun login()
     {
-        log("start loading function")
         val api = BmyBankApi.getInstance()
         val loginRequest = api.login(email?.textValue, password?.textValue)
 
 
-        loginRequest.enqueue(object : Callback<User>
+        loginRequest.enqueue(object : Callback<LoginResponse>
         {
-            override fun onResponse(call: Call<User>, response: Response<User>)
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>)
             {
-                val user = response.body()
-                if (user != null)
-                {
-                    toast("user : $user")
-                }
+                val loginResponse = response.body()
+
+                toast("login repsonse : $loginResponse")
+
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable)
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable)
             {
                 toast("Failure getting user from server, throwable message : ${t.message}")
             }

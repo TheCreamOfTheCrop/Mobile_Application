@@ -1,7 +1,7 @@
 package ecalle.com.bmybank.services
 
 import ecalle.com.bmybank.BuildConfig
-import ecalle.com.bmybank.bo.User
+import ecalle.com.bmybank.bo.LoginResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,18 +12,18 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 /**
- * Created by thoma on 11/03/2018.
+ * Created by Thomas Ecalle on 11/03/2018.
  */
 interface BmyBankApi
 {
 
     @FormUrlEncoded
-    @POST("/user/login")
-    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<User>
+    @POST("user/login")
+    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginResponse>
 
     companion object
     {
-        private val url = "http://127.0.0.1:9001"
+        private val url = "http://91.121.67.75:4100"
 
         fun getInstance(): BmyBankApi
         {
