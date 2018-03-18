@@ -12,9 +12,11 @@ import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.InscriptionActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.bo.LoginAndRegisterResponse
+import ecalle.com.bmybank.custom_components.BeMyDialog
+import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.extensions.toast
 import ecalle.com.bmybank.services.BmyBankApi
-import org.jetbrains.anko.support.v4.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,7 +80,14 @@ class ScannerStep : Fragment(), BlockingStep
             {
                 callback?.stepperLayout?.hideProgress()
                 log("Scanner Step finished loading")
-                callback?.complete()
+                if (response?.code() == 400)
+                {
+                    customAlert(message = R.string.email_already_used, type = BeMyDialog.TYPE.FAILURE, loop = false)
+                }
+                else
+                {
+                    callback?.complete()
+                }
             }
 
         })

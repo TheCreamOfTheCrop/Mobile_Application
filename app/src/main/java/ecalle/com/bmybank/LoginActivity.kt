@@ -137,7 +137,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.edit().putString(Constants.USER_UUID_PREFERENCES_KEY, user.uid).apply()
 
-        RealmServices.saveCurrentUser(user)
+        RealmServices.saveCurrentuser(user)
     }
 
     private fun goToMainActivity(uid: String)

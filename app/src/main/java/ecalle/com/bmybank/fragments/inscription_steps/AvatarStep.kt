@@ -78,11 +78,13 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
                 listeningActivity.onAvatarSelected(capturedImageUri.toString())
 
 
-            } catch (e: Exception)
+            }
+            catch (e: Exception)
             {
                 e.printStackTrace()
             }
-        } else if (requestCode == AvatarStep.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK)
+        }
+        else if (requestCode == AvatarStep.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK)
         {
             val photo = data?.extras?.get("data") as Bitmap
             avatarImageView.setImageBitmap(photo)

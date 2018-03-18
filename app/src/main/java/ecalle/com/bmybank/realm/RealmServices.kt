@@ -12,7 +12,7 @@ import io.realm.Realm
 object RealmServices
 {
     @WorkerThread
-    fun saveCurrentUser(user: User)
+    fun saveCurrentuser(user: User)
     {
         val realm = Realm.getDefaultInstance()
         realm.use {

@@ -12,11 +12,33 @@ import ecalle.com.bmybank.custom_components.BeMyDialog
  */
 fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
-fun android.support.v4.app.Fragment.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
+fun log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
 fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int, loop: Boolean = true): BeMyDialog
 {
     val dialog = BeMyDialog.Builder(this)
+            .type(type)
+            .message(message)
+            .loop(loop)
+            .build()
+    dialog.show()
+    return dialog
+}
+
+fun Fragment.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int, loop: Boolean = true): BeMyDialog
+{
+    val dialog = BeMyDialog.Builder(activity)
+            .type(type)
+            .message(message)
+            .loop(loop)
+            .build()
+    dialog.show()
+    return dialog
+}
+
+fun android.support.v4.app.Fragment.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int, loop: Boolean = true): BeMyDialog
+{
+    val dialog = BeMyDialog.Builder(context!!)
             .type(type)
             .message(message)
             .loop(loop)
@@ -36,3 +58,4 @@ private fun logger(message: String, tag: String = "thomasecalle", type: Int = Lo
         }
 
 fun Fragment.toast(message: String, legth: Int = Toast.LENGTH_SHORT) = Toast.makeText(activity, message, legth).show()
+fun android.support.v4.app.Fragment.toast(message: String, legth: Int = Toast.LENGTH_SHORT) = Toast.makeText(activity, message, legth).show()
