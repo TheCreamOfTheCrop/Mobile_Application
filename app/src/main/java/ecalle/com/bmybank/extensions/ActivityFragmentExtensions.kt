@@ -1,7 +1,6 @@
 package ecalle.com.bmybank.extensions
 
 import android.app.Fragment
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
@@ -15,11 +14,16 @@ fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: I
 
 fun android.support.v4.app.Fragment.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
-fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int) =
-        BeMyDialog.Builder(this)
-                .type(type)
-                .message(message)
-                .build().show()
+fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int): BeMyDialog
+{
+    val dialog = BeMyDialog.Builder(this)
+            .type(type)
+            .message(message)
+            .build()
+    dialog.show()
+    return dialog
+}
+
 
 private fun logger(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) =
         when (type)

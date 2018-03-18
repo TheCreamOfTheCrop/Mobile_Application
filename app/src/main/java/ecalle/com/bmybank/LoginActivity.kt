@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
@@ -30,7 +31,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     companion object
     {
-        val INSCRIPTION_REQUEST = 1
+        val INSCRIPTION_REQUEST = 42
     }
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -73,6 +74,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     private fun login()
     {
+        val loadingDialog = customAlert(message = R.string.connection_loading, type = BeMyDialog.TYPE.LOADING)
+
+
         val api = BmyBankApi.getInstance()
         val loginRequest = api.login(login.textValue, password.textValue)
 
@@ -91,6 +95,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                     val loginResponse = response.body()
                     if (loginResponse?.user != null)
                     {
+                        loadingDialog.dismiss()
                         goToMainActivity(loginResponse)
                     }
                     else

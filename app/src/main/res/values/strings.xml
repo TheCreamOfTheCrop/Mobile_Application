@@ -45,4 +45,5 @@
     <string name="personel_informations_menu_title">Informations personnelles</string>
     <string name="consult">Consulter</string>
     <string name="modify">Modifier</string>
+    <string name="connection_loading">Connexion en cours...</string>
 </resources>

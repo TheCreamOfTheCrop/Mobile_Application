@@ -17,16 +17,13 @@ import org.jetbrains.anko.find
 /**
  * Created by Thomas Ecalle on 04/03/2018.
  */
-class InscriptionActivity : AppCompatActivity(), ToolbarManager, StepperLayout.StepperListener
+class InscriptionActivity : AppCompatActivity(), StepperLayout.StepperListener
 {
-    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inscription)
-
-        toolbarTitle = getString(R.string.inscription)
 
         stepperLayout.adapter = InscriptionStepperAdapter(supportFragmentManager, this)
         stepperLayout.setListener(this)

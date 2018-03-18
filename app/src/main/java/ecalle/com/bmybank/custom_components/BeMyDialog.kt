@@ -25,9 +25,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
     {
         val context: Context = context
         var message: String = ""
-            private set
         var type: TYPE = TYPE.LOADING
-            private set
 
         fun message(message: Int): Builder
         {
@@ -61,10 +59,15 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
 
         setCancelable(false)
 
-        val animationJSON: String = if (type == TYPE.SUCCESS) "success.json" else "failure.json"
+        val animationJSON = when (type)
+        {
+            TYPE.SUCCESS -> "success.json"
+            TYPE.FAILURE -> "failure.json"
+            TYPE.LOADING -> "loading.json"
+        }
 
         animation.setAnimation(animationJSON)
-        animation.loop(false)
+        animation.loop(true)
 
         animation.addAnimatorListener(this)
         animation.playAnimation()
@@ -72,6 +75,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
 
         messageTextView.text = message
     }
+
 
     override fun onAnimationRepeat(p0: Animator?)
     {
@@ -81,6 +85,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
     override fun onAnimationEnd(p0: Animator?)
     {
         setCancelable(true)
+
     }
 
     override fun onAnimationCancel(p0: Animator?)

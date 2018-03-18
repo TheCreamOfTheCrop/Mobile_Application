@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     >
 
-    <include layout="@layout/toolbar"/>
-
     <com.stepstone.stepper.StepperLayout
         android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
