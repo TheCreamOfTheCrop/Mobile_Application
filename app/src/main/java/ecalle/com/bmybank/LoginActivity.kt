@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
     lateinit private var login: EditText
     lateinit private var password: EditText
     lateinit private var error: TextView
+    private var loadingDialog: BeMyDialog? = null
 
     companion object
     {
@@ -38,6 +40,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        if (!sharedPreferences.getString(Constants.USER_UUID_PREFERENCES_KEY, "").isEmpty())
+        {
+            log("A user seems already logged in")
+        }
 
         login = find(R.id.login)
         password = find(R.id.password)
@@ -74,7 +82,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     private fun login()
     {
-        val loadingDialog = customAlert(message = R.string.connection_loading, type = BeMyDialog.TYPE.LOADING)
+        loadingDialog = customAlert(message = R.string.connection_loading, type = BeMyDialog.TYPE.LOADING)
 
 
         val api = BmyBankApi.getInstance()
@@ -88,7 +96,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 if (andRegisterResponse.code() == 400)
                 {
                     showError()
-                    loadingDialog.dismiss()
+                    loadingDialog?.dismiss()
                 }
                 else
                 {
@@ -96,7 +104,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                     val loginResponse = andRegisterResponse.body()
                     if (loginResponse?.user != null)
                     {
-                        loadingDialog.dismiss()
                         goToMainActivity(loginResponse)
                     }
                     else
@@ -120,7 +127,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     private fun goToMainActivity(loginAndRegisterResponse: LoginAndRegisterResponse)
     {
-        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to loginAndRegisterResponse.user)
+        val user = loginAndRegisterResponse.user
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString(Constants.USER_UUID_PREFERENCES_KEY, user.uid).apply()
+
+        loadingDialog?.dismiss()
+
+        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to user)
         finish()
     }
 

@@ -8,8 +8,10 @@ class Constants
     companion object
     {
         val SERIALIZED_OBJECT_KEY = "serializedObjectKey"
+        val SHARED_PREFERENCES = "sharedPreferences"
         val FAILURE_ANIMATION = "failure.json"
         val SUCCESS_ANIMATION = "success.json"
         val LOADING_ANIMATION = "loading.json"
+        val USER_UUID_PREFERENCES_KEY = "userUuidPreferencesKey"
     }
 }

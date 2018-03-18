@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import kotlinx.android.synthetic.main.dialog_bemybank.*
 
@@ -70,9 +71,9 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
 
         val animationJSON = when (type)
         {
-            TYPE.SUCCESS -> "success.json"
-            TYPE.FAILURE -> "failure.json"
-            TYPE.LOADING -> "loading.json"
+            TYPE.SUCCESS -> Constants.SUCCESS_ANIMATION
+            TYPE.FAILURE -> Constants.FAILURE_ANIMATION
+            TYPE.LOADING -> Constants.LOADING_ANIMATION
         }
 
         animation.setAnimation(animationJSON)
