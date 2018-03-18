@@ -8,7 +8,7 @@ import android.view.View
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.adapters.InscriptionStepperAdapter
-import ecalle.com.bmybank.bo.User
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.interfaces.InscriptionListeningActivity
 import kotlinx.android.synthetic.main.activity_inscription.*

@@ -13,6 +13,8 @@ import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.realm.RealmServices
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.find
@@ -42,9 +44,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         setContentView(R.layout.activity_login)
 
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        if (!sharedPreferences.getString(Constants.USER_UUID_PREFERENCES_KEY, "").isEmpty())
+        val currentUserUid = sharedPreferences.getString(Constants.USER_UUID_PREFERENCES_KEY, "")
+
+        if (!currentUserUid.isEmpty())
         {
             log("A user seems already logged in")
+            goToMainActivity(currentUserUid)
         }
 
         login = find(R.id.login)
@@ -104,7 +109,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                     val loginResponse = andRegisterResponse.body()
                     if (loginResponse?.user != null)
                     {
-                        goToMainActivity(loginResponse)
+                        val user = loginResponse.user
+                        saveUser(user)
+                        goToMainActivity(user.uid)
                     }
                     else
                     {
@@ -125,15 +132,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     }
 
-    private fun goToMainActivity(loginAndRegisterResponse: LoginAndRegisterResponse)
+    private fun saveUser(user: User)
     {
-        val user = loginAndRegisterResponse.user
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.edit().putString(Constants.USER_UUID_PREFERENCES_KEY, user.uid).apply()
 
+        RealmServices.saveCurrentUser(user)
+    }
+
+    private fun goToMainActivity(uid: String)
+    {
         loadingDialog?.dismiss()
 
-        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to user)
+        startActivity<MainActivity>(Constants.SERIALIZED_USER_UID to uid)
         finish()
     }
 

@@ -9,9 +9,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
-import ecalle.com.bmybank.bo.User
 import ecalle.com.bmybank.fragments.PublicProfileFragment
 import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
+import ecalle.com.bmybank.realm.RealmServices
+import ecalle.com.bmybank.realm.bo.User
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.find
 
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
     lateinit private var navigationView: NavigationView
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -33,9 +35,14 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
 
         toolbarTitle = getString(R.string.bmyBank)
 
-        val user = intent.getSerializableExtra(Constants.SERIALIZED_OBJECT_KEY) as User
+        val userUid: String? = intent.getStringExtra(Constants.SERIALIZED_USER_UID)
 
-        updateHeader(user)
+        if (userUid != null)
+        {
+            user = RealmServices.getCurrentUser(userUid)
+
+            updateHeader(user)
+        }
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -77,14 +84,18 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateHeader(user: User)
+    private fun updateHeader(user: User?)
     {
-        val headerView = navigationView.getHeaderView(0)
-        val headerName = headerView.find<TextView>(R.id.navHeaderName)
-        val headerAccountValidity = headerView.find<TextView>(R.id.navHeaderAccountValidity)
+        if (user != null)
+        {
+            val headerView = navigationView.getHeaderView(0)
+            val headerName = headerView.find<TextView>(R.id.navHeaderName)
+            val headerAccountValidity = headerView.find<TextView>(R.id.navHeaderAccountValidity)
 
-        headerName.text = "${user.firstname} ${user.lastname}"
-        headerAccountValidity.text = if (user.isAccountValidate) getString(R.string.valid_account_label) else getString(R.string.not_valid_account_label)
+            headerName.text = "${user.firstname} ${user.lastname}"
+            headerAccountValidity.text = if (user.isAccountValidate) getString(R.string.valid_account_label) else getString(R.string.not_valid_account_label)
+        }
+
     }
 
 }

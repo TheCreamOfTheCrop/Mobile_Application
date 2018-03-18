@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.User
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.extensions.hasOnlyLetters
 import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.log

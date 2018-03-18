@@ -1,6 +1,6 @@
 package ecalle.com.bmybank.interfaces
 
-import ecalle.com.bmybank.bo.User
+import ecalle.com.bmybank.realm.bo.User
 
 /**
  * Created by Thomas Ecalle on 18/03/2018.
