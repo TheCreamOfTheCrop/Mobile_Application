@@ -11,10 +11,11 @@ import kotlinx.android.synthetic.main.dialog_bemybank.*
 /**
  * Created by Thomas Ecalle on 04/03/2018.
  */
-class BeMyDialog private constructor(context: Context?, message: String, type: TYPE) : Dialog(context), Animator.AnimatorListener
+class BeMyDialog private constructor(context: Context?, message: String, type: TYPE, loop: Boolean) : Dialog(context), Animator.AnimatorListener
 {
     private var message: String
     private var type: TYPE
+    private var loop: Boolean
 
     enum class TYPE
     {
@@ -26,6 +27,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
         val context: Context = context
         var message: String = ""
         var type: TYPE = TYPE.LOADING
+        var loop: Boolean = true
 
         fun message(message: Int): Builder
         {
@@ -39,9 +41,15 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
             return this
         }
 
+        fun loop(loop: Boolean): Builder
+        {
+            this.loop = loop
+            return this
+        }
+
         fun build(): BeMyDialog
         {
-            return BeMyDialog(context, message, type)
+            return BeMyDialog(context, message, type, loop)
         }
     }
 
@@ -49,6 +57,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
     {
         this.message = message
         this.type = type
+        this.loop = loop
     }
 
 
@@ -67,7 +76,7 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
         }
 
         animation.setAnimation(animationJSON)
-        animation.loop(true)
+        animation.loop(loop)
 
         animation.addAnimatorListener(this)
         animation.playAnimation()
@@ -85,7 +94,6 @@ class BeMyDialog private constructor(context: Context?, message: String, type: T
     override fun onAnimationEnd(p0: Animator?)
     {
         setCancelable(true)
-
     }
 
     override fun onAnimationCancel(p0: Animator?)

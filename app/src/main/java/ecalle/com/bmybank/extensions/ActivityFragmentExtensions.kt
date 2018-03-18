@@ -14,11 +14,12 @@ fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: I
 
 fun android.support.v4.app.Fragment.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
-fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int): BeMyDialog
+fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int, loop: Boolean = true): BeMyDialog
 {
     val dialog = BeMyDialog.Builder(this)
             .type(type)
             .message(message)
+            .loop(loop)
             .build()
     dialog.show()
     return dialog

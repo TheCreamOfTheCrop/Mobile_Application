@@ -18,6 +18,7 @@ import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.interfaces.InscriptionListeningActivity
 import org.jetbrains.anko.find
 import permissions.dispatcher.*
 
@@ -65,6 +66,7 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
+        val listeningActivity = activity as InscriptionListeningActivity
         if (requestCode == AvatarStep.REQUEST_SELECT_IMAGE_IN_ALBUM && resultCode == Activity.RESULT_OK)
         {
             try
@@ -73,6 +75,8 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
                 log("getting image from gallery, uri is : $capturedImageUri")
 
                 avatarImageView.setImageURI(capturedImageUri)
+                listeningActivity.onAvatarSelected(capturedImageUri.toString())
+
 
             } catch (e: Exception)
             {

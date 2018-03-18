@@ -1,7 +1,6 @@
 package ecalle.com.bmybank.fragments.inscription_steps
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.UiThread
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -10,8 +9,15 @@ import android.view.ViewGroup
 import com.stepstone.stepper.BlockingStep
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
+import ecalle.com.bmybank.InscriptionActivity
 import ecalle.com.bmybank.R
+import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.services.BmyBankApi
+import org.jetbrains.anko.support.v4.toast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Created by Thomas Ecalle on 04/03/2018.
@@ -51,13 +57,31 @@ class ScannerStep : Fragment(), BlockingStep
     {
         log("Scanner Step on Complete clicked")
         callback?.stepperLayout?.showProgress(getString(R.string.inscription_loading_message))
-        Handler().postDelayed(
-                {
-                    callback?.stepperLayout?.hideProgress()
-                    log("Scanner Step finished loading")
-                    callback?.complete()
-                },
-                2000L)
+
+        val listeningActivity = activity as InscriptionActivity
+
+        val actualUser = listeningActivity.getActualUser()
+
+        val api = BmyBankApi.getInstance()
+        val registerRequest = api.register(actualUser?.email, actualUser?.password, actualUser?.lastname, actualUser?.firstname, actualUser?.description, actualUser?.isAccountValidate)
+
+        registerRequest.enqueue(object : Callback<LoginAndRegisterResponse>
+        {
+            override fun onFailure(call: Call<LoginAndRegisterResponse>?, t: Throwable?)
+            {
+                callback?.stepperLayout?.hideProgress()
+                log("Scanner Step finished loading")
+                toast("error while register")
+            }
+
+            override fun onResponse(call: Call<LoginAndRegisterResponse>?, response: Response<LoginAndRegisterResponse>?)
+            {
+                callback?.stepperLayout?.hideProgress()
+                log("Scanner Step finished loading")
+                callback?.complete()
+            }
+
+        })
     }
 
     @UiThread

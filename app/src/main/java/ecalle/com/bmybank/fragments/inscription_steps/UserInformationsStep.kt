@@ -13,10 +13,12 @@ import android.widget.TextView
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.R
+import ecalle.com.bmybank.bo.User
 import ecalle.com.bmybank.extensions.hasOnlyLetters
 import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.interfaces.InscriptionListeningActivity
 import org.jetbrains.anko.find
 
 
@@ -102,6 +104,10 @@ class UserInformationsStep : Fragment(), Step
         {
             return VerificationError(getString(R.string.not_well_format_names))
         }
+
+        val listeningActivity = activity as InscriptionListeningActivity
+        val user = User(email = email.textValue, password = password.textValue, lastname = lastName.textValue, firstname = firstName.textValue, description = description.textValue)
+        listeningActivity.onUserInformationsValidated(user)
 
         return null
     }

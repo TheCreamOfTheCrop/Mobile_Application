@@ -1,7 +1,7 @@
 package ecalle.com.bmybank.services
 
 import ecalle.com.bmybank.BuildConfig
-import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,7 +19,16 @@ interface BmyBankApi
 
     @FormUrlEncoded
     @POST("user/login")
-    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginResponse>
+    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginAndRegisterResponse>
+
+    @FormUrlEncoded
+    @POST("user/register")
+    fun register(@Field("email") email: String?,
+                 @Field("password") password: String?,
+                 @Field("lastname") lastname: String?,
+                 @Field("firstname") firstname: String?,
+                 @Field("description") description: String?,
+                 @Field("isAccountValidate") isAccountValidate: Boolean?): Call<LoginAndRegisterResponse>
 
     companion object
     {

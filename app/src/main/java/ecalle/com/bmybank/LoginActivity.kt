@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         {
             when (resultCode)
             {
-                Activity.RESULT_OK -> customAlert(message = R.string.validated_inscription_message)
+                Activity.RESULT_OK -> customAlert(message = R.string.validated_inscription_message, loop = false)
             }
         }
     }
@@ -81,18 +81,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         val loginRequest = api.login(login.textValue, password.textValue)
 
 
-        loginRequest.enqueue(object : Callback<LoginResponse>
+        loginRequest.enqueue(object : Callback<LoginAndRegisterResponse>
         {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>)
+            override fun onResponse(call: Call<LoginAndRegisterResponse>, andRegisterResponse: Response<LoginAndRegisterResponse>)
             {
-                if (response.code() == 400)
+                if (andRegisterResponse.code() == 400)
                 {
                     showError()
                 }
                 else
                 {
                     showError(false)
-                    val loginResponse = response.body()
+                    val loginResponse = andRegisterResponse.body()
                     if (loginResponse?.user != null)
                     {
                         loadingDialog.dismiss()
@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
             }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable)
+            override fun onFailure(call: Call<LoginAndRegisterResponse>, t: Throwable)
             {
                 toast("Failure getting user from server, throwable message : ${t.message}")
             }
@@ -117,9 +117,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     }
 
-    private fun goToMainActivity(loginResponse: LoginResponse)
+    private fun goToMainActivity(loginAndRegisterResponse: LoginAndRegisterResponse)
     {
-        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to loginResponse.user)
+        startActivity<MainActivity>(Constants.SERIALIZED_OBJECT_KEY to loginAndRegisterResponse.user)
         finish()
     }
 

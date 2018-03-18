@@ -4,21 +4,25 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.View
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.adapters.InscriptionStepperAdapter
+import ecalle.com.bmybank.bo.User
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.interfaces.InscriptionListeningActivity
 import kotlinx.android.synthetic.main.activity_inscription.*
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.find
 
 /**
  * Created by Thomas Ecalle on 04/03/2018.
  */
-class InscriptionActivity : AppCompatActivity(), StepperLayout.StepperListener
+class InscriptionActivity :
+        AppCompatActivity(),
+        StepperLayout.StepperListener,
+        InscriptionListeningActivity
 {
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -76,4 +80,26 @@ class InscriptionActivity : AppCompatActivity(), StepperLayout.StepperListener
             negativeButton(R.string.no) {}
         }.show()
     }
+
+    override fun onUserInformationsValidated(user: User)
+    {
+        this.user = user
+        log("validated user informations: $user")
+    }
+
+    override fun onAvatarSelected(uri: String)
+    {
+        this.user?.avatar = uri
+    }
+
+    override fun onAccountValidation(isValid: Boolean)
+    {
+        this.user?.isAccountValidate = isValid
+    }
+
+    override fun getActualUser(): User?
+    {
+        return this.user
+    }
+
 }
