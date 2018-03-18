@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -15,6 +16,7 @@ import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.find
+import org.jetbrains.anko.startActivity
 
 /**
  * Created by Thomas Ecalle on 18/03/2018.
@@ -77,10 +79,23 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
             {
                 fragmentManager.beginTransaction().replace(R.id.fragmentContainer, ProfileModificationFragment()).commit()
             }
+            R.id.logout ->
+            {
+                logout()
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun logout()
+    {
+        RealmServices.deleteCurrentUser(user?.uid)
+        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
+        startActivity<LoginActivity>()
+        finish()
     }
 
     @SuppressLint("SetTextI18n")

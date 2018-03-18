@@ -28,7 +28,26 @@ object RealmServices
         val realm = Realm.getDefaultInstance()
         realm.use {
             val user = it.where(User::class.java).equalTo(Constants.USER_UUID_PREFERENCES_KEY, uid).findFirst()
-            return it.copyFromRealm(user)
+            return if (user != null)
+            {
+                it.copyFromRealm(user)
+            }
+            else
+            {
+                null
+            }
+        }
+    }
+
+    @WorkerThread
+    fun deleteCurrentUser(uid: String?)
+    {
+        val realm = Realm.getDefaultInstance()
+        realm.use {
+            val user = it.where(User::class.java).equalTo(Constants.USER_UUID_PREFERENCES_KEY, uid).findFirst()
+            it.executeTransaction{
+                user?.deleteFromRealm()
+            }
         }
     }
 }
