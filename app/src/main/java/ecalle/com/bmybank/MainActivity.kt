@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import ecalle.com.bmybank.fragments.PublicProfileFragment
+import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.find
 
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         toolbarTitle = getString(R.string.bmyBank)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -29,6 +32,8 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, PublicProfileFragment()).commit()
     }
 
     override fun onBackPressed()
@@ -49,11 +54,11 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         {
             R.id.nav_profile ->
             {
-
+                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, PublicProfileFragment()).commit()
             }
             R.id.nav_edit_profile ->
             {
-
+                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, ProfileModificationFragment()).commit()
             }
         }
 
