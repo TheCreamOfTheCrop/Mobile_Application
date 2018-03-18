@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import ecalle.com.bmybank.bo.LoginResponse
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.services.BmyBankApi
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.find
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
@@ -22,8 +24,9 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity(), View.OnClickListener
 {
 
-    private val email: EditText? = null
-    private val password: EditText? = null
+    lateinit private var login: EditText
+    lateinit private var password: EditText
+    lateinit private var error: TextView
 
     companion object
     {
@@ -34,6 +37,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        login = find(R.id.login)
+        password = find(R.id.password)
+        error = find(R.id.error)
 
         passwordForgotten.setOnClickListener(this)
         inscription.setOnClickListener(this)
@@ -64,16 +71,24 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
     private fun login()
     {
         val api = BmyBankApi.getInstance()
-        val loginRequest = api.login(email?.textValue, password?.textValue)
+        val loginRequest = api.login(login.textValue, password.textValue)
 
 
         loginRequest.enqueue(object : Callback<LoginResponse>
         {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>)
             {
-                val loginResponse = response.body()
+                if (response.code() == 400)
+                {
+                    showError()
+                }
+                else
+                {
+                    showError(false)
+                    val loginResponse = response.body()
+                    toast("login completed $loginResponse")
+                }
 
-                toast("login repsonse : $loginResponse")
 
             }
 
@@ -85,6 +100,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
         log("end loading function")
 
+    }
+
+    private fun showError(show: Boolean = true)
+    {
+        error.text = getString(R.string.wrong_email_or_password)
+        error.visibility = if (show) View.VISIBLE else View.GONE
     }
 }
 

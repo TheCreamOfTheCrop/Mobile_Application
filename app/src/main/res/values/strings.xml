@@ -36,4 +36,5 @@
     <string name="not_well_format_names">Nom et Prénom ne doivent contenir que des lettres</string>
     <string name="quitting_inscription_validation">Êtes-vous sûr de vouloir annuler l\'inscription ?</string>
     <string name="cancel">Annuler</string>
+    <string name="wrong_email_or_password">Mauvais email ou mot de passe</string>
 </resources>
