@@ -23,7 +23,7 @@ val EditText.textValue: String
 
 fun EditText.hasOnlyLetters(): Boolean
 {
-    return textValue.matches(Regex("[a-zA-Z]+"));
+    return textValue.matches(Regex("[A-zÀ-ÿ]+"))
 }
 
 fun View.slideExit()
