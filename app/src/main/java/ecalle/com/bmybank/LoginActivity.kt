@@ -88,6 +88,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 if (andRegisterResponse.code() == 400)
                 {
                     showError()
+                    loadingDialog.dismiss()
                 }
                 else
                 {

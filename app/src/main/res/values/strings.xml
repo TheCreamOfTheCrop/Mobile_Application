@@ -46,4 +46,5 @@
     <string name="consult">Consulter</string>
     <string name="modify">Modifier</string>
     <string name="connection_loading">Connexion en cours...</string>
+    <string name="not_valid_account_label">Compte non validé</string>
 </resources>
