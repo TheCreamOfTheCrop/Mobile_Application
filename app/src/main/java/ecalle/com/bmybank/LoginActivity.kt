@@ -105,7 +105,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 }
                 else
                 {
-                    showError(false)
+                    showError(show = false)
                     val loginResponse = andRegisterResponse.body()
                     if (loginResponse?.user != null)
                     {
@@ -124,7 +124,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
             override fun onFailure(call: Call<LoginAndRegisterResponse>, t: Throwable)
             {
-                toast("Failure getting user from server, throwable message : ${t.message}")
+                //toast("Failure getting user from server, throwable message : ${t.message}")
+                loadingDialog?.dismiss()
+                showError(R.string.not_internet)
             }
         })
 
@@ -148,9 +150,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         finish()
     }
 
-    private fun showError(show: Boolean = true)
+    private fun showError(message: Int = R.string.wrong_email_or_password, show: Boolean = true)
     {
-        error.text = getString(R.string.wrong_email_or_password)
+        error.text = getString(message)
         error.visibility = if (show) View.VISIBLE else View.GONE
     }
 }
