@@ -1,5 +1,6 @@
 package ecalle.com.bmybank.realm
 
+import android.content.Context
 import android.support.annotation.WorkerThread
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.realm.bo.User
@@ -23,11 +24,14 @@ object RealmServices
     }
 
     @WorkerThread
-    fun getCurrentUser(uid: String): User?
+    fun getCurrentUser(context: Context): User?
     {
+        val sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        val currentUserUid = sharedPreferences.getString(Constants.USER_UUID_PREFERENCES_KEY, "")
+
         val realm = Realm.getDefaultInstance()
         realm.use {
-            val user = it.where(User::class.java).equalTo(Constants.USER_UUID_PREFERENCES_KEY, uid).findFirst()
+            val user = it.where(User::class.java).equalTo(Constants.USER_UUID_PREFERENCES_KEY, currentUserUid).findFirst()
             return if (user != null)
             {
                 it.copyFromRealm(user)
@@ -45,7 +49,7 @@ object RealmServices
         val realm = Realm.getDefaultInstance()
         realm.use {
             val user = it.where(User::class.java).equalTo(Constants.USER_UUID_PREFERENCES_KEY, uid).findFirst()
-            it.executeTransaction{
+            it.executeTransaction {
                 user?.deleteFromRealm()
             }
         }

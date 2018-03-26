@@ -43,13 +43,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        val currentUserUid = sharedPreferences.getString(Constants.USER_UUID_PREFERENCES_KEY, "")
-
-        if (!currentUserUid.isEmpty())
+        if (RealmServices.getCurrentUser(this) != null)
         {
             log("A user seems already logged in")
-            goToMainActivity(currentUserUid)
+            goToMainActivity()
         }
 
         login = find(R.id.login)
@@ -111,7 +108,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                     {
                         val user = loginResponse.user
                         saveUser(user)
-                        goToMainActivity(user.uid)
+                        goToMainActivity()
                     }
                     else
                     {
@@ -142,11 +139,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         RealmServices.saveCurrentuser(user)
     }
 
-    private fun goToMainActivity(uid: String)
+    private fun goToMainActivity()
     {
         loadingDialog?.dismiss()
 
-        startActivity<MainActivity>(Constants.SERIALIZED_USER_UID to uid)
+        startActivity<MainActivity>()
         finish()
     }
 

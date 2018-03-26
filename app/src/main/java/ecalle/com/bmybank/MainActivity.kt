@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.annotation.SuppressLint
+import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -37,14 +38,10 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
 
         toolbarTitle = getString(R.string.bmyBank)
 
-        val userUid: String? = intent.getStringExtra(Constants.SERIALIZED_USER_UID)
 
-        if (userUid != null)
-        {
-            user = RealmServices.getCurrentUser(userUid)
+        user = RealmServices.getCurrentUser(this)
 
-            updateHeader(user)
-        }
+        updateHeader(user)
 
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -52,7 +49,9 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
 
         navigationView.setNavigationItemSelectedListener(this)
 
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, PublicProfileFragment()).commit()
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.SERIALIZED_OBJECT_KEY, user)
+        replaceFragment(PublicProfileFragment(), bundle)
     }
 
     override fun onBackPressed()
@@ -69,15 +68,20 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
+        val userBundle = Bundle()
+        userBundle.putSerializable(Constants.SERIALIZED_OBJECT_KEY, user)
+
         when (item.itemId)
         {
             R.id.nav_profile ->
             {
-                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, PublicProfileFragment()).commit()
+
+                replaceFragment(PublicProfileFragment(), userBundle)
             }
+
             R.id.nav_edit_profile ->
             {
-                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, ProfileModificationFragment()).commit()
+                replaceFragment(ProfileModificationFragment(), userBundle)
             }
             R.id.logout ->
             {
@@ -89,8 +93,15 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         return true
     }
 
+    private fun replaceFragment(fragment: Fragment, bundle: Bundle? = null)
+    {
+        fragment.arguments = bundle
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
+    }
+
     private fun logout()
     {
+
         RealmServices.deleteCurrentUser(user?.uid)
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
