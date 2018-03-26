@@ -53,4 +53,8 @@
     <string name="description_line_title">Description</string>
     <string name="not_well_format_description">Votre description doit comporter moins de 255 caractères</string>
     <string name="logout_confirmation">Souhaitez-vous vraiment vous déconnecter ?</string>
+    <string name="previousPassword">Précédent mot de passe</string>
+    <string name="newPassword">Nouveau mot de passe</string>
+    <string name="bad_password">Mot de passe incorrect</string>
+    <string name="user_updating_loading">Prise en compte des changements...</string>
 </resources>

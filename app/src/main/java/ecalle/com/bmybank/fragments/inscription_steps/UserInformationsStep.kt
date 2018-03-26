@@ -42,14 +42,14 @@ class UserInformationsStep : Fragment(), Step
     {
         val view = inflater.inflate(R.layout.fragment_user_information_step, container, false)
 
-        scrollView = view.find<ScrollView>(R.id.scrollView)
-        errorView = view.find<TextView>(R.id.errorView)
-        email = view.find<EditText>(R.id.email)
-        password = view.find<EditText>(R.id.password)
-        confirmPassword = view.find<EditText>(R.id.confirmPassword)
-        firstName = view.find<EditText>(R.id.firstName)
-        lastName = view.find<EditText>(R.id.lastName)
-        description = view.find<EditText>(R.id.description)
+        scrollView = view.find(R.id.scrollView)
+        errorView = view.find(R.id.errorView)
+        email = view.find(R.id.email)
+        password = view.find(R.id.password)
+        confirmPassword = view.find(R.id.confirmPassword)
+        firstName = view.find(R.id.firstName)
+        lastName = view.find(R.id.lastName)
+        description = view.find(R.id.description)
 
         makeDescriptionScrollable()
 
@@ -58,10 +58,10 @@ class UserInformationsStep : Fragment(), Step
 
     private fun makeDescriptionScrollable()
     {
-        description.setVerticalScrollBarEnabled(true)
-        description.setOverScrollMode(View.OVER_SCROLL_ALWAYS)
-        description.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET)
-        description.setMovementMethod(ScrollingMovementMethod.getInstance())
+        description.isVerticalScrollBarEnabled = true
+        description.overScrollMode = View.OVER_SCROLL_ALWAYS
+        description.scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
+        description.movementMethod = ScrollingMovementMethod.getInstance()
 
         description.setOnTouchListener(
                 { view, motionEvent ->
@@ -88,39 +88,30 @@ class UserInformationsStep : Fragment(), Step
                 "\ndescription: ${description.text}" +
                 "\nPasswords are equals ? ${password.textValue == confirmPassword.textValue}")
 
-        if (isAFieldEmpty())
+        when
         {
-            return VerificationError(getString(R.string.form_all_fields_not_complete))
-        }
-        if (isNotValidEmailAdress())
-        {
-            return VerificationError(getString(R.string.not_valid_email_adress))
-        }
-        if (passwordAreDifferent())
-        {
-            return VerificationError(getString(R.string.passwords_not_equals))
-        }
-        if (namesAreNotWellFormat())
-        {
-            return VerificationError(getString(R.string.not_well_format_names))
-        }
-        if (descriptionIsNotWellFormat())
-        {
-            return VerificationError(getString(R.string.not_well_format_description))
+            isAFieldEmpty() -> return VerificationError(getString(R.string.form_all_fields_not_complete))
+            isNotValidEmailAdress() -> return VerificationError(getString(R.string.not_valid_email_adress))
+            passwordAreDifferent() -> return VerificationError(getString(R.string.passwords_not_equals))
+            namesAreNotWellFormat() -> return VerificationError(getString(R.string.not_well_format_names))
+            descriptionIsNotWellFormat() -> return VerificationError(getString(R.string.not_well_format_description))
+            else ->
+            {
+                val listeningActivity = activity as InscriptionListeningActivity
+                val user = User(email = email.textValue, password = password.textValue, lastname = lastName.textValue, firstname = firstName.textValue, description = description.textValue)
+                listeningActivity.onUserInformationsValidated(user)
+
+                return null
+            }
         }
 
-        val listeningActivity = activity as InscriptionListeningActivity
-        val user = User(email = email.textValue, password = password.textValue, lastname = lastName.textValue, firstname = firstName.textValue, description = description.textValue)
-        listeningActivity.onUserInformationsValidated(user)
-
-        return null
     }
 
     override fun onError(error: VerificationError)
     {
         errorView.text = error.errorMessage
         errorView.visibility = View.VISIBLE
-        scrollView.fullScroll(ScrollView.FOCUS_UP);
+        scrollView.fullScroll(ScrollView.FOCUS_UP)
     }
 
     private fun isAFieldEmpty(): Boolean

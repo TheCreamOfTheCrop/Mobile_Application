@@ -30,6 +30,15 @@ interface BmyBankApi
                  @Field("description") description: String?,
                  @Field("isAccountValidate") isAccountValidate: Boolean?): Call<LoginAndRegisterResponse>
 
+    @FormUrlEncoded
+    @POST("/user/update")
+    fun updateUser(@Field("id") id: Int?,
+                   @Field("email") email: String? = null,
+                   @Field("password") password: String? = null,
+                   @Field("lastname") lastname: String? = null,
+                   @Field("firstname") firstname: String? = null,
+                   @Field("description") description: String? = null): Call<LoginAndRegisterResponse>
+
     companion object
     {
         private val url = "https://still-cove-11874.herokuapp.com/"

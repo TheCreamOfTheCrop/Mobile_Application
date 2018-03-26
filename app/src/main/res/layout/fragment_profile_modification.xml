@@ -1,19 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/generalPadding"
+    >
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/errorView"
+        style="@style/ErrorLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Modification of public profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/generalPadding"
+        android:text="teeest"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/errorView"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ecalle.com.bmybank.custom_components.CustomLinedTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/identifiers"
+                />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/emailPlaceholder"
+                android:inputType="textEmailAddress"
+                />
+
+            <EditText
+                android:id="@+id/previousPassword"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/previousPassword"
+                android:inputType="textPassword"
+                />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/newPassword"
+                android:inputType="textPassword"
+                />
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirmPasswordPlaceholder"
+                android:inputType="textPassword"
+                />
+
+            <ecalle.com.bmybank.custom_components.CustomLinedTitle
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/informations"
+                />
+
+            <EditText
+                android:id="@+id/firstName"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/firstNamePlaceholder"
+                android:inputType="text"
+                />
+
+            <EditText
+                android:id="@+id/lastName"
+                style="@style/RoundedEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/lastNamePlaceholder"
+                android:inputType="text"
+                />
+
+            <EditText
+                android:id="@+id/description"
+                style="@style/RoundedMultilineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/descriptionPlaceholder"
+                />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:baselineAlignBottom="true"
+        android:src="@drawable/ic_save"
+        android:tint="@color/white"
+        />
+
+</RelativeLayout>
