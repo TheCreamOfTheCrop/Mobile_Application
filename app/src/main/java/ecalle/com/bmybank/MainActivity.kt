@@ -16,6 +16,7 @@ import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragmen
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
 import org.jetbrains.anko.startActivity
 
@@ -102,11 +103,19 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
     private fun logout()
     {
 
-        RealmServices.deleteCurrentUser(user?.uid)
-        val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
-        startActivity<LoginActivity>()
-        finish()
+        alert {
+            message = getString(R.string.logout_confirmation)
+            positiveButton(R.string.yes) {
+                RealmServices.deleteCurrentUser(user?.uid)
+                val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+                sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
+                startActivity<LoginActivity>()
+                finish()
+            }
+
+            negativeButton(R.string.no) {}
+        }.show()
+
     }
 
     @SuppressLint("SetTextI18n")

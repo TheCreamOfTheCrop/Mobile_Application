@@ -52,4 +52,5 @@
     <string name="not_internet">Aucune connexion internet</string>
     <string name="description_line_title">Description</string>
     <string name="not_well_format_description">Votre description doit comporter moins de 255 caractères</string>
+    <string name="logout_confirmation">Souhaitez-vous vraiment vous déconnecter ?</string>
 </resources>
