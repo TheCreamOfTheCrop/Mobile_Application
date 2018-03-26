@@ -13,12 +13,12 @@ import android.widget.TextView
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.extensions.hasOnlyLetters
 import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.interfaces.InscriptionListeningActivity
+import ecalle.com.bmybank.realm.bo.User
 import org.jetbrains.anko.find
 
 
@@ -65,10 +65,10 @@ class UserInformationsStep : Fragment(), Step
 
         description.setOnTouchListener(
                 { view, motionEvent ->
-                    view.parent.requestDisallowInterceptTouchEvent(true)
+                    view?.parent?.requestDisallowInterceptTouchEvent(true)
                     if (motionEvent.action and MotionEvent.ACTION_UP != 0 && motionEvent.actionMasked and MotionEvent.ACTION_UP != 0)
                     {
-                        view.parent.requestDisallowInterceptTouchEvent(false)
+                        view?.parent?.requestDisallowInterceptTouchEvent(false)
                     }
                     false
                 })
@@ -104,6 +104,10 @@ class UserInformationsStep : Fragment(), Step
         {
             return VerificationError(getString(R.string.not_well_format_names))
         }
+        if (descriptionIsNotWellFormat())
+        {
+            return VerificationError(getString(R.string.not_well_format_description))
+        }
 
         val listeningActivity = activity as InscriptionListeningActivity
         val user = User(email = email.textValue, password = password.textValue, lastname = lastName.textValue, firstname = firstName.textValue, description = description.textValue)
@@ -137,6 +141,11 @@ class UserInformationsStep : Fragment(), Step
     private fun namesAreNotWellFormat(): Boolean
     {
         return !firstName.hasOnlyLetters() || !lastName.hasOnlyLetters()
+    }
+
+    private fun descriptionIsNotWellFormat(): Boolean
+    {
+        return description.textValue.length >= 255
     }
 
 }
