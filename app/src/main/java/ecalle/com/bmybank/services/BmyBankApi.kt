@@ -32,7 +32,7 @@ interface BmyBankApi
 
     companion object
     {
-        private val url = "http://91.121.67.75:4100"
+        private val url = "https://still-cove-11874.herokuapp.com/"
 
         fun getInstance(): BmyBankApi
         {
