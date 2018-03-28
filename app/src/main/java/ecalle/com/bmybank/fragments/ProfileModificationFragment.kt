@@ -17,7 +17,6 @@ import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.hasOnlyLetters
-import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
@@ -46,6 +45,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
     lateinit private var user: User
     private var loadingDialog: BeMyDialog? = null
+    private var needToUpdatePassword = false
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -124,10 +124,12 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
             descriptionIsNotWellFormat() -> showError(getString(R.string.not_well_format_description))
             else ->
             {
+                var updatedPassword: String? = null
                 user.email = email.textValue
                 if (!password.textValue.isEmpty())
                 {
                     user.password = password.textValue
+                    updatedPassword = user.password
                 }
 
                 user.lastname = lastName.textValue
@@ -138,7 +140,8 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
 
                 val api = BmyBankApi.getInstance()
-                val updateRequest = api.updateUser(user.id, user.email, user.password, user.lastname, user.firstname, user.description)
+
+                val updateRequest = api.updateUser(user.id, user.email, updatedPassword, user.lastname, user.firstname, user.description)
 
                 updateRequest.enqueue(object : Callback<LoginAndRegisterResponse>
                 {
@@ -180,12 +183,6 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
         errorView.text = error
         errorView.visibility = if (show) View.VISIBLE else View.GONE
         scrollView.fullScroll(ScrollView.FOCUS_UP)
-    }
-
-
-    private fun isAFieldEmpty(): Boolean
-    {
-        return email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty() || description.isEmpty()
     }
 
     private fun passwordAreDifferent(): Boolean
