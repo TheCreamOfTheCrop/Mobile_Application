@@ -34,7 +34,8 @@ interface BmyBankApi
     @POST("/user/update")
     fun updateUser(@Field("id") id: Int?,
                    @Field("email") email: String? = null,
-                   @Field("password") password: String? = null,
+                   @Field("previousPassword") previousPassword: String? = null,
+                   @Field("newPassword") newPassword: String? = null,
                    @Field("lastname") lastname: String? = null,
                    @Field("firstname") firstname: String? = null,
                    @Field("description") description: String? = null): Call<LoginAndRegisterResponse>

@@ -17,6 +17,7 @@ import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.hasOnlyLetters
+import ecalle.com.bmybank.extensions.isEmpty
 import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
@@ -25,6 +26,7 @@ import org.jetbrains.anko.find
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 /**
  * Created by Thomas Ecalle on 18/03/2018.
@@ -124,12 +126,18 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
             descriptionIsNotWellFormat() -> showError(getString(R.string.not_well_format_description))
             else ->
             {
-                var updatedPassword: String? = null
-                user.email = email.textValue
+                var needToUpdatePassword = false
+                var needToUpdateEmail = false
+
+                if (email.textValue != user.email)
+                {
+                    needToUpdateEmail = true
+                    user.email = email.textValue
+                }
+
                 if (!password.textValue.isEmpty())
                 {
-                    user.password = password.textValue
-                    updatedPassword = user.password
+                    needToUpdatePassword = true
                 }
 
                 user.lastname = lastName.textValue
@@ -141,28 +149,42 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
                 val api = BmyBankApi.getInstance()
 
-                val updateRequest = api.updateUser(user.id, user.email, updatedPassword, user.lastname, user.firstname, user.description)
+                val updateRequest =
+                        api.updateUser(id = user.id,
+                                email = if (needToUpdateEmail) user.email else null,
+                                previousPassword = if (needToUpdatePassword) user.password else null,
+                                newPassword = if (needToUpdatePassword) password.textValue else null,
+                                lastname = user.lastname,
+                                firstname = user.firstname,
+                                description = user.description)
 
                 updateRequest.enqueue(object : Callback<LoginAndRegisterResponse>
                 {
-                    override fun onResponse(call: Call<LoginAndRegisterResponse>, andRegisterResponse: Response<LoginAndRegisterResponse>)
+                    override fun onResponse(call: Call<LoginAndRegisterResponse>, response: Response<LoginAndRegisterResponse>)
                     {
-                        if (andRegisterResponse.code() == 400)
+                        if (response.code() == 400)
                         {
-                            showError(getString(R.string.bad_password))
+                            if (response.errorBody() != null)
+                            {
+                                showError(response.errorBody()!!.string())
+                            }
+                            else
+                            {
+                                showError(getString(R.string.impossible_user_update))
+                            }
                             loadingDialog?.dismiss()
                         }
                         else
                         {
                             showError(show = false)
 
-                            fillInformations()
                             RealmServices.saveCurrentuser(user)
 
                             loadingDialog?.dismiss()
 
                         }
 
+                        fillInformations()
 
                     }
 
@@ -187,7 +209,9 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
     private fun passwordAreDifferent(): Boolean
     {
-        return password.textValue != confirmPassword.textValue
+        return (password.textValue != confirmPassword.textValue)
+                || (!previousPassword.textValue.isEmpty() && password.isEmpty())
+                || (previousPassword.textValue.isEmpty() && !password.isEmpty())
     }
 
     private fun isNotValidEmailAdress(): Boolean

@@ -57,4 +57,5 @@
     <string name="newPassword">Nouveau mot de passe</string>
     <string name="bad_password">Mot de passe incorrect</string>
     <string name="user_updating_loading">Prise en compte des changements...</string>
+    <string name="impossible_user_update">Modification impossible</string>
 </resources>
