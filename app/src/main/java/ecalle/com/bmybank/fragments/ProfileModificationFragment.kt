@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import com.squareup.moshi.Moshi
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.bo.LoginAndRegisterResponse
@@ -24,6 +25,8 @@ import org.jetbrains.anko.find
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.squareup.moshi.JsonAdapter
+import ecalle.com.bmybank.bo.SImpleResponse
 
 
 /**
@@ -163,7 +166,13 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
             {
               if (response.errorBody() != null)
               {
-                showInformation(response.errorBody()!!.string())
+                val stringResponse = response.errorBody()!!.string()
+                val moshi = Moshi.Builder().build()
+                val jsonAdapter = moshi.adapter(SImpleResponse::class.java)
+                val response = jsonAdapter.fromJson(stringResponse)
+
+                showInformation(response.message)
+
               }
               else
               {
