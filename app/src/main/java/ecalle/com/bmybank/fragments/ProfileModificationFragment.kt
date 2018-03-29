@@ -128,6 +128,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
       {
         var needToUpdatePassword = false
         var needToUpdateEmail = false
+        var previousPasswordValue = ""
 
         if (email.textValue != user.email)
         {
@@ -138,6 +139,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
         if (!password.textValue.isEmpty())
         {
           needToUpdatePassword = true
+          previousPasswordValue = previousPassword.textValue
         }
 
         user.lastname = lastName.textValue
@@ -152,7 +154,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
         val updateRequest =
             api.updateUser(id = user.id,
                 email = if (needToUpdateEmail) user.email else null,
-                previousPassword = if (needToUpdatePassword) user.password else null,
+                previousPassword = if (needToUpdatePassword) previousPasswordValue else null,
                 newPassword = if (needToUpdatePassword) password.textValue else null,
                 lastname = user.lastname,
                 firstname = user.firstname,
