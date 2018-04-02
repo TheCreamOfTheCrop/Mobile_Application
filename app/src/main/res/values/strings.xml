@@ -67,4 +67,5 @@
     <string name="radiobutton_public_loan">Public</string>
     <string name="radiobutton_private_loan">Privé</string>
     <string name="loan_type_label">Type de prêt</string>
+  <string name="user_update_success">Mise à jour du profil réussie</string>
 </resources>
