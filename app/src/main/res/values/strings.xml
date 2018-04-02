@@ -58,4 +58,13 @@
     <string name="bad_password">Mot de passe incorrect</string>
     <string name="user_updating_loading">Prise en compte des changements...</string>
     <string name="impossible_user_update">Modification impossible</string>
+    <string name="add_loan_title">Demande de prêt</string>
+    <string name="add_loan_description">Décrivez votre projet en 255 mots maximums</string>
+    <string name="amount_placeholder">0.00</string>
+    <string name="amount_label">Montant :</string>
+    <string name="rate_label">Intérêts : </string>
+    <string name="rate_placeholder">0.00</string>
+    <string name="radiobutton_public_loan">Public</string>
+    <string name="radiobutton_private_loan">Privé</string>
+    <string name="loan_type_label">Type de prêt</string>
 </resources>

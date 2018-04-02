@@ -3,9 +3,7 @@ package ecalle.com.bmybank.fragments.inscription_steps
 import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -15,10 +13,7 @@ import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.bo.LoginAndRegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
-import ecalle.com.bmybank.extensions.customAlert
-import ecalle.com.bmybank.extensions.hasOnlyLetters
-import ecalle.com.bmybank.extensions.isEmpty
-import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
@@ -76,7 +71,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
         }
 
 
-        makeDescriptionScrollable()
+        description.makeEditTextScrollableInScrollview()
 
         return view
     }
@@ -87,24 +82,6 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
         lastName.setText(user.lastname)
         email.setText(user.email)
         description.setText(user.description)
-    }
-
-    private fun makeDescriptionScrollable()
-    {
-        description.isVerticalScrollBarEnabled = true
-        description.overScrollMode = View.OVER_SCROLL_ALWAYS
-        description.scrollBarStyle = View.SCROLLBARS_INSIDE_INSET
-        description.movementMethod = ScrollingMovementMethod.getInstance()
-
-        description.setOnTouchListener(
-                { view, motionEvent ->
-                    view?.parent?.requestDisallowInterceptTouchEvent(true)
-                    if (motionEvent.action and MotionEvent.ACTION_UP != 0 && motionEvent.actionMasked and MotionEvent.ACTION_UP != 0)
-                    {
-                        view?.parent?.requestDisallowInterceptTouchEvent(false)
-                    }
-                    false
-                })
     }
 
 

@@ -39,6 +39,12 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".AddLoanActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>
