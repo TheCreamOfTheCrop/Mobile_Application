@@ -17,6 +17,7 @@ import ecalle.com.bmybank.bo.RegisterResponse
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
+import ecalle.com.bmybank.interfaces.UserModificationListener
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
@@ -169,6 +170,9 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
                                 showInformation(information = getString(R.string.user_update_success), error = false)
 
                                 RealmServices.saveCurrentuser(user)
+
+                                val userListener = activity as UserModificationListener
+                                userListener.userModified(user)
 
                                 loadingDialog?.dismiss()
 

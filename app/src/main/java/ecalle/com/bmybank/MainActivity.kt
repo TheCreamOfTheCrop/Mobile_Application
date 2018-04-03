@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import ecalle.com.bmybank.fragments.PublicProfileFragment
 import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
+import ecalle.com.bmybank.interfaces.UserModificationListener
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,8 +24,9 @@ import org.jetbrains.anko.startActivity
 /**
  * Created by Thomas Ecalle on 18/03/2018.
  */
-class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavigationItemSelectedListener
+class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavigationItemSelectedListener, UserModificationListener
 {
+
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
     lateinit private var navigationView: NavigationView
@@ -38,7 +40,6 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         navigationView = find(R.id.navigationView)
 
         toolbarTitle = getString(R.string.bmyBank)
-
 
         user = RealmServices.getCurrentUser(this)
 
@@ -128,10 +129,15 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
             val headerName = headerView.find<TextView>(R.id.navHeaderName)
             val headerAccountValidity = headerView.find<TextView>(R.id.navHeaderAccountValidity)
 
-            headerName.text = "${user.firstname} ${user.lastname}"
-            headerAccountValidity.text = if (user.isAccountValidate) getString(R.string.valid_account_label) else getString(R.string.not_valid_account_label)
+            headerName.text = "${user?.firstname} ${user?.lastname}"
+            headerAccountValidity.text = if (user?.isAccountValidate!!) getString(R.string.valid_account_label) else getString(R.string.not_valid_account_label)
         }
 
+    }
+
+    override fun userModified(user: User)
+    {
+        updateHeader(user)
     }
 
 }
