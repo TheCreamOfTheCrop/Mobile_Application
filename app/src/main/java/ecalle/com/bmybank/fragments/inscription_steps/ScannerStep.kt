@@ -64,7 +64,7 @@ class ScannerStep : Fragment(), BlockingStep
 
         val actualUser = listeningActivity.getActualUser()
 
-        val api = BmyBankApi.getInstance()
+        val api = BmyBankApi.getInstance(context)
         val registerRequest = api.register(actualUser?.email, actualUser?.password, actualUser?.lastname, actualUser?.firstname, actualUser?.description, actualUser?.isAccountValidate)
 
         registerRequest.enqueue(object : Callback<RegisterResponse>

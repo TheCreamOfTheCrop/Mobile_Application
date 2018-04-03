@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
                 RealmServices.deleteCurrentUser(user?.uid)
                 val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
                 sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
+                sharedPreferences.edit().remove(Constants.TOKEN_PREFERENCES_KEY).apply()
                 startActivity<LoginActivity>()
                 finish()
             }

@@ -15,5 +15,6 @@ class Constants
         val LOADING_ANIMATION = "loading.json"
         val USER_UUID_PREFERENCES_KEY = "uid"
         val DESCRIPTION_MAX_LENGTH = 255
+        val TOKEN_PREFERENCES_KEY = "tokenPreferencesKey"
     }
 }

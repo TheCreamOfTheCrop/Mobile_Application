@@ -12,6 +12,7 @@ import io.realm.Realm
  */
 object RealmServices
 {
+
     @WorkerThread
     fun saveCurrentuser(user: User)
     {

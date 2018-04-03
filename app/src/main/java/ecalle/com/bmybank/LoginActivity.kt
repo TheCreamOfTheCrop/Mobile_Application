@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import ecalle.com.bmybank.bo.LoginResponse
-import ecalle.com.bmybank.bo.RegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
@@ -88,7 +87,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         loadingDialog = customAlert(message = R.string.connection_loading, type = BeMyDialog.TYPE.LOADING)
 
 
-        val api = BmyBankApi.getInstance()
+        val api = BmyBankApi.getInstance(this)
         val loginRequest = api.login(login.textValue, password.textValue)
 
 
@@ -108,7 +107,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                     if (loginResponse?.result?.user != null)
                     {
                         val user = loginResponse.result.user
-                        saveUser(user)
+                        saveUser(user, loginResponse.result.token)
                         goToMainActivity()
                     }
                     else
@@ -132,10 +131,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     }
 
-    private fun saveUser(user: User)
+    private fun saveUser(user: User, token: String)
     {
         val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         sharedPreferences.edit().putString(Constants.USER_UUID_PREFERENCES_KEY, user.uid).apply()
+        sharedPreferences.edit().putString(Constants.TOKEN_PREFERENCES_KEY, token).apply()
 
         RealmServices.saveCurrentuser(user)
     }
