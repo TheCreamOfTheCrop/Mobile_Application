@@ -68,4 +68,11 @@
     <string name="radiobutton_private_loan">Privé</string>
     <string name="loan_type_label">Type de prêt</string>
   <string name="user_update_success">Mise à jour du profil réussie</string>
+    <string name="loan_menu_title">Gestion de prêts</string>
+    <string name="my_loans">Mes prêts</string>
+    <string name="other_menu_title">Autre</string>
+    <string name="pending_loans_title">Attente</string>
+    <string name="in_progress_loans_title">En cours</string>
+    <string name="in_negociation_loans_title">Négos</string>
+    <string name="finished_loans_title">Finis</string>
 </resources>

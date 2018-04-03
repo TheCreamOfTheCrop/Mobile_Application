@@ -1,16 +1,17 @@
 package ecalle.com.bmybank
 
 import android.annotation.SuppressLint
-import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
+import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicProfileFragment
 import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
 import ecalle.com.bmybank.interfaces.UserModificationListener
@@ -64,7 +65,24 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         }
         else
         {
-            super.onBackPressed()
+            val fragment = supportFragmentManager.findFragmentByTag(Constants.FRAGMENT_TAG) as Fragment
+
+            if (fragment is MyLoansFragment)
+            {
+                val currentPosition = fragment.getCurrentPosition()
+                if (currentPosition == 0)
+                {
+                    super.onBackPressed()
+                }
+                else
+                {
+                    fragment.handleBack()
+                }
+            }
+            else
+            {
+                super.onBackPressed()
+            }
         }
     }
 
@@ -80,12 +98,15 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
 
                 replaceFragment(PublicProfileFragment(), userBundle)
             }
-
             R.id.nav_edit_profile ->
             {
                 replaceFragment(ProfileModificationFragment(), userBundle)
             }
-            R.id.logout ->
+            R.id.nav_my_loans ->
+            {
+                replaceFragment(MyLoansFragment())
+            }
+            R.id.nav_logout ->
             {
                 logout()
             }
@@ -95,10 +116,10 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
         return true
     }
 
-    private fun replaceFragment(fragment: Fragment, bundle: Bundle? = null)
+    private fun replaceFragment(fragment: Fragment, bundle: Bundle? = null, tag: String = Constants.FRAGMENT_TAG)
     {
         fragment.arguments = bundle
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment, tag).commit()
     }
 
     private fun logout()

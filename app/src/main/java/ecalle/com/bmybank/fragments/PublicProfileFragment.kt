@@ -1,7 +1,7 @@
 package ecalle.com.bmybank.fragments
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +35,7 @@ class PublicProfileFragment : Fragment()
 
         if (arguments != null)
         {
-            val user = arguments.getSerializable(Constants.SERIALIZED_OBJECT_KEY) as User
+            val user = arguments?.getSerializable(Constants.SERIALIZED_OBJECT_KEY) as User
 
             firstName.text = user.firstname
             lastName.text = user.lastname

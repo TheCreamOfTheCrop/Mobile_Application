@@ -69,6 +69,6 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
 
     private fun descriptionIsNotWellFormat(): Boolean
     {
-        return description.textValue.length >= 255
+        return description.textValue.length >= Constants.DESCRIPTION_MAX_LENGTH
     }
 }

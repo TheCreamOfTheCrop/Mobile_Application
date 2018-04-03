@@ -1,8 +1,8 @@
 package ecalle.com.bmybank.fragments.inscription_steps
 
-import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -65,9 +65,9 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
         save.setOnClickListener(this)
 
-        if (arguments != null)
+        if (arguments !== null)
         {
-            user = arguments.getSerializable(Constants.SERIALIZED_OBJECT_KEY) as User
+            user = arguments?.getSerializable(Constants.SERIALIZED_OBJECT_KEY) as User
 
             fillInformations()
 
@@ -198,7 +198,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
     private fun showInformation(information: String = "", show: Boolean = true, error: Boolean = true)
     {
         errorView.text = information
-        val color = if (error) ContextCompat.getColor(activity, R.color.red) else ContextCompat.getColor(activity, R.color.green)
+        val color = if (error) ContextCompat.getColor(activity!!, R.color.red) else ContextCompat.getColor(activity!!, R.color.green)
         errorView.setTextColor(color)
         errorView.visibility = if (show) View.VISIBLE else View.GONE
         scrollView.fullScroll(ScrollView.FOCUS_UP)
@@ -223,7 +223,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
     private fun descriptionIsNotWellFormat(): Boolean
     {
-        return description.textValue.length >= 255
+        return description.textValue.length >= Constants.DESCRIPTION_MAX_LENGTH
     }
 
 

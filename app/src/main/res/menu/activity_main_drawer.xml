@@ -19,11 +19,28 @@
                 />
         </menu>
     </item>
+    <item
+        android:title="@string/loan_menu_title"
+        >
+        <menu>
+            <item
+                android:id="@+id/nav_my_loans"
+                android:icon="@drawable/ic_money"
+                android:title="@string/my_loans"
+                />
+        </menu>
+    </item>
 
     <item
-        android:id="@+id/logout"
-        android:icon="@drawable/ic_exit"
-        android:title="@string/logout"
-        />
+        android:title="@string/other_menu_title"
+        >
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_exit"
+                android:title="@string/logout"
+                />
+        </menu>
+    </item>
 
 </menu>
