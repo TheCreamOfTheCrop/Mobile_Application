@@ -11,7 +11,7 @@ import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.InscriptionActivity
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.LoginAndRegisterResponse
+import ecalle.com.bmybank.bo.RegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
@@ -67,16 +67,16 @@ class ScannerStep : Fragment(), BlockingStep
         val api = BmyBankApi.getInstance()
         val registerRequest = api.register(actualUser?.email, actualUser?.password, actualUser?.lastname, actualUser?.firstname, actualUser?.description, actualUser?.isAccountValidate)
 
-        registerRequest.enqueue(object : Callback<LoginAndRegisterResponse>
+        registerRequest.enqueue(object : Callback<RegisterResponse>
         {
-            override fun onFailure(call: Call<LoginAndRegisterResponse>?, t: Throwable?)
+            override fun onFailure(call: Call<RegisterResponse>?, t: Throwable?)
             {
                 callback?.stepperLayout?.hideProgress()
                 log("Scanner Step finished loading")
                 toast("error while register")
             }
 
-            override fun onResponse(call: Call<LoginAndRegisterResponse>?, response: Response<LoginAndRegisterResponse>?)
+            override fun onResponse(call: Call<RegisterResponse>?, response: Response<RegisterResponse>?)
             {
                 callback?.stepperLayout?.hideProgress()
                 log("Scanner Step finished loading")

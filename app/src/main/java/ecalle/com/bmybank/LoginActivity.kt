@@ -8,7 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import ecalle.com.bmybank.bo.LoginAndRegisterResponse
+import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.bo.RegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
@@ -91,9 +92,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         val loginRequest = api.login(login.textValue, password.textValue)
 
 
-        loginRequest.enqueue(object : Callback<LoginAndRegisterResponse>
+        loginRequest.enqueue(object : Callback<LoginResponse>
         {
-            override fun onResponse(call: Call<LoginAndRegisterResponse>, andRegisterResponse: Response<LoginAndRegisterResponse>)
+            override fun onResponse(call: Call<LoginResponse>, andRegisterResponse: Response<LoginResponse>)
             {
                 if (andRegisterResponse.code() == 400)
                 {
@@ -104,9 +105,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 {
                     showError(show = false)
                     val loginResponse = andRegisterResponse.body()
-                    if (loginResponse?.user != null)
+                    if (loginResponse?.result?.user != null)
                     {
-                        val user = loginResponse.user
+                        val user = loginResponse.result.user
                         saveUser(user)
                         goToMainActivity()
                     }
@@ -119,7 +120,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
             }
 
-            override fun onFailure(call: Call<LoginAndRegisterResponse>, t: Throwable)
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable)
             {
                 //toast("Failure getting user from server, throwable message : ${t.message}")
                 loadingDialog?.dismiss()

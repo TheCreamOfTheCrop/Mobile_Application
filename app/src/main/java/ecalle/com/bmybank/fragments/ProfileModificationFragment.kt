@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import android.widget.TextView
 import com.squareup.moshi.Moshi
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.LoginAndRegisterResponse
+import ecalle.com.bmybank.bo.RegisterResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
@@ -24,7 +23,6 @@ import org.jetbrains.anko.find
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.squareup.moshi.JsonAdapter
 import ecalle.com.bmybank.bo.SImpleResponse
 
 
@@ -141,9 +139,9 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
                 firstname = user.firstname,
                 description = user.description)
 
-        updateRequest.enqueue(object : Callback<LoginAndRegisterResponse>
+        updateRequest.enqueue(object : Callback<RegisterResponse>
         {
-          override fun onResponse(call: Call<LoginAndRegisterResponse>, response: Response<LoginAndRegisterResponse>)
+          override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>)
           {
             if (response.code() == 400)
             {
@@ -177,7 +175,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
           }
 
-          override fun onFailure(call: Call<LoginAndRegisterResponse>, t: Throwable)
+          override fun onFailure(call: Call<RegisterResponse>, t: Throwable)
           {
             //toast("Failure getting user from server, throwable message : ${t.message}")
             loadingDialog?.dismiss()

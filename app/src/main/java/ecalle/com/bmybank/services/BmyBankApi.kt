@@ -1,7 +1,8 @@
 package ecalle.com.bmybank.services
 
 import ecalle.com.bmybank.BuildConfig
-import ecalle.com.bmybank.bo.LoginAndRegisterResponse
+import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.bo.RegisterResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,7 +20,7 @@ interface BmyBankApi
 
     @FormUrlEncoded
     @POST("user/login")
-    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginAndRegisterResponse>
+    fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginResponse>
 
     @FormUrlEncoded
     @POST("user/register")
@@ -28,7 +29,7 @@ interface BmyBankApi
                  @Field("lastname") lastname: String?,
                  @Field("firstname") firstname: String?,
                  @Field("description") description: String?,
-                 @Field("isAccountValidate") isAccountValidate: Boolean?): Call<LoginAndRegisterResponse>
+                 @Field("isAccountValidate") isAccountValidate: Boolean?): Call<RegisterResponse>
 
     @FormUrlEncoded
     @POST("/user/update")
@@ -38,7 +39,7 @@ interface BmyBankApi
                    @Field("newPassword") newPassword: String? = null,
                    @Field("lastname") lastname: String? = null,
                    @Field("firstname") firstname: String? = null,
-                   @Field("description") description: String? = null): Call<LoginAndRegisterResponse>
+                   @Field("description") description: String? = null): Call<RegisterResponse>
 
     companion object
     {
