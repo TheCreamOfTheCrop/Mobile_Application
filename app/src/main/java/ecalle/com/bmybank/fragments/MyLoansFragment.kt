@@ -1,23 +1,28 @@
 package ecalle.com.bmybank.fragments
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.MyLoansPagerAdapter
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
  */
-class MyLoansFragment : Fragment()
+class MyLoansFragment : Fragment(), View.OnClickListener
 {
+
     private lateinit var pagerAdapter: MyLoansPagerAdapter
     private lateinit var viewPager: ViewPager
+    private lateinit var addLoanButton: FloatingActionButton
     private lateinit var tabs: TabLayout
 
 
@@ -27,7 +32,9 @@ class MyLoansFragment : Fragment()
 
         viewPager = view.find(R.id.viewPager)
         tabs = view.find(R.id.tabs)
+        addLoanButton = view.find(R.id.addLoanButton)
 
+        addLoanButton.setOnClickListener(this)
         pagerAdapter = MyLoansPagerAdapter(fragmentManager!!, context)
 
         viewPager.adapter = pagerAdapter
@@ -43,6 +50,14 @@ class MyLoansFragment : Fragment()
     fun handleBack()
     {
         viewPager.currentItem = getCurrentPosition() - 1
+    }
+
+    override fun onClick(view: View?)
+    {
+        when (view?.id)
+        {
+            addLoanButton.id -> startActivity<AddLoanActivity>()
+        }
     }
 
 }

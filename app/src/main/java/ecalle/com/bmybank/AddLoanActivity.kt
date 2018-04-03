@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
@@ -8,9 +9,21 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import com.squareup.moshi.Moshi
+import ecalle.com.bmybank.bo.AddingLoanResponse
+import ecalle.com.bmybank.bo.SImpleResponse
+import ecalle.com.bmybank.custom_components.BeMyDialog
+import ecalle.com.bmybank.extensions.customAlert
+import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.makeEditTextScrollableInScrollview
 import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.realm.RealmServices
+import ecalle.com.bmybank.services.BmyBankApi
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * Created by Thomas Ecalle on 02/04/2018.
@@ -21,9 +34,12 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
     private lateinit var description: EditText
+    private lateinit var amount: EditText
+    private lateinit var rate: EditText
     private lateinit var validate: Button
     private lateinit var errorView: TextView
     private lateinit var scrollView: ScrollView
+    private lateinit var loadingDialog: BeMyDialog
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -34,6 +50,8 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         enableHomeAsUp { onBackPressed() }
 
         description = find(R.id.description)
+        amount = find(R.id.amount)
+        rate = find(R.id.rate)
         errorView = find(R.id.errorView)
         scrollView = find(R.id.scrollView)
         validate = find(R.id.validate)
@@ -50,22 +68,125 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         }
     }
 
+    override fun onBackPressed()
+    {
+        log("on back pressed")
+        confirmStoppingInscription()
+    }
+
+    private fun confirmStoppingInscription()
+    {
+        alert {
+            message = getString(R.string.quitting_loan_creation_message)
+            positiveButton(R.string.yes) {
+                super.onBackPressed()
+                finish()
+            }
+
+            negativeButton(R.string.no) {}
+        }.show()
+    }
+
     private fun checkThenSend()
     {
         if (descriptionIsNotWellFormat())
         {
-            showError()
+            showInformation(getString(R.string.not_well_format_description))
             return
+        }
+        else if (amountNotWellSet())
+        {
+            showInformation(getString(R.string.incorrect_amount))
+        }
+        else if (rateNotWellSet())
+        {
+            showInformation(getString(R.string.incorrect_rate))
+        }
+        else
+        {
+            addLoan()
         }
     }
 
-    fun showError(error: String = getString(R.string.not_well_format_description))
+    private fun addLoan()
     {
-        errorView.text = error
-        errorView.visibility = View.VISIBLE
+        val currentUser = RealmServices.getCurrentUser(this)
+        val api = BmyBankApi.getInstance(this)
+        val addLoanRequest = api.addLoan(amount = amount.textValue.toFloatOrNull(),
+                description = if (description.textValue !== null) description.textValue else "",
+                rate = rate.textValue.toFloatOrNull(),
+                userId = currentUser?.id,
+                delay = 400)
+
+        loadingDialog = customAlert(message = R.string.add_loan_loading, type = BeMyDialog.TYPE.LOADING)
+
+
+        addLoanRequest.enqueue(object : Callback<AddingLoanResponse>
+        {
+            override fun onResponse(call: Call<AddingLoanResponse>, response: Response<AddingLoanResponse>)
+            {
+                when
+                {
+                    response.code() == 404 -> showInformation(getString(R.string.server_issue))
+                    response.code() == 400 ->
+                    {
+                        if (response.errorBody() != null)
+                        {
+                            val stringResponse = response.errorBody()!!.string()
+                            val moshi = Moshi.Builder().build()
+                            val jsonAdapter = moshi.adapter(SImpleResponse::class.java)
+                            val response = jsonAdapter.fromJson(stringResponse)
+
+                            showInformation(response.message)
+
+                        }
+                        else
+                        {
+                            showInformation(getString(R.string.impossible_loan_add))
+                        }
+                        loadingDialog.dismiss()
+                    }
+                    else ->
+                    {
+                        showInformation(information = getString(R.string.loan_well_added), error = false)
+
+                        loadingDialog.dismiss()
+
+                    }
+                }
+
+
+            }
+
+            override fun onFailure(call: Call<AddingLoanResponse>, t: Throwable)
+            {
+                //toast("Failure getting user from server, throwable message : ${t.message}")
+                loadingDialog?.dismiss()
+                showInformation(getString(R.string.not_internet))
+            }
+        })
+
+
+    }
+
+    private fun showInformation(information: String = "", show: Boolean = true, error: Boolean = true)
+    {
+        errorView.text = information
+        val color = if (error) ContextCompat.getColor(this, R.color.red) else ContextCompat.getColor(this, R.color.green)
+        errorView.setTextColor(color)
+        errorView.visibility = if (show) View.VISIBLE else View.GONE
         scrollView.fullScroll(ScrollView.FOCUS_UP)
     }
 
+    private fun amountNotWellSet(): Boolean
+    {
+        return amount.textValue.isEmpty() || (amount.textValue.toFloatOrNull() === null)
+    }
+
+    private fun rateNotWellSet(): Boolean
+    {
+        return rate.textValue.isEmpty() || (rate.textValue.toFloatOrNull() === null)
+    }
 
     private fun descriptionIsNotWellFormat(): Boolean
     {

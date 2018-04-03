@@ -1,11 +1,11 @@
 package ecalle.com.bmybank.services
 
 import android.content.Context
-import ecalle.com.bmybank.BuildConfig
+import ecalle.com.bmybank.bo.AddingLoanResponse
 import ecalle.com.bmybank.bo.LoginResponse
 import ecalle.com.bmybank.bo.RegisterResponse
+import ecalle.com.bmybank.bo.SImpleResponse
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -19,6 +19,14 @@ import retrofit2.http.PUT
  */
 interface BmyBankApi
 {
+
+    @FormUrlEncoded
+    @POST("loan/add")
+    fun addLoan(@Field("amount") amount: Float?,
+                @Field("description") description: String?,
+                @Field("rate") rate: Float?,
+                @Field("user_id") userId: Int?,
+                @Field("delay") delay: Int? = 400): Call<AddingLoanResponse>
 
     @FormUrlEncoded
     @POST("user/login")
@@ -52,7 +60,6 @@ interface BmyBankApi
             val client = OkHttpClient().newBuilder()
                     .addInterceptor(CustomInterceptor(context))
                     .build()
-
 
 
             val retrofit = Retrofit.Builder()
