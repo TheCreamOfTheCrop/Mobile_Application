@@ -64,19 +64,28 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         title.text = getTitle()
         retry.setOnClickListener(this)
 
+        loadThenGetLoans()
+
+        return view
+    }
+
+    private fun loadThenGetLoans()
+    {
         loader.visibility = View.VISIBLE
         errorView.visibility = View.GONE
         recyclerView.visibility = View.GONE
-        getLoans()
 
-        return view
+        getLoans()
     }
 
     override fun onClick(view: View?)
     {
         when (view?.id)
         {
-            retry.id -> getLoans()
+            retry.id ->
+            {
+                loadThenGetLoans()
+            }
         }
     }
 
