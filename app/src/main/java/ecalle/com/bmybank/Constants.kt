@@ -16,5 +16,9 @@ class Constants
         val USER_UUID_PREFERENCES_KEY = "uid"
         val DESCRIPTION_MAX_LENGTH = 255
         val TOKEN_PREFERENCES_KEY = "tokenPreferencesKey"
+        val PENDING_LOANS = "en attente"
+        val IN_PROGRESS_LOANS = "en cours"
+        val IN_NEGOCIATION_LOANS = "en négociation"
+        val FINISHED_LOANS = "finis"
     }
 }

@@ -2,9 +2,9 @@ package ecalle.com.bmybank.services
 
 import android.content.Context
 import ecalle.com.bmybank.bo.AddingLoanResponse
+import ecalle.com.bmybank.bo.GettingUserLoansResponse
 import ecalle.com.bmybank.bo.LoginResponse
-import ecalle.com.bmybank.bo.RegisterResponse
-import ecalle.com.bmybank.bo.SImpleResponse
+import ecalle.com.bmybank.bo.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -25,8 +25,12 @@ interface BmyBankApi
     fun addLoan(@Field("amount") amount: Float?,
                 @Field("description") description: String?,
                 @Field("rate") rate: Float?,
-                @Field("user_id") userId: Int?,
+                @Field("id") userId: Int?,
                 @Field("delay") delay: Int? = 400): Call<AddingLoanResponse>
+
+    @FormUrlEncoded
+    @POST("loan/findLoan")
+    fun findPersonalLoans(@Field("state_id") filter: String = ""): Call<GettingUserLoansResponse>
 
     @FormUrlEncoded
     @POST("user/login")
@@ -39,7 +43,7 @@ interface BmyBankApi
                  @Field("lastname") lastname: String?,
                  @Field("firstname") firstname: String?,
                  @Field("description") description: String?,
-                 @Field("isAccountValidate") isAccountValidate: Boolean?): Call<RegisterResponse>
+                 @Field("isAccountValidate") isAccountValidate: Boolean?): Call<UserResponse>
 
     @FormUrlEncoded
     @PUT("/user")
@@ -49,7 +53,11 @@ interface BmyBankApi
                    @Field("newPassword") newPassword: String? = null,
                    @Field("lastname") lastname: String? = null,
                    @Field("firstname") firstname: String? = null,
-                   @Field("description") description: String? = null): Call<RegisterResponse>
+                   @Field("description") description: String? = null): Call<UserResponse>
+
+    @FormUrlEncoded
+    @POST("/user")
+    fun findUserById(@Field("id") id: Int): Call<UserResponse>
 
     companion object
     {

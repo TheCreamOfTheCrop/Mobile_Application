@@ -29,7 +29,7 @@ open class Loan(
     open var description: String? = null
     open var loanType: String = ""
     open var stateId: String = ""
-    open var userRequesterId: Int = 0
+    open var user_requester_id: Int = 0
     open var delay: Int = 0
 
     enum class LOANTYPE(type: String)
@@ -57,7 +57,7 @@ open class Loan(
         this.loanType = loan_type
         this.stateId = state_id
         this.description = description
-        this.userRequesterId = user_requester_id
+        this.user_requester_id = user_requester_id
         this.delay = delay
     }
 }

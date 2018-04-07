@@ -30,7 +30,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener
     {
         val view = inflater.inflate(R.layout.fragment_my_loans, container, false)
 
-        viewPager = view.find(R.id.viewPager)
+        viewPager = view.find<ViewPager>(R.id.viewPager)
         tabs = view.find(R.id.tabs)
         addLoanButton = view.find(R.id.addLoanButton)
 
@@ -39,6 +39,12 @@ class MyLoansFragment : Fragment(), View.OnClickListener
 
         viewPager.adapter = pagerAdapter
         tabs.setupWithViewPager(viewPager)
+
+        tabs.getTabAt(0)?.setIcon(R.drawable.ic_pending)
+        tabs.getTabAt(1)?.setIcon(R.drawable.ic_negociation)
+        tabs.getTabAt(2)?.setIcon(R.drawable.ic_in_progress)
+        tabs.getTabAt(3)?.setIcon(R.drawable.ic_check)
+
         return view
     }
 

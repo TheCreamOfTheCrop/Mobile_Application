@@ -8,7 +8,6 @@ import ecalle.com.bmybank.fragments.my_loans_pager.FinishedLoansFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.InNegociationLoansFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.InProgressFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.PendingLoansFragment
-import ecalle.com.bmybank.interfaces.MyLoansPagerFragment
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
@@ -24,6 +23,8 @@ class MyLoansPagerAdapter(fm: FragmentManager, private val context: Context?) : 
         framgents.add(InNegociationLoansFragment())
         framgents.add(InProgressFragment())
         framgents.add(FinishedLoansFragment())
+
+
     }
 
     override fun getItem(position: Int): Fragment
@@ -34,8 +35,12 @@ class MyLoansPagerAdapter(fm: FragmentManager, private val context: Context?) : 
 
     override fun getPageTitle(position: Int): CharSequence?
     {
+        /*
         val fragment = framgents.get(position) as MyLoansPagerFragment
         return context?.getString(fragment.getTitle())
+         */
+        return null
+
     }
 
     override fun getCount(): Int

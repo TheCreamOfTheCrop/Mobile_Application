@@ -13,7 +13,7 @@ import android.widget.TextView
 import com.squareup.moshi.Moshi
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.RegisterResponse
+import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
@@ -140,9 +140,9 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
                                 firstname = user.firstname,
                                 description = user.description)
 
-                updateRequest.enqueue(object : Callback<RegisterResponse>
+                updateRequest.enqueue(object : Callback<UserResponse>
                 {
-                    override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>)
+                    override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>)
                     {
                         when
                         {
@@ -183,7 +183,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
 
                     }
 
-                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable)
+                    override fun onFailure(call: Call<UserResponse>, t: Throwable)
                     {
                         //toast("Failure getting user from server, throwable message : ${t.message}")
                         loadingDialog?.dismiss()

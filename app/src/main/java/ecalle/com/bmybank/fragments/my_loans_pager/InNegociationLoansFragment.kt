@@ -1,29 +1,21 @@
 package ecalle.com.bmybank.fragments.my_loans_pager
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.interfaces.MyLoansPagerFragment
+import ecalle.com.bmybank.fragments.LoadingLoansFragment
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
  */
-class InNegociationLoansFragment : Fragment(), MyLoansPagerFragment
+class InNegociationLoansFragment : LoadingLoansFragment()
 {
-    override fun getTitle(): Int
+    override fun getLoansType(): String
     {
-        return R.string.in_negociation_loans_title
+        return Constants.IN_NEGOCIATION_LOANS
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun getTitle(): String
     {
-        val view = inflater.inflate(R.layout.fragment_in_negociation_loans, container, false)
-
-
-        return view
+        return getString(R.string.in_negociation_loans_title)
     }
-
 }

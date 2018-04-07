@@ -71,9 +71,9 @@
     <string name="loan_menu_title">Gestion de prêts</string>
     <string name="my_loans">Mes prêts</string>
     <string name="other_menu_title">Autre</string>
-    <string name="pending_loans_title">Attente</string>
+    <string name="pending_loans_title">En Attente</string>
     <string name="in_progress_loans_title">En cours</string>
-    <string name="in_negociation_loans_title">Négos</string>
+    <string name="in_negociation_loans_title">En Négociation</string>
     <string name="finished_loans_title">Finis</string>
     <string name="quitting_loan_creation_message">Voulez-vous vraiment annuler la création de votre prêt ?</string>
     <string name="incorrect_amount">Montant incorrect</string>
@@ -81,4 +81,6 @@
     <string name="incorrect_rate">Taux d\'intérêts incorrect</string>
     <string name="impossible_loan_add">Impossible d\'ajouter ce prêt</string>
     <string name="add_loan_loading">Envoie du prêt en cours...</string>
+    <string name="no_results">Aucun résultat</string>
+    <string name="retry">Réessayer</string>
 </resources>
