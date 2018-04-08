@@ -9,6 +9,11 @@ import ecalle.com.bmybank.fragments.LoadingLoansFragment
  */
 class FinishedLoansFragment : LoadingLoansFragment()
 {
+    override fun load()
+    {
+        loadThenGetLoans()
+    }
+
     override fun getLoansType(): String
     {
         return Constants.FINISHED_LOANS

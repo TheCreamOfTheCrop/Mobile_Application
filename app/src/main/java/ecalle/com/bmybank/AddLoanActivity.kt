@@ -1,5 +1,6 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -148,10 +149,9 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
                     }
                     else ->
                     {
-                        showInformation(information = getString(R.string.loan_well_added), error = false)
-
                         loadingDialog.dismiss()
-
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
                 }
 

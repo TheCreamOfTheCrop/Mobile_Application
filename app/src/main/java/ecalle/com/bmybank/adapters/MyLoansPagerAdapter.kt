@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import ecalle.com.bmybank.fragments.LoadingLoansFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.FinishedLoansFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.InNegociationLoansFragment
 import ecalle.com.bmybank.fragments.my_loans_pager.InProgressFragment
@@ -48,9 +49,10 @@ class MyLoansPagerAdapter(fm: FragmentManager, private val context: Context?) : 
         return 4
     }
 
-    fun getCurrentPosition(): Int
+    fun reload()
     {
-        return currentPosition
+        val fragment = framgents[currentPosition] as LoadingLoansFragment
+        fragment.load()
     }
 
 }

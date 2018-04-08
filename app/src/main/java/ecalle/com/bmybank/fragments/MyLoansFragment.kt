@@ -1,5 +1,7 @@
 package ecalle.com.bmybank.fragments
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
@@ -12,7 +14,7 @@ import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.MyLoansPagerAdapter
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.startActivityForResult
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
@@ -24,6 +26,11 @@ class MyLoansFragment : Fragment(), View.OnClickListener
     private lateinit var viewPager: ViewPager
     private lateinit var addLoanButton: FloatingActionButton
     private lateinit var tabs: TabLayout
+
+    companion object
+    {
+        val ADDING_LOAN_REQUEST = 3
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -62,7 +69,21 @@ class MyLoansFragment : Fragment(), View.OnClickListener
     {
         when (view?.id)
         {
-            addLoanButton.id -> startActivity<AddLoanActivity>()
+            addLoanButton.id -> startActivityForResult<AddLoanActivity>(MyLoansFragment.ADDING_LOAN_REQUEST)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        if (requestCode == MyLoansFragment.ADDING_LOAN_REQUEST)
+        {
+            when (resultCode)
+            {
+                Activity.RESULT_OK ->
+                {
+                    pagerAdapter.reload()
+                }
+            }
         }
     }
 

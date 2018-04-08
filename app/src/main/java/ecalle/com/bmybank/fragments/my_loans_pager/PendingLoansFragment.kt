@@ -10,6 +10,11 @@ import ecalle.com.bmybank.fragments.LoadingLoansFragment
  */
 class PendingLoansFragment : LoadingLoansFragment()
 {
+    override fun load()
+    {
+        loadThenGetLoans()
+    }
+
     override fun getTitle(): String
     {
         return getString(R.string.pending_loans_title)

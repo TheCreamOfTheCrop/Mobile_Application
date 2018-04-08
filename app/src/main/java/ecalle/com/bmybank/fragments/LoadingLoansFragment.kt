@@ -41,6 +41,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
 
     abstract fun getLoansType(): String
     abstract fun getTitle(): String
+    abstract fun load()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -69,7 +70,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         return view
     }
 
-    private fun loadThenGetLoans()
+    protected fun loadThenGetLoans()
     {
         loader.visibility = View.VISIBLE
         errorView.visibility = View.GONE
