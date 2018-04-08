@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/loan_list_item_background"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/generalPadding"
     android:paddingTop="@dimen/generalPadding"
+    android:foreground="?android:attr/selectableItemBackground"
     >
 
     <LinearLayout
