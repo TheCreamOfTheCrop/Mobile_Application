@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import ecalle.com.bmybank.R
+import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
@@ -28,12 +29,16 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val loader: ProgressBar = itemView.find(R.id.loader)
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
-    fun bind(loan: Loan)
+    fun bind(loan: Loan, onLoanClickListener: LoansAdapter.OnLoanClickListener)
     {
         amount.text = loan.amount.toString()
         rate.text = loan.rate.toString()
         description.text = loan.description
         repayment.text = itemView.context.getString(R.string.repayment_loan_item_label, loan.delay)
+
+        itemView.setOnClickListener {
+            onLoanClickListener.onLoanClick(loan, firsName.text.toString(), lastName.text.toString())
+        }
 
         val api = BmyBankApi.getInstance(itemView.context)
         val findUserByIdRequest = api.findUserById(loan.user_requester_id)

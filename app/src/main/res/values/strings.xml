@@ -89,4 +89,8 @@
     <string name="month">mois</string>
     <string name="incorrect_repayment">Durée de remboursement incorrecte</string>
     <string name="repayment_loan_item_label">Remboursement prévu en %1$d mois</string>
+    <string name="loan_viewver_toolbar_title">Détails du prêt</string>
+    <string name="negociate_button_label">Négocier</string>
+    <string name="accept_loan">Accepter</string>
+    <string name="delay_label">Durée :</string>
 </resources>

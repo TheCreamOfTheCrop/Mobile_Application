@@ -11,8 +11,12 @@ import ecalle.com.bmybank.view_holders.LoanViewHolder
 /**
  * Created by Thomas Ecalle on 07/04/2018.
  */
-class LoansAdapter(private var list: List<Loan>) : RecyclerView.Adapter<LoanViewHolder>()
+class LoansAdapter(private var list: List<Loan>, private var onLoanClickListener: OnLoanClickListener) : RecyclerView.Adapter<LoanViewHolder>()
 {
+    interface OnLoanClickListener
+    {
+        fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): LoanViewHolder
     {
@@ -23,7 +27,7 @@ class LoansAdapter(private var list: List<Loan>) : RecyclerView.Adapter<LoanView
     override fun onBindViewHolder(myViewHolder: LoanViewHolder, position: Int)
     {
         val loan = list[position]
-        myViewHolder.bind(loan)
+        myViewHolder.bind(loan, onLoanClickListener)
     }
 
     override fun getItemCount(): Int

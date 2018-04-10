@@ -1,5 +1,6 @@
 package ecalle.com.bmybank.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import ecalle.com.bmybank.LoanViewerActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.bo.GettingUserLoansResponse
@@ -27,8 +29,10 @@ import retrofit2.Response
 /**
  * Created by Thomas Ecalle on 07/04/2018.
  */
-class PublicLoansFragment : Fragment(), View.OnClickListener
+class PublicLoansFragment : Fragment(), View.OnClickListener, LoansAdapter.OnLoanClickListener
 {
+
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var loader: ProgressBar
@@ -36,6 +40,11 @@ class PublicLoansFragment : Fragment(), View.OnClickListener
     private lateinit var errorText: TextView
     private lateinit var retry: Button
     private lateinit var loans: List<Loan>
+
+    companion object
+    {
+        val PUBLIC_LOAN_KEY = "publicLoanKey"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -84,7 +93,7 @@ class PublicLoansFragment : Fragment(), View.OnClickListener
     private fun setupList()
     {
         recyclerView.layoutManager = LinearLayoutManager(ctx)
-        recyclerView.adapter = LoansAdapter(loans)
+        recyclerView.adapter = LoansAdapter(loans, this)
 
         recyclerView.visibility = View.VISIBLE
 
@@ -140,5 +149,14 @@ class PublicLoansFragment : Fragment(), View.OnClickListener
         recyclerView.visibility = View.GONE
 
         errorText.text = message
+    }
+
+    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+    {
+        val intent = Intent(ctx, LoanViewerActivity::class.java)
+        intent.putExtra(PublicLoansFragment.PUBLIC_LOAN_KEY, loan)
+        intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
+        intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
+        startActivity(intent)
     }
 }

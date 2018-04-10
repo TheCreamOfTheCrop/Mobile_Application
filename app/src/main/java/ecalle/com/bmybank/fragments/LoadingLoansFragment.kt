@@ -42,6 +42,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     abstract fun getLoansType(): String
     abstract fun getTitle(): String
     abstract fun load()
+    abstract fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -70,6 +71,13 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         return view
     }
 
+
+    override fun onResume()
+    {
+        super.onResume()
+        loadThenGetLoans()
+    }
+
     protected fun loadThenGetLoans()
     {
         loader.visibility = View.VISIBLE
@@ -93,7 +101,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     private fun setupList()
     {
         recyclerView.layoutManager = LinearLayoutManager(ctx)
-        recyclerView.adapter = LoansAdapter(loans)
+        recyclerView.adapter = LoansAdapter(loans, getLoanClickListener())
 
         recyclerView.visibility = View.VISIBLE
 

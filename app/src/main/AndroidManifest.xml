@@ -42,9 +42,11 @@
 
         <activity
             android:name=".AddLoanActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"/>
 
-        </activity>
+        <activity
+            android:name=".LoanViewerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

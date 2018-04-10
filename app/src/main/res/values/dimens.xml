@@ -7,4 +7,5 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="avatar_dimen">90dp</dimen>
+    <dimen name="little_avatar_dimen">45dp</dimen>
 </resources>
