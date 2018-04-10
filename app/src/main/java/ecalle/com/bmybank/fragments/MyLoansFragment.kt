@@ -30,6 +30,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener
     companion object
     {
         val ADDING_LOAN_REQUEST = 3
+        val MY_LOAN_KEY = "myLoanKey"
     }
 
 

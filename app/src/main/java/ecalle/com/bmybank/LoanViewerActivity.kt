@@ -3,8 +3,10 @@ package ecalle.com.bmybank
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
 import org.jetbrains.anko.find
@@ -23,7 +25,6 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
-    private var isOtherUserLoan: Boolean = true
     private lateinit var loan: Loan
     private lateinit var userFirstName: String
     private lateinit var userLastName: String
@@ -48,6 +49,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager
         delay = find(R.id.delay)
         firstName = find(R.id.firstName)
         lastName = find(R.id.lastName)
+        accept = find(R.id.accept)
+        negociate = find(R.id.negociate)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -59,10 +62,19 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager
 
         if (intent.hasExtra(PublicLoansFragment.PUBLIC_LOAN_KEY))
         {
-            isOtherUserLoan = true
             loan = intent.getSerializableExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) as Loan
             userFirstName = intent.getStringExtra(USER_FIRSTNAME_KEY)
             userLastName = intent.getStringExtra(USER_LASTNAME_KEY)
+            accept.visibility = View.VISIBLE
+            negociate.visibility = View.VISIBLE
+        }
+        else if (intent.hasExtra(MyLoansFragment.MY_LOAN_KEY))
+        {
+            loan = intent.getSerializableExtra(MyLoansFragment.MY_LOAN_KEY) as Loan
+            userFirstName = intent.getStringExtra(USER_FIRSTNAME_KEY)
+            userLastName = intent.getStringExtra(USER_LASTNAME_KEY)
+            accept.visibility = View.GONE
+            negociate.visibility = View.GONE
         }
 
 

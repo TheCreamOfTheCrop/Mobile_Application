@@ -193,16 +193,19 @@
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:orientation="vertical"
+
                 >
 
                 <Button
                     android:id="@+id/negociate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/light_button_background"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/negociate_button_label"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     />
 
                 <Button
@@ -211,6 +214,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/accept_loan"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     />
             </LinearLayout>
 
