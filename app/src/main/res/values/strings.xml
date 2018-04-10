@@ -67,7 +67,7 @@
     <string name="radiobutton_public_loan">Public</string>
     <string name="radiobutton_private_loan">Privé</string>
     <string name="loan_type_label">Type de prêt</string>
-  <string name="user_update_success">Mise à jour du profil réussie</string>
+    <string name="user_update_success">Mise à jour du profil réussie</string>
     <string name="loan_menu_title">Gestion de prêts</string>
     <string name="my_loans">Mes prêts</string>
     <string name="other_menu_title">Autre</string>
@@ -83,4 +83,10 @@
     <string name="add_loan_loading">Envoie du prêt en cours...</string>
     <string name="no_results">Aucun résultat</string>
     <string name="retry">Réessayer</string>
+    <string name="public_loans">Demandes publiques</string>
+    <string name="repayment_label">Remboursement :</string>
+    <string name="repayment_default_value">1</string>
+    <string name="month">mois</string>
+    <string name="incorrect_repayment">Durée de remboursement incorrecte</string>
+    <string name="repayment_loan_item_label">Remboursement prévu en %1$d mois</string>
 </resources>

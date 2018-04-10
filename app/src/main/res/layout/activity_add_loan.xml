@@ -113,6 +113,43 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        style="@style/BlackTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/repayment_label"
+                        />
+
+                    <EditText
+                        android:id="@+id/repayment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/repayment_default_value"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        style="@style/BlackTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/month"
+                        />
+
+                </LinearLayout>
+
                 <TextView
                     style="@style/GreyLabel"
                     android:layout_width="wrap_content"
@@ -126,8 +163,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical"
                     android:checkedButton="@+id/radioPublic"
+                    android:orientation="vertical"
                     >
 
                     <RadioButton

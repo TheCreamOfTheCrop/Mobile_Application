@@ -32,6 +32,9 @@ interface BmyBankApi
     @POST("loan/findLoan")
     fun findPersonalLoans(@Field("state_id") filter: String = ""): Call<GettingUserLoansResponse>
 
+    @POST("/loan/listPublic")
+    fun findPublicLoans(): Call<GettingUserLoansResponse>
+
     @FormUrlEncoded
     @POST("user/login")
     fun login(@Field("email") email: String?, @Field("password") password: String?): Call<LoginResponse>

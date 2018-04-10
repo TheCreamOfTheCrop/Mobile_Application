@@ -24,6 +24,7 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val lastName: TextView = itemView.find(R.id.lastName)
     private val rate: TextView = itemView.find(R.id.rate)
     private val description: TextView = itemView.find(R.id.description)
+    private val repayment: TextView = itemView.find(R.id.repayment)
     private val loader: ProgressBar = itemView.find(R.id.loader)
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
@@ -32,6 +33,7 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         amount.text = loan.amount.toString()
         rate.text = loan.rate.toString()
         description.text = loan.description
+        repayment.text = itemView.context.getString(R.string.repayment_loan_item_label, loan.delay)
 
         val api = BmyBankApi.getInstance(itemView.context)
         val findUserByIdRequest = api.findUserById(loan.user_requester_id)
@@ -56,6 +58,7 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable)
             {
+                println("ok")
             }
         })
     }

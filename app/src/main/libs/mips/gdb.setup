@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/mips
+directory D:/AppData/ndk-bundle/build//../sysroot jni/..//jni jni/..//jni/engine D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/include D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/libs/mips/include D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/include/backward

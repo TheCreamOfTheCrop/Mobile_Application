@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
 import ecalle.com.bmybank.fragments.MyLoansFragment
+import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.fragments.PublicProfileFragment
 import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
 import ecalle.com.bmybank.interfaces.UserModificationListener
@@ -105,6 +106,10 @@ class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavig
             R.id.nav_my_loans ->
             {
                 replaceFragment(MyLoansFragment())
+            }
+            R.id.nav_public_loans ->
+            {
+                replaceFragment(PublicLoansFragment())
             }
             R.id.nav_logout ->
             {

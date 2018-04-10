@@ -28,6 +28,11 @@
                 android:icon="@drawable/ic_money"
                 android:title="@string/my_loans"
                 />
+            <item
+                android:id="@+id/nav_public_loans"
+                android:icon="@drawable/ic_public"
+                android:title="@string/public_loans"
+                />
         </menu>
     </item>
 

@@ -36,6 +36,7 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
 
     private lateinit var description: EditText
     private lateinit var amount: EditText
+    private lateinit var repayment: EditText
     private lateinit var rate: EditText
     private lateinit var validate: Button
     private lateinit var errorView: TextView
@@ -52,6 +53,7 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
 
         description = find(R.id.description)
         amount = find(R.id.amount)
+        repayment = find(R.id.repayment)
         rate = find(R.id.rate)
         errorView = find(R.id.errorView)
         scrollView = find(R.id.scrollView)
@@ -90,34 +92,27 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
 
     private fun checkThenSend()
     {
-        if (descriptionIsNotWellFormat())
+        when
         {
-            showInformation(getString(R.string.not_well_format_description))
-            return
-        }
-        else if (amountNotWellSet())
-        {
-            showInformation(getString(R.string.incorrect_amount))
-        }
-        else if (rateNotWellSet())
-        {
-            showInformation(getString(R.string.incorrect_rate))
-        }
-        else
-        {
-            addLoan()
+            descriptionIsNotWellFormat() -> showInformation(getString(R.string.not_well_format_description))
+            amountNotWellSet() -> showInformation(getString(R.string.incorrect_amount))
+            rateNotWellSet() -> showInformation(getString(R.string.incorrect_rate))
+            repaymentIsNotValid() -> showInformation(getString(R.string.incorrect_repayment))
+            else -> addLoan()
         }
     }
 
     private fun addLoan()
     {
+        val repaymentValueInMonths = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
+
         val currentUser = RealmServices.getCurrentUser(this)
         val api = BmyBankApi.getInstance(this)
         val addLoanRequest = api.addLoan(amount = amount.textValue.toFloatOrNull(),
                 description = if (description.textValue !== null) description.textValue else "",
                 rate = rate.textValue.toFloatOrNull(),
                 userId = currentUser?.id,
-                delay = 400)
+                delay = repaymentValueInMonths)
 
         loadingDialog = customAlert(message = R.string.add_loan_loading, type = BeMyDialog.TYPE.LOADING)
 
@@ -191,5 +186,11 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     private fun descriptionIsNotWellFormat(): Boolean
     {
         return description.textValue.length >= Constants.DESCRIPTION_MAX_LENGTH
+    }
+
+    private fun repaymentIsNotValid(): Boolean
+    {
+        val value = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
+        return value < 0
     }
 }

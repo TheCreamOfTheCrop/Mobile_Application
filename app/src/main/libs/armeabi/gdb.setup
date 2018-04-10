@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/armeabi
+directory D:/AppData/ndk-bundle/build//../sysroot jni/..//jni jni/..//jni/engine D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/include D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/include D:/AppData/ndk-bundle/build//../sources/cxx-stl/gnu-libstdc++/4.9/include/backward
