@@ -6,16 +6,21 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import ecalle.com.bmybank.custom_components.BeMyDialog
+import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
+import org.jetbrains.anko.toast
 
 /**
  * Created by Thomas Ecalle on 10/04/2018.
  */
-class LoanViewerActivity : AppCompatActivity(), ToolbarManager
+class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
 {
+
 
     companion object
     {
@@ -28,7 +33,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager
     private lateinit var loan: Loan
     private lateinit var userFirstName: String
     private lateinit var userLastName: String
-
+    private lateinit var loadingDialog: BeMyDialog
     private lateinit var description: TextView
     private lateinit var amount: TextView
     private lateinit var delay: TextView
@@ -82,9 +87,30 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager
         amount.text = loan.amount.toString()
         rate.text = loan.rate.toString()
         delay.text = loan.delay.toString()
-
+        accept.setOnClickListener(this)
+        negociate.setOnClickListener(this)
         firstName.text = userFirstName
         lastName.text = userLastName
 
     }
+
+    override fun onClick(view: View?)
+    {
+        when (view?.id)
+        {
+            accept.id -> toast("clicked on accept")
+            negociate.id -> negociate()
+        }
+    }
+
+    private fun negociate()
+    {
+        loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
+        val api = BmyBankApi.getInstance(this)
+        val loginRequest = api.addNegociation(loan.id, loan.amount, loan.rate, loan.delay)
+
+
+    }
+
+
 }

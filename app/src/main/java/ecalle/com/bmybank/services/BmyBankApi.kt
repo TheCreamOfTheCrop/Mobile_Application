@@ -1,10 +1,7 @@
 package ecalle.com.bmybank.services
 
 import android.content.Context
-import ecalle.com.bmybank.bo.AddingLoanResponse
-import ecalle.com.bmybank.bo.GettingUserLoansResponse
-import ecalle.com.bmybank.bo.LoginResponse
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.bo.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -19,6 +16,13 @@ import retrofit2.http.PUT
  */
 interface BmyBankApi
 {
+
+    @FormUrlEncoded
+    @POST("negociate/add")
+    fun addNegociation(@Field("id_loan") idLoan: Int?,
+                       @Field("amount") amount: Float?,
+                       @Field("rate") rate: Float?,
+                       @Field("delay") delay: Int?): Call<AddingNegociationResponse>
 
     @FormUrlEncoded
     @POST("loan/add")

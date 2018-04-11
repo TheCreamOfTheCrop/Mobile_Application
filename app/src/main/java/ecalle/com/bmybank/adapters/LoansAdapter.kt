@@ -27,7 +27,8 @@ class LoansAdapter(private var list: List<Loan>, private var onLoanClickListener
     override fun onBindViewHolder(myViewHolder: LoanViewHolder, position: Int)
     {
         val loan = list[position]
-        myViewHolder.bind(loan, onLoanClickListener)
+        val color = if (position % 2 == 0) R.color.colorPrimary else R.color.colorAccent
+        myViewHolder.bind(loan, onLoanClickListener, color)
     }
 
     override fun getItemCount(): Int
