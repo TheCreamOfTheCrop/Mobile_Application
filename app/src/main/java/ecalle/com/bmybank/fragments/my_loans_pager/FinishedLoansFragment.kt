@@ -31,9 +31,4 @@ class FinishedLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickLi
     {
         return Constants.FINISHED_LOANS
     }
-
-    override fun getTitle(): String
-    {
-        return getString(R.string.finished_loans_title)
-    }
 }

@@ -34,13 +34,11 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     private lateinit var loader: ProgressBar
     private lateinit var errorView: LinearLayout
     private lateinit var errorText: TextView
-    private lateinit var title: TextView
     private lateinit var retry: Button
     private lateinit var loans: List<Loan>
 
 
     abstract fun getLoansType(): String
-    abstract fun getTitle(): String
     abstract fun load()
     abstract fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
 
@@ -53,7 +51,6 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         swipeRefreshLayout = view.find(R.id.swipeRefreshLayout)
         loader = view.find(R.id.loader)
         errorView = view.find(R.id.errorView)
-        title = view.find(R.id.title)
         errorText = view.find(R.id.errorText)
         retry = view.find(R.id.retry)
 
@@ -63,7 +60,6 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
             swipeRefreshLayout.isRefreshing = false
         }
 
-        title.text = getTitle()
         retry.setOnClickListener(this)
 
         loadThenGetLoans()

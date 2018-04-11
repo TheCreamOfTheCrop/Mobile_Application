@@ -31,9 +31,4 @@ class InProgressFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListe
     {
         return Constants.IN_PROGRESS_LOANS
     }
-
-    override fun getTitle(): String
-    {
-        return getString(R.string.in_progress_loans_title)
-    }
 }

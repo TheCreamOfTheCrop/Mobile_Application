@@ -31,9 +31,4 @@ class InNegociationLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanCl
     {
         return Constants.IN_NEGOCIATION_LOANS
     }
-
-    override fun getTitle(): String
-    {
-        return getString(R.string.in_negociation_loans_title)
-    }
 }

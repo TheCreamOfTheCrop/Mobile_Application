@@ -2,8 +2,10 @@ package ecalle.com.bmybank.view_holders
 
 import android.support.annotation.ColorRes
 import android.support.constraint.ConstraintLayout
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
@@ -27,7 +29,7 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val rate: TextView = itemView.find(R.id.rate)
     private val waveLayout: ConstraintLayout = itemView.find(R.id.waveLayout)
     private val repayment: TextView = itemView.find(R.id.repayment)
-    //private val loader: ProgressBar = itemView.find(R.id.loader)
+    private val loader: ProgressBar = itemView.find(R.id.loader)
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
     fun bind(loan: Loan, onLoanClickListener: LoansAdapter.OnLoanClickListener, @ColorRes color: Int)
@@ -61,7 +63,7 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                     firsName.text = user.firstname
                     lastName.text = user.lastname
 
-                    //loader.visibility = View.GONE
+                    loader.visibility = View.GONE
                     firsName.visibility = View.VISIBLE
                     lastName.visibility = View.VISIBLE
                 }

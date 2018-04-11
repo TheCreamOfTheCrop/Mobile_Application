@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="generalPadding">30dp</dimen>
+    <dimen name="generalPadding">20dp</dimen>
     <dimen name="generalCardElevation">10dp</dimen>
     <dimen name="linedTitleMargin">30dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>

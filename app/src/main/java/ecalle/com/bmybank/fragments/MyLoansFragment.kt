@@ -48,10 +48,10 @@ class MyLoansFragment : Fragment(), View.OnClickListener
         viewPager.adapter = pagerAdapter
         tabs.setupWithViewPager(viewPager)
 
-        tabs.getTabAt(0)?.setIcon(R.drawable.ic_pending)
-        tabs.getTabAt(1)?.setIcon(R.drawable.ic_negociation)
-        tabs.getTabAt(2)?.setIcon(R.drawable.ic_in_progress)
-        tabs.getTabAt(3)?.setIcon(R.drawable.ic_check)
+        tabs.getTabAt(0)?.setIcon(R.drawable.ic_time)
+        tabs.getTabAt(1)?.setIcon(R.drawable.ic_chat)
+        tabs.getTabAt(2)?.setIcon(R.drawable.ic_arrow)
+        tabs.getTabAt(3)?.setIcon(R.drawable.ic_validate)
 
         return view
     }
