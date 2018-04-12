@@ -15,12 +15,13 @@ import org.jetbrains.anko.support.v4.ctx
  */
 class PendingLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
-    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
         intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
         intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
+        intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)
     }
 

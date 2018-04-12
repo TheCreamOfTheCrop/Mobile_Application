@@ -71,7 +71,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     override fun onResume()
     {
         super.onResume()
-        loadThenGetLoans()
+        //loadThenGetLoans()
     }
 
     protected fun loadThenGetLoans()

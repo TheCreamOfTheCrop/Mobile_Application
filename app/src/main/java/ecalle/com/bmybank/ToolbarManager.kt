@@ -1,10 +1,16 @@
 package ecalle.com.bmybank
 
+import android.os.Build
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.WindowManager
+import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.extensions.slideEnter
 import ecalle.com.bmybank.extensions.slideExit
+
 
 /**
  * Created by Thomas Ecalle on 04/03/2018.
@@ -29,6 +35,20 @@ interface ToolbarManager
     {
         toolbar.navigationIcon = createUpDrawable()
         toolbar.setNavigationOnClickListener { up() }
+    }
+
+    fun changeColor(color: LoansAdapter.Color, context: AppCompatActivity)
+    {
+        val colorId = if (color == LoansAdapter.Color.BLUE) R.color.colorPrimary else R.color.colorAccent
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            val window = context.window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = ContextCompat.getColor(context, colorId)
+        }
+
+        toolbar.setBackgroundColor(ContextCompat.getColor(context, colorId))
     }
 
     fun attachToScroll(recyclerView: RecyclerView)

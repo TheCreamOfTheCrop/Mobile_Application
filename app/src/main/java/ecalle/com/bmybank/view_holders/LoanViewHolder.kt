@@ -1,6 +1,5 @@
 package ecalle.com.bmybank.view_holders
 
-import android.support.annotation.ColorRes
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -32,21 +31,19 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val loader: ProgressBar = itemView.find(R.id.loader)
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
-    fun bind(loan: Loan, onLoanClickListener: LoansAdapter.OnLoanClickListener, @ColorRes color: Int)
+    fun bind(loan: Loan, onLoanClickListener: LoansAdapter.OnLoanClickListener, color: LoansAdapter.Color)
     {
         amount.text = loan.amount.toString()
         rate.text = loan.rate.toString()
         //description.text = loan.description
         repayment.text = itemView.context.getString(R.string.repayment_loan_item_label, loan.delay)
 
-        /*
-        val waveDrawable = ContextCompat.getDrawable(itemView.context, R.drawable.vague)
-        DrawableCompat.setTint(waveDrawable!!, ContextCompat.getColor(itemView.context, color))
-        waveLayout.background = waveDrawable
-           */
+        val image = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
+        waveLayout.background = ContextCompat.getDrawable(itemView.context, image)
+
 
         itemView.setOnClickListener {
-            onLoanClickListener.onLoanClick(loan, firsName.text.toString(), lastName.text.toString())
+            onLoanClickListener.onLoanClick(loan, firsName.text.toString(), lastName.text.toString(), color)
         }
 
         val api = BmyBankApi.getInstance(itemView.context)

@@ -12,7 +12,7 @@ import ecalle.com.bmybank.realm.bo.Loan
  */
 class InProgressFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
-    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
     {
         toast("clicked on loan with id : ${loan.id}")
     }

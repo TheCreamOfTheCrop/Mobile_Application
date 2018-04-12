@@ -13,9 +13,14 @@ import ecalle.com.bmybank.view_holders.LoanViewHolder
  */
 class LoansAdapter(private var list: List<Loan>, private var onLoanClickListener: OnLoanClickListener) : RecyclerView.Adapter<LoanViewHolder>()
 {
+    enum class Color
+    {
+        BLUE, ORANGE
+    }
+
     interface OnLoanClickListener
     {
-        fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+        fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: Color)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): LoanViewHolder
@@ -27,7 +32,7 @@ class LoansAdapter(private var list: List<Loan>, private var onLoanClickListener
     override fun onBindViewHolder(myViewHolder: LoanViewHolder, position: Int)
     {
         val loan = list[position]
-        val color = if (position % 2 == 0) R.color.colorPrimary else R.color.colorAccent
+        val color = if (position % 2 == 0) Color.BLUE else Color.ORANGE
         myViewHolder.bind(loan, onLoanClickListener, color)
     }
 

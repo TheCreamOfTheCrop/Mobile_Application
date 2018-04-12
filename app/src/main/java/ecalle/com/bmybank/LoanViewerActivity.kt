@@ -1,17 +1,21 @@
 package ecalle.com.bmybank
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
+import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
+import org.jetbrains.anko.act
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 
@@ -26,13 +30,12 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     {
         val USER_FIRSTNAME_KEY = "userFirstNameKey"
         val USER_LASTNAME_KEY = "userFirstNameKey"
+        val COLOR_KEY = "colorKey"
     }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
-    private lateinit var loan: Loan
-    private lateinit var userFirstName: String
-    private lateinit var userLastName: String
+
     private lateinit var loadingDialog: BeMyDialog
     private lateinit var description: TextView
     private lateinit var amount: TextView
@@ -42,6 +45,12 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var lastName: TextView
     private lateinit var accept: Button
     private lateinit var negociate: Button
+    private lateinit var waveHeader: RelativeLayout
+
+    private lateinit var loan: Loan
+    private lateinit var userFirstName: String
+    private lateinit var userLastName: String
+    private lateinit var color: LoansAdapter.Color
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -56,6 +65,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         lastName = find(R.id.lastName)
         accept = find(R.id.accept)
         negociate = find(R.id.negociate)
+        waveHeader = find(R.id.waveHeader)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -82,6 +92,12 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             negociate.visibility = View.GONE
         }
 
+        color = intent.getSerializableExtra(LoanViewerActivity.COLOR_KEY) as LoansAdapter.Color
+
+        changeColor(color, this)
+        val drawable = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
+
+        waveHeader.background = ContextCompat.getDrawable(this, drawable)
 
         description.text = loan.description
         amount.text = loan.amount.toString()
@@ -105,7 +121,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     private fun negociate()
     {
-        loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
+        //loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
         val api = BmyBankApi.getInstance(this)
         val loginRequest = api.addNegociation(loan.id, loan.amount, loan.rate, loan.delay)
 
