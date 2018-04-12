@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +11,94 @@
     <include
         layout="@layout/toolbar"
         />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/vague"
+        android:paddingBottom="10dp"
+        android:paddingTop="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/little_avatar_dimen"
+                android:layout_height="@dimen/little_avatar_dimen"
+                android:layout_gravity="center"
+                android:src="@drawable/default_profile"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/lastName"
+                    style="@style/WhiteLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Lastname"
+                    />
+
+                <TextView
+                    android:id="@+id/firstName"
+                    style="@style/WhiteLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Firstname"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/amount"
+                    style="@style/BigAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0"
+                    tools:text="1000"
+                    />
+
+                <ImageView
+                    android:id="@+id/euro"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_euro_symbol"
+                    android:tint="@color/white"
+                    app:layout_constraintVertical_bias="0.1"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,169 +111,124 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/infos_cellules_background"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                >
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/avatar"
-                    android:layout_width="@dimen/little_avatar_dimen"
-                    android:layout_height="@dimen/little_avatar_dimen"
-                    android:src="@drawable/default_profile"
-                    />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:orientation="vertical"
-                    >
-
-                    <TextView
-                        android:id="@+id/lastName"
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Lastname"
-                        />
-
-                    <TextView
-                        android:id="@+id/firstName"
-                        style="@style/NormalText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Firstname"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal"
                 >
-
-                <TextView
-                    android:id="@+id/amount"
-                    style="@style/BigAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="4300"
-                    />
-
-                <ImageView
-                    android:id="@+id/euro"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_euro_symbol"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                >
-
-                <LinearLayout
-                    android:id="@+id/rateCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="15dp"
-                    >
-
-                    <TextView
-                        style="@style/GreyLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/rate_label"
-                        android:textSize="24sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/rate"
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_percent"
-                        android:drawableRight="@drawable/ic_percent"
-                        tools:text="30"/>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/delayCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="15dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
                     >
 
                     <TextView
-                        style="@style/GreyLabel"
+                        style="@style/DarkGreyLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="@string/delay_label"
-                        android:textSize="24sp"
+                        android:layout_gravity="bottom"
+                        android:fontFamily="@font/oxygen_bold"
+                        android:text="@string/delay_label_with_dots"
                         />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/delay"
-                            style="@style/BlackTitle"
+                            style="@style/BlueLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:autoSizeTextType="uniform"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="24sp"
                             tools:text="4"
                             />
 
                         <TextView
-                            style="@style/BlackTitle"
+                            style="@style/BlueLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
+                            android:autoSizeTextType="uniform"
+                            android:fontFamily="@font/roboto_bold"
                             android:text="@string/month"
-                            />
+                            android:textSize="24sp"/>
 
                     </LinearLayout>
 
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/rateCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        style="@style/DarkGreyLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:fontFamily="@font/oxygen_bold"
+                        android:text="@string/rate_label"
+                        />
+
+                    <TextView
+                        android:id="@+id/rate"
+                        style="@style/BlueLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="24sp"
+                        tools:text="30"
+                        />
+
+                    <ImageView
+                        android:id="@+id/percent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_percent"
+                        android:tint="@color/colorPrimary"
+                        app:layout_constraintVertical_bias="0.1"
+                        />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/description"
-                style="@style/NormalText"
+                style="@style/LightGreyLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:lines="4"
-                android:textStyle="italic"
+                android:textAlignment="center"
                 tools:text="@string/lorem"
                 />
 
@@ -193,15 +237,17 @@
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:orientation="vertical"
-
+                android:padding="@dimen/generalPadding"
                 >
 
                 <Button
                     android:id="@+id/negociate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="15dp"
                     android:background="@drawable/light_button_background"
+                    android:fontFamily="@font/roboto_bold"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/negociate_button_label"
                     android:visibility="gone"
@@ -210,16 +256,22 @@
 
                 <Button
                     android:id="@+id/accept"
-                    style="@style/AcceptButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/acccept_button_background"
+                    android:fontFamily="@font/roboto_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/accept_loan"
+                    android:textColor="@color/white"
                     android:visibility="gone"
                     tools:visibility="visible"
                     />
             </LinearLayout>
 
         </LinearLayout>
+
+
     </ScrollView>
 
 

@@ -7,10 +7,12 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="red">#FF0000</color>
-    <color name="green">#387337</color>
+    <color name="green">#1ccc6f</color>
 
 
     <color name="lightGrey">#999999</color>
     <color name="grey">#d4d5d6</color>
     <color name="darkGrey">#515151</color>
+    <color name="labelGrey">#9b9b9b</color>
+
 </resources>
