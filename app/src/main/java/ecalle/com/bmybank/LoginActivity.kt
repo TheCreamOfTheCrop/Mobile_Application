@@ -43,12 +43,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if (RealmServices.getCurrentUser(this) != null)
-        {
-            log("A user seems already logged in")
-            goToMainActivity()
-        }
-
         login = find(R.id.login)
         password = find(R.id.password)
         error = find(R.id.error)

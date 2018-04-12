@@ -22,13 +22,7 @@
         >
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PasswordForgottenActivity"
             android:screenOrientation="portrait"/>
@@ -47,6 +41,16 @@
         <activity
             android:name=".LoanViewerActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".SplashscreenActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
