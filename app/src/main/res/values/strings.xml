@@ -95,4 +95,9 @@
     <string name="delay_label">Durée</string>
     <string name="negociating_loading">Envoi de votre proposition</string>
     <string name="delay_label_with_dots">Durée :</string>
+    <string name="verify_your_account">Vérifier votre compte</string>
+    <string name="start">Commencer</string>
+    <string name="my_profile">Mon profil</string>
+    <string name="preferences">Preferences</string>
+    <string name="security">Sécurité</string>
 </resources>

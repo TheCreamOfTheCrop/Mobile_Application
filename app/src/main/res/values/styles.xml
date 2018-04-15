@@ -117,6 +117,25 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="SmallWhiteText" parent="WhiteLabel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="SmallBlackText" parent="WhiteLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="whiteTextViewButton">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/light_button_background</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <style name="BigAmount" parent="WhiteLabel">
         <item name="android:textSize">25sp</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
