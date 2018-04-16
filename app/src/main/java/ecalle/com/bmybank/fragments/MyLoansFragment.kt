@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.adapters.MyLoansPagerAdapter
+import ecalle.com.bmybank.adapters.PagerAdapter
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivityForResult
 
@@ -22,7 +22,7 @@ import org.jetbrains.anko.support.v4.startActivityForResult
 class MyLoansFragment : Fragment(), View.OnClickListener
 {
 
-    private lateinit var pagerAdapter: MyLoansPagerAdapter
+    private lateinit var pagerAdapter: PagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var addLoanButton: FloatingActionButton
     private lateinit var tabs: TabLayout
@@ -43,7 +43,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener
         addLoanButton = view.find(R.id.addLoanButton)
 
         addLoanButton.setOnClickListener(this)
-        pagerAdapter = MyLoansPagerAdapter(fragmentManager!!, context)
+        //pagerAdapter = PagerAdapter(fragmentManager)
 
         viewPager.adapter = pagerAdapter
         tabs.setupWithViewPager(viewPager)

@@ -1,169 +1,70 @@
 package ecalle.com.bmybank
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.MenuItem
-import android.widget.TextView
-import ecalle.com.bmybank.fragments.MyLoansFragment
-import ecalle.com.bmybank.fragments.PublicLoansFragment
-import ecalle.com.bmybank.fragments.PublicProfileFragment
-import ecalle.com.bmybank.fragments.inscription_steps.ProfileModificationFragment
-import ecalle.com.bmybank.interfaces.UserModificationListener
+import android.support.v7.widget.CardView
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import ecalle.com.bmybank.adapters.PagerAdapter
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
-import org.jetbrains.anko.startActivity
+
 
 /**
- * Created by Thomas Ecalle on 18/03/2018.
+ * Created by Thomas Ecalle on 16/04/2018.
  */
-class MainActivity : AppCompatActivity(), ToolbarManager, NavigationView.OnNavigationItemSelectedListener, UserModificationListener
+class MainActivity : AppCompatActivity(), View.OnClickListener
 {
-
-    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
-
-    lateinit private var navigationView: NavigationView
-    private var user: User? = null
+    private lateinit var pagerAdapter: PagerAdapter
+    private lateinit var viewPager: ViewPager
+    private lateinit var tabs: TabLayout
+    private var currentUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigationView = find(R.id.navigationView)
+        currentUser = RealmServices.getCurrentUser(this)
 
-        toolbarTitle = getString(R.string.bmyBank)
+        viewPager = find(R.id.viewPager)
+        tabs = find(R.id.tabs)
 
-        user = RealmServices.getCurrentUser(this)
+        pagerAdapter = PagerAdapter(supportFragmentManager)
 
-        updateHeader(user)
+        viewPager.adapter = pagerAdapter
+        tabs.setupWithViewPager(viewPager)
 
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        navigationView.setNavigationItemSelectedListener(this)
-
-        val bundle = Bundle()
-        bundle.putSerializable(Constants.SERIALIZED_OBJECT_KEY, user)
-        replaceFragment(PublicProfileFragment(), bundle)
+        setupIcons()
     }
 
-    override fun onBackPressed()
+    private fun setupIcons()
     {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START))
-        {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        }
-        else
-        {
-            val fragment = supportFragmentManager.findFragmentByTag(Constants.FRAGMENT_TAG) as Fragment
+        val cardOne = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
+        val imageViewOne = cardOne.find<ImageView>(R.id.icon)
+        imageViewOne.setImageResource(R.drawable.ic_chart)
+        tabs.getTabAt(0)?.customView = cardOne
 
-            if (fragment is MyLoansFragment)
-            {
-                val currentPosition = fragment.getCurrentPosition()
-                if (currentPosition == 0)
-                {
-                    super.onBackPressed()
-                }
-                else
-                {
-                    fragment.handleBack()
-                }
-            }
-            else
-            {
-                super.onBackPressed()
-            }
-        }
-    }
+        val cardTwo = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
+        val imageViewTwo = cardTwo.find<ImageView>(R.id.icon)
+        imageViewTwo.setImageResource(R.drawable.ic_list)
+        tabs.getTabAt(1)?.customView = cardTwo
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean
-    {
-        val userBundle = Bundle()
-        userBundle.putSerializable(Constants.SERIALIZED_OBJECT_KEY, user)
 
-        when (item.itemId)
-        {
-            R.id.nav_profile ->
-            {
-
-                replaceFragment(PublicProfileFragment(), userBundle)
-            }
-            R.id.nav_edit_profile ->
-            {
-                replaceFragment(ProfileModificationFragment(), userBundle)
-            }
-            R.id.nav_my_loans ->
-            {
-                replaceFragment(MyLoansFragment())
-            }
-            R.id.nav_public_loans ->
-            {
-                replaceFragment(PublicLoansFragment())
-            }
-            R.id.nav_logout ->
-            {
-                logout()
-            }
-        }
-
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    private fun replaceFragment(fragment: Fragment, bundle: Bundle? = null, tag: String = Constants.FRAGMENT_TAG)
-    {
-        fragment.arguments = bundle
-        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment, tag).commit()
-    }
-
-    private fun logout()
-    {
-
-        alert {
-            message = getString(R.string.logout_confirmation)
-            positiveButton(R.string.yes) {
-                RealmServices.deleteCurrentUser(user?.uid)
-                val sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
-                sharedPreferences.edit().remove(Constants.USER_UUID_PREFERENCES_KEY).apply()
-                sharedPreferences.edit().remove(Constants.TOKEN_PREFERENCES_KEY).apply()
-                startActivity<LoginActivity>()
-                finish()
-            }
-
-            negativeButton(R.string.no) {}
-        }.show()
+        val cardThree = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
+        val imageViewThree = cardThree.find<ImageView>(R.id.icon)
+        imageViewThree.setImageResource(R.drawable.ic_person)
+        tabs.getTabAt(2)?.customView = cardThree
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun updateHeader(user: User?)
+    override fun onClick(p0: View?)
     {
-        if (user != null)
-        {
-            val headerView = navigationView.getHeaderView(0)
-            val headerName = headerView.find<TextView>(R.id.navHeaderName)
-            val headerAccountValidity = headerView.find<TextView>(R.id.navHeaderAccountValidity)
 
-            headerName.text = "${user?.firstname} ${user?.lastname}"
-            headerAccountValidity.text = if (user?.isAccountValidate!!) getString(R.string.valid_account_label) else getString(R.string.not_valid_account_label)
-        }
-
-    }
-
-    override fun userModified(user: User)
-    {
-        updateHeader(user)
     }
 
 }

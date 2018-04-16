@@ -10,12 +10,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.custom_components.BeMyDialog
-import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.fragments.MyLoansFragment
-import ecalle.com.bmybank.fragments.PublicLoansFragment
+import ecalle.com.bmybank.fragments.my_loans_pager.PublicLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
-import org.jetbrains.anko.act
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 
@@ -50,7 +48,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var loan: Loan
     private lateinit var userFirstName: String
     private lateinit var userLastName: String
-    private lateinit var color: LoansAdapter.Color
+    private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -92,9 +90,14 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             negociate.visibility = View.GONE
         }
 
-        color = intent.getSerializableExtra(LoanViewerActivity.COLOR_KEY) as LoansAdapter.Color
+        color = intent.getSerializableExtra(LoanViewerActivity.COLOR_KEY) as LoansAdapter.Color?
 
-        changeColor(color, this)
+        if (color == null)
+        {
+            color = LoansAdapter.Color.BLUE
+        }
+
+        changeColor(color!!, this)
         val drawable = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
 
         waveHeader.background = ContextCompat.getDrawable(this, drawable)

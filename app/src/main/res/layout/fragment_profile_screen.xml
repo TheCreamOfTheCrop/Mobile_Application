@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/generalBackgroundColor"
     android:gravity="center"
-    android:padding="60dp"
     >
 
     <LinearLayout
@@ -15,6 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/primary_rounded_background"
         android:gravity="center"
         android:orientation="vertical"
@@ -52,11 +54,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/verifyAccountValidator"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="15dp"
         android:backgroundTint="@color/white"
-
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        app:cardUseCompatPadding="true"
         >
 
         <LinearLayout
@@ -66,12 +69,15 @@
             >
 
             <LinearLayout
+                android:id="@+id/profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp"
-
+                android:padding="20dp"
                 >
 
                 <ImageView
@@ -86,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/merriweather_black"
                     android:text="@string/my_profile"
                     />
             </LinearLayout>
@@ -97,11 +104,15 @@
                 />
 
             <LinearLayout
+                android:id="@+id/preferences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="20dp"
                 >
 
                 <ImageView
@@ -116,6 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/merriweather_black"
                     android:text="@string/preferences"
                     />
             </LinearLayout>
@@ -127,11 +139,15 @@
                 />
 
             <LinearLayout
+                android:id="@+id/security"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="20dp"
                 >
 
                 <ImageView
@@ -146,6 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/merriweather_black"
                     android:text="@string/security"
                     />
             </LinearLayout>
@@ -156,15 +173,16 @@
 
 
     <TextView
+        android:id="@+id/applicationVersionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:text="BmyBank v1.0.0"
-
         />
 
 

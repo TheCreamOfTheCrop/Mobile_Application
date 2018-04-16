@@ -20,5 +20,7 @@ class Constants
         val IN_PROGRESS_LOANS = "en cours"
         val IN_NEGOCIATION_LOANS = "en négociation"
         val FINISHED_LOANS = "finis"
+        val BAD_RATE = 3.0
+        val NORMAL_RATE = 10.0
     }
 }

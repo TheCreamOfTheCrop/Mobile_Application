@@ -1,4 +1,4 @@
-package ecalle.com.bmybank.fragments
+package ecalle.com.bmybank.fragments.my_loans_pager
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import ecalle.com.bmybank.LoanViewerActivity
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.adapters.LoansAdapter
+import ecalle.com.bmybank.adapters.PublicLoansAdapter
 import ecalle.com.bmybank.bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
@@ -27,9 +27,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * Created by Thomas Ecalle on 07/04/2018.
+ * Created by Thomas Ecalle on 03/04/2018.
  */
-class PublicLoansFragment : Fragment(), View.OnClickListener, LoansAdapter.OnLoanClickListener
+class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter.OnPublicLoanClickListener
 {
 
 
@@ -93,7 +93,7 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, LoansAdapter.OnLoa
     private fun setupList()
     {
         recyclerView.layoutManager = LinearLayoutManager(ctx)
-        recyclerView.adapter = LoansAdapter(loans, this)
+        recyclerView.adapter = PublicLoansAdapter(loans, this)
 
         recyclerView.visibility = View.VISIBLE
 
@@ -151,13 +151,12 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, LoansAdapter.OnLoa
         errorText.text = message
     }
 
-    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
+    override fun onPublicLoanClick(loan: Loan, userFirstName: String, userLastName: String)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(PublicLoansFragment.PUBLIC_LOAN_KEY, loan)
         intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
         intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
-        intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)
     }
 }

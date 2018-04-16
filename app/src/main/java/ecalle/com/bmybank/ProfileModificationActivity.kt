@@ -1,20 +1,16 @@
-package ecalle.com.bmybank.fragments.inscription_steps
+package ecalle.com.bmybank
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import com.squareup.moshi.Moshi
-import ecalle.com.bmybank.Constants
-import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.bo.SImpleResponse
+import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
@@ -25,11 +21,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 /**
- * Created by Thomas Ecalle on 18/03/2018.
+ * Created by Thomas Ecalle on 17/04/2018.
  */
-class ProfileModificationFragment : Fragment(), View.OnClickListener
+class ProfileModificationActivity : AppCompatActivity(), View.OnClickListener
 {
 
     lateinit private var scrollView: ScrollView
@@ -47,36 +42,33 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
     private var loadingDialog: BeMyDialog? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreate(savedInstanceState: Bundle?)
     {
-        val view = inflater.inflate(R.layout.activity_profile_modification, container, false)
-
-        scrollView = view.find(R.id.scrollView)
-        errorView = view.find(R.id.errorView)
-        email = view.find(R.id.email)
-        previousPassword = view.find(R.id.previousPassword)
-        password = view.find(R.id.password)
-        confirmPassword = view.find(R.id.confirmPassword)
-        firstName = view.find(R.id.firstName)
-        lastName = view.find(R.id.lastName)
-        description = view.find(R.id.description)
-        save = view.find(R.id.save)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_profile_modification)
+        scrollView = find(R.id.scrollView)
+        errorView = find(R.id.errorView)
+        email = find(R.id.email)
+        previousPassword = find(R.id.previousPassword)
+        password = find(R.id.password)
+        confirmPassword = find(R.id.confirmPassword)
+        firstName = find(R.id.firstName)
+        lastName = find(R.id.lastName)
+        description = find(R.id.description)
+        save = find(R.id.save)
 
         save.setOnClickListener(this)
 
-        if (arguments !== null)
-        {
-            user = arguments?.getSerializable(Constants.SERIALIZED_OBJECT_KEY) as User
 
-            fillInformations()
+        user = RealmServices.getCurrentUser(this) ?: return
 
-        }
+        fillInformations()
 
 
         description.makeEditTextScrollableInScrollview()
 
-        return view
     }
+
 
     private fun fillInformations()
     {
@@ -128,7 +120,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
                 loadingDialog = customAlert(message = R.string.user_updating_loading, type = BeMyDialog.TYPE.LOADING)
 
 
-                val api = BmyBankApi.getInstance(activity)
+                val api = BmyBankApi.getInstance(this)
 
                 val updateRequest =
                         api.updateUser(id = user.id,
@@ -171,7 +163,6 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
                                 RealmServices.saveCurrentuser(user)
 
                                 loadingDialog?.dismiss()
-
                             }
                         }
 
@@ -194,7 +185,7 @@ class ProfileModificationFragment : Fragment(), View.OnClickListener
     private fun showInformation(information: String = "", show: Boolean = true, error: Boolean = true)
     {
         errorView.text = information
-        val color = if (error) ContextCompat.getColor(activity!!, R.color.red) else ContextCompat.getColor(activity!!, R.color.green)
+        val color = if (error) ContextCompat.getColor(this, R.color.red) else ContextCompat.getColor(this, R.color.green)
         errorView.setTextColor(color)
         errorView.visibility = if (show) View.VISIBLE else View.GONE
         scrollView.fullScroll(ScrollView.FOCUS_UP)
