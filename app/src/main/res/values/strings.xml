@@ -102,4 +102,12 @@
     <string name="security">Sécurité</string>
     <string name="application_version">BmyBank version %1$s</string>
     <string name="public_loans_title">Liste des demandes publiques</string>
+
+    <string name="my_loans_prompt">En attente</string>
+    <string-array name="my_loans_states">
+        <item>En attente</item>
+        <item>En négociation</item>
+        <item>En cours</item>
+        <item>Terminés</item>
+    </string-array>
 </resources>

@@ -1,46 +1,98 @@
 package ecalle.com.bmybank.fragments
 
 
-import android.content.Intent
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
 import ecalle.com.bmybank.Constants
-import ecalle.com.bmybank.LoanViewerActivity
-import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.R
+import ecalle.com.bmybank.fragments.my_loans.FinishedLoansFragment
+import ecalle.com.bmybank.fragments.my_loans.InNegociationLoansFragment
+import ecalle.com.bmybank.fragments.my_loans.InProgressLoansFragment
+import ecalle.com.bmybank.fragments.my_loans.MyPendingLoansFragment
+import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.ctx
+
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
  */
-class MyLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
+class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSelectedListener
 {
+
     companion object
     {
         val MY_LOAN_KEY = "myLoanKey"
     }
 
-    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
+    private lateinit var spinner: Spinner
+    private lateinit var fragmentContainer: FrameLayout
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
-        val intent = Intent(ctx, LoanViewerActivity::class.java)
-        intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
-        intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
-        intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
-        intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
-        startActivity(intent)
+        val view = inflater.inflate(R.layout.fragment_my_loans, container, false)
+
+        spinner = view.find<Spinner>(R.id.spinner)
+        fragmentContainer = view.find(R.id.fragmentContainer)
+
+        populateSpinner()
+
+        return view
     }
 
-    override fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
+    private fun populateSpinner()
     {
-        return this
+        spinner.onItemSelectedListener = this
+
+        // Spinner Drop down elements
+        val states = ArrayList<String>()
+        states.add(Constants.PENDING_LOANS)
+        states.add(Constants.IN_NEGOCIATION_LOANS)
+        states.add(Constants.IN_PROGRESS_LOANS)
+        states.add(Constants.FINISHED_LOANS)
+
+        // Creating adapter for spinner
+        val dataAdapter = ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, states)
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        // attaching data adapter to spinner
+        spinner.adapter = dataAdapter
     }
 
-    override fun load()
+    override fun onClick(p0: View?)
     {
-        loadThenGetLoans()
+
     }
 
-    override fun getLoansType(): String
+    override fun onNothingSelected(parent: AdapterView<*>?)
     {
-        return Constants.PENDING_LOANS
+        Toast.makeText(parent?.context, "Nothing selected", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long)
+    {
+        // On selecting a spinner item
+        val item = parent?.getItemAtPosition(position).toString()
+
+        var fragment = when (item)
+        {
+            Constants.IN_PROGRESS_LOANS -> InProgressLoansFragment()
+            Constants.IN_NEGOCIATION_LOANS -> InNegociationLoansFragment()
+            Constants.FINISHED_LOANS -> FinishedLoansFragment()
+            else ->
+            {
+                MyPendingLoansFragment()
+            }
+        } as Fragment
+
+
+        fragmentManager?.beginTransaction()?.replace(fragmentContainer.id, fragment)?.commit()
     }
 
 }
