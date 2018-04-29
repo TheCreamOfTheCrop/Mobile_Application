@@ -1,4 +1,4 @@
-package ecalle.com.bmybank.fragments.my_loans_pager
+package ecalle.com.bmybank.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -154,7 +154,7 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
     override fun onPublicLoanClick(loan: Loan, userFirstName: String, userLastName: String)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
-        intent.putExtra(PublicLoansFragment.PUBLIC_LOAN_KEY, loan)
+        intent.putExtra(PUBLIC_LOAN_KEY, loan)
         intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
         intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
         startActivity(intent)

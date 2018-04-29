@@ -1,6 +1,7 @@
 package ecalle.com.bmybank.fragments
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.bo.GettingUserLoansResponse
@@ -20,6 +22,7 @@ import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.support.v4.onRefresh
+import org.jetbrains.anko.support.v4.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +38,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     private lateinit var errorView: LinearLayout
     private lateinit var errorText: TextView
     private lateinit var retry: Button
+    private lateinit var addLoanButton: FloatingActionButton
     private lateinit var loans: List<Loan>
 
 
@@ -53,6 +57,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         errorView = view.find(R.id.errorView)
         errorText = view.find(R.id.errorText)
         retry = view.find(R.id.retry)
+        addLoanButton = view.find(R.id.addLoanButton)
 
 
         swipeRefreshLayout.onRefresh {
@@ -61,6 +66,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         }
 
         retry.setOnClickListener(this)
+        addLoanButton.setOnClickListener(this)
 
         loadThenGetLoans()
 
@@ -91,7 +97,16 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
             {
                 loadThenGetLoans()
             }
+            addLoanButton.id ->
+            {
+                addLoan()
+            }
         }
+    }
+
+    private fun addLoan()
+    {
+        startActivity<AddLoanActivity>()
     }
 
     private fun setupList()

@@ -11,7 +11,7 @@ import android.widget.TextView
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.fragments.MyLoansFragment
-import ecalle.com.bmybank.fragments.my_loans_pager.PublicLoansFragment
+import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find

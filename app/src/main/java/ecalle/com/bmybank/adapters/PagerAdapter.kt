@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import ecalle.com.bmybank.fragments.ProfileScreenFragment
-import ecalle.com.bmybank.fragments.my_loans_pager.PublicLoansFragment
-import ecalle.com.bmybank.fragments.my_loans_pager.PendingLoansFragment
+import ecalle.com.bmybank.fragments.PublicLoansFragment
+import ecalle.com.bmybank.fragments.MyLoansFragment
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
@@ -20,7 +20,7 @@ class PagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm)
 
         return when (position)
         {
-            0 -> PendingLoansFragment()
+            0 -> MyLoansFragment()
             1 -> PublicLoansFragment()
             else -> ProfileScreenFragment()
         }

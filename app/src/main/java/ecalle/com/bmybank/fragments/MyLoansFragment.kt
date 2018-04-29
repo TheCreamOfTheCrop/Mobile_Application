@@ -1,91 +1,46 @@
 package ecalle.com.bmybank.fragments
 
-import android.app.Activity
+
 import android.content.Intent
-import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import ecalle.com.bmybank.AddLoanActivity
-import ecalle.com.bmybank.R
-import ecalle.com.bmybank.adapters.PagerAdapter
-import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.startActivityForResult
+import ecalle.com.bmybank.Constants
+import ecalle.com.bmybank.LoanViewerActivity
+import ecalle.com.bmybank.adapters.LoansAdapter
+import ecalle.com.bmybank.realm.bo.Loan
+import org.jetbrains.anko.support.v4.ctx
 
 /**
  * Created by Thomas Ecalle on 03/04/2018.
  */
-class MyLoansFragment : Fragment(), View.OnClickListener
+class MyLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
-
-    private lateinit var pagerAdapter: PagerAdapter
-    private lateinit var viewPager: ViewPager
-    private lateinit var addLoanButton: FloatingActionButton
-    private lateinit var tabs: TabLayout
-
     companion object
     {
-        val ADDING_LOAN_REQUEST = 3
         val MY_LOAN_KEY = "myLoanKey"
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
     {
-        val view = inflater.inflate(R.layout.fragment_my_loans, container, false)
-
-        viewPager = view.find<ViewPager>(R.id.viewPager)
-        tabs = view.find(R.id.tabs)
-        addLoanButton = view.find(R.id.addLoanButton)
-
-        addLoanButton.setOnClickListener(this)
-        //pagerAdapter = PagerAdapter(fragmentManager)
-
-        viewPager.adapter = pagerAdapter
-        tabs.setupWithViewPager(viewPager)
-
-        tabs.getTabAt(0)?.setIcon(R.drawable.ic_time)
-        tabs.getTabAt(1)?.setIcon(R.drawable.ic_chat)
-        tabs.getTabAt(2)?.setIcon(R.drawable.ic_arrow)
-        tabs.getTabAt(3)?.setIcon(R.drawable.ic_validate)
-
-        return view
+        val intent = Intent(ctx, LoanViewerActivity::class.java)
+        intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
+        intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
+        intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
+        intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
+        startActivity(intent)
     }
 
-    fun getCurrentPosition(): Int
+    override fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
     {
-        return viewPager.currentItem
+        return this
     }
 
-    fun handleBack()
+    override fun load()
     {
-        viewPager.currentItem = getCurrentPosition() - 1
+        loadThenGetLoans()
     }
 
-    override fun onClick(view: View?)
+    override fun getLoansType(): String
     {
-        when (view?.id)
-        {
-            addLoanButton.id -> startActivityForResult<AddLoanActivity>(MyLoansFragment.ADDING_LOAN_REQUEST)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-        if (requestCode == MyLoansFragment.ADDING_LOAN_REQUEST)
-        {
-            when (resultCode)
-            {
-                Activity.RESULT_OK ->
-                {
-                    pagerAdapter.reload()
-                }
-            }
-        }
+        return Constants.PENDING_LOANS
     }
 
 }

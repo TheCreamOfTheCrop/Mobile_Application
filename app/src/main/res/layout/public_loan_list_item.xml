@@ -8,15 +8,15 @@
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="20dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="10dp"
     app:cardUseCompatPadding="true"
     >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/generalPadding"
+        android:padding="10dp"
         >
 
         <TextView
