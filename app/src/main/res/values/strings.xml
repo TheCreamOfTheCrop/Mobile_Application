@@ -104,6 +104,11 @@
     <string name="public_loans_title">Liste des demandes publiques</string>
 
     <string name="my_loans_prompt">En attente</string>
+    <string name="acceptin_loan">Traitement en cours...</string>
+    <string name="accepting_loan_confirmation">Souhaite-vous réelement accepter ce prêt ?</string>
+    <string name="negociating_loan_edition">Négociation du prêt</string>
+    <string name="quitting_loan_negociation">Souhaitez-vous vraiment annuler cette demande de négociation ?</string>
+    <string name="negociation_well_sent">Envoie effectué avec succès !</string>
     <string-array name="my_loans_states">
         <item>En attente</item>
         <item>En négociation</item>

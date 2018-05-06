@@ -15,7 +15,7 @@ import org.jetbrains.anko.support.v4.ctx
 class FinishedLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
 
-    override fun onLoanClick(loan: Loan, userFirstName: String, userLastName: String, color: LoansAdapter.Color)
+    override fun onLoanClick(loan: Loan, userFirstName: String?, userLastName: String?, color: LoansAdapter.Color)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)

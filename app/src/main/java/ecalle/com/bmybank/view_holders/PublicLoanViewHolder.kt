@@ -22,8 +22,8 @@ import retrofit2.Response
 class PublicLoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
     private val amount: TextView = itemView.find(R.id.amount)
-    private lateinit var firsName: String
-    private lateinit var lastName: String
+    private var firsName: String? = null
+    private var lastName: String? = null
     private val rate: TextView = itemView.find(R.id.rate)
     private val percentSymbol: ImageView = itemView.find(R.id.percentSymbol)
     private val repayment: TextView = itemView.find(R.id.repayment)

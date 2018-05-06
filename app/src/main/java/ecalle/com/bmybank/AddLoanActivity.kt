@@ -12,6 +12,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import com.squareup.moshi.Moshi
 import ecalle.com.bmybank.bo.AddingLoanResponse
+import ecalle.com.bmybank.bo.AddingNegociationResponse
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
@@ -19,9 +20,12 @@ import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.makeEditTextScrollableInScrollview
 import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.realm.RealmServices
+import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
+import kotlinx.android.synthetic.main.activity_add_loan.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
+import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +35,11 @@ import retrofit2.Response
  */
 class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
 {
+    companion object
+    {
+        val IS_NEGOCIATING_MODE_KEY = "etitionMode"
+        val NEGOCIATED_LOAN_KEY = "negociatedLoanKey"
+    }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
@@ -42,13 +51,22 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     private lateinit var errorView: TextView
     private lateinit var scrollView: ScrollView
     private lateinit var loadingDialog: BeMyDialog
+    private var isNegociatingMode: Boolean = false
+    private lateinit var negociatedLoan: Loan
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_loan)
 
-        toolbarTitle = getString(R.string.add_loan_title)
+        isNegociatingMode = intent.getBooleanExtra(IS_NEGOCIATING_MODE_KEY, false)
+
+        if (isNegociatingMode && intent.getSerializableExtra(NEGOCIATED_LOAN_KEY) != null)
+        {
+            negociatedLoan = intent.getSerializableExtra(NEGOCIATED_LOAN_KEY) as Loan
+        }
+
+        toolbarTitle = if (!isNegociatingMode) getString(R.string.add_loan_title) else getString(R.string.negociating_loan_edition)
         enableHomeAsUp { onBackPressed() }
 
         description = find(R.id.description)
@@ -58,6 +76,19 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         errorView = find(R.id.errorView)
         scrollView = find(R.id.scrollView)
         validate = find(R.id.validate)
+
+        if (isNegociatingMode)
+        {
+            radioPublic.isEnabled = false
+            radioPrivate.isEnabled = false
+            description.isEnabled = false
+
+            amount.setText(negociatedLoan.amount.toString())
+            description.setText(negociatedLoan.description)
+            rate.setText(negociatedLoan.rate.toString())
+            repayment.setText(negociatedLoan.delay.toString())
+            validate.text = getString(R.string.negociate_button_label)
+        }
 
         description.makeEditTextScrollableInScrollview()
         validate.setOnClickListener(this)
@@ -74,13 +105,13 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     override fun onBackPressed()
     {
         log("on back pressed")
-        confirmStoppingInscription()
+        confirmStoppingLoanEdition()
     }
 
-    private fun confirmStoppingInscription()
+    private fun confirmStoppingLoanEdition()
     {
         alert {
-            message = getString(R.string.quitting_loan_creation_message)
+            message = if (!isNegociatingMode) getString(R.string.quitting_loan_creation_message) else getString(R.string.quitting_loan_negociation)
             positiveButton(R.string.yes) {
                 super.onBackPressed()
                 finish()
@@ -98,8 +129,54 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
             amountNotWellSet() -> showInformation(getString(R.string.incorrect_amount))
             rateNotWellSet() -> showInformation(getString(R.string.incorrect_rate))
             repaymentIsNotValid() -> showInformation(getString(R.string.incorrect_repayment))
-            else -> addLoan()
+            else -> if (!isNegociatingMode) addLoan() else negociate()
         }
+    }
+
+    private fun negociate()
+    {
+
+        loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
+        val delay = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
+
+        val api = BmyBankApi.getInstance(this)
+        val request = api.addNegociation(negociatedLoan.id, amount.textValue.toFloatOrNull(), rate.textValue.toFloatOrNull(), delay)
+
+
+        request.enqueue(object : Callback<AddingNegociationResponse>
+        {
+            override fun onResponse(call: Call<AddingNegociationResponse>, response: Response<AddingNegociationResponse>)
+            {
+
+                loadingDialog.dismiss()
+
+                if (response.code() == 400)
+                {
+                    showInformation(getString(R.string.server_issue))
+                }
+                else
+                {
+                    val acceptResponse = response.body()
+                    if (acceptResponse?.success!!)
+                    {
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    }
+                    else
+                    {
+                        showInformation(getString(R.string.server_issue))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddingNegociationResponse>, t: Throwable)
+            {
+                //toast("Failure getting user from server, throwable message : ${t.message}")
+                showInformation(getString(R.string.not_internet))
+
+            }
+        })
+
     }
 
     private fun addLoan()
@@ -121,6 +198,8 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         {
             override fun onResponse(call: Call<AddingLoanResponse>, response: Response<AddingLoanResponse>)
             {
+                loadingDialog.dismiss()
+
                 when
                 {
                     response.code() == 404 -> showInformation(getString(R.string.server_issue))
@@ -140,11 +219,9 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
                         {
                             showInformation(getString(R.string.impossible_loan_add))
                         }
-                        loadingDialog.dismiss()
                     }
                     else ->
                     {
-                        loadingDialog.dismiss()
                         setResult(Activity.RESULT_OK)
                         finish()
                     }

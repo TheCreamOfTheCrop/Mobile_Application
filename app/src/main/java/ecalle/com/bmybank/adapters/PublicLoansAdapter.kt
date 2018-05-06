@@ -20,7 +20,7 @@ class PublicLoansAdapter(private var list: List<Loan>, private var onPublicLoanC
 
     interface OnPublicLoanClickListener
     {
-        fun onPublicLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+        fun onPublicLoanClick(loan: Loan, userFirstName: String?, userLastName: String?)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): PublicLoanViewHolder

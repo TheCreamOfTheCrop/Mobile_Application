@@ -25,6 +25,10 @@ interface BmyBankApi
                        @Field("delay") delay: Int?): Call<AddingNegociationResponse>
 
     @FormUrlEncoded
+    @POST("loan/accept")
+    fun acceptDirectLoan(@Field("id_loan") idLoan: Int?): Call<SImpleResponse>
+
+    @FormUrlEncoded
     @POST("loan/add")
     fun addLoan(@Field("amount") amount: Float?,
                 @Field("description") description: String?,

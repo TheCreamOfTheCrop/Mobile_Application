@@ -151,7 +151,7 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
         errorText.text = message
     }
 
-    override fun onPublicLoanClick(loan: Loan, userFirstName: String, userLastName: String)
+    override fun onPublicLoanClick(loan: Loan, userFirstName: String?, userLastName: String?)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(PUBLIC_LOAN_KEY, loan)

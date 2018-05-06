@@ -39,11 +39,23 @@
                 app:civ_border_width="2dp"
                 />
 
-            <LinearLayout
+
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"/>
+
+            <LinearLayout
+                android:id="@+id/userInformations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:orientation="vertical"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 >
 
                 <TextView
@@ -143,10 +155,10 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
-                        android:layout_gravity="center"
                         android:orientation="horizontal">
 
                         <TextView
