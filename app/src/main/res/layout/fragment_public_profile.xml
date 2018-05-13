@@ -13,7 +13,7 @@
         android:layout_width="@dimen/avatar_dimen"
         android:layout_height="@dimen/avatar_dimen"
         android:src="@drawable/default_profile"
-        app:layout_constraintBottom_toTopOf="@id/random"
+        app:layout_constraintBottom_toTopOf="@+id/random"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
