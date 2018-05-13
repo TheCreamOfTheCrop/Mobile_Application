@@ -109,6 +109,7 @@
     <string name="negociating_loan_edition">Négociation du prêt</string>
     <string name="quitting_loan_negociation">Souhaitez-vous vraiment annuler cette demande de négociation ?</string>
     <string name="negociation_well_sent">Envoie effectué avec succès !</string>
+    <string name="disconnect">Déconnexion</string>
     <string-array name="my_loans_states">
         <item>En attente</item>
         <item>En négociation</item>

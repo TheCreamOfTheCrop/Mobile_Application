@@ -139,7 +139,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/security"
+                android:id="@+id/disconnect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -153,7 +153,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chat"
+                    android:src="@drawable/ic_exit"
                     android:tint="@color/black"
                     />
 
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/merriweather_black"
-                    android:text="@string/security"
+                    android:text="@string/disconnect"
                     />
             </LinearLayout>
 
