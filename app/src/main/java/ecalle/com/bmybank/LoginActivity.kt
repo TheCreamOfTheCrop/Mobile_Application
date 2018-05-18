@@ -89,10 +89,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
         {
             override fun onResponse(call: Call<LoginResponse>, andRegisterResponse: Response<LoginResponse>)
             {
+                loadingDialog?.dismiss()
+
                 if (andRegisterResponse.code() == 400)
                 {
                     showError()
-                    loadingDialog?.dismiss()
                 }
                 else
                 {

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1003997746899",
+    "firebase_url": "https://bmybank-2146c.firebaseio.com",
+    "project_id": "bmybank-2146c",
+    "storage_bucket": "bmybank-2146c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003997746899:android:7f82ffd73888d0f5",
+        "android_client_info": {
+          "package_name": "ecalle.com.bmybank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003997746899-enmhjuhds3jgfm4tds411elti9sqf6ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW9JF2qej4DLmBtiwG2Vw3xuMGAwnEKSU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
