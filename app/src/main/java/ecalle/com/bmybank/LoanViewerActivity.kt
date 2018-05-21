@@ -13,7 +13,10 @@ import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
-import ecalle.com.bmybank.firebase.bo.User
+import ecalle.com.bmybank.firebase.Utils
+import ecalle.com.bmybank.firebase.bo.Channel
+import ecalle.com.bmybank.firebase.bo.ListMessages
+import ecalle.com.bmybank.firebase.bo.Message
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
@@ -22,10 +25,13 @@ import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Thomas Ecalle on 10/04/2018.
@@ -205,12 +211,32 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         startActivityForResult(intent, REQUEST_CODE)
         */
 
+        createAndLaunchNegociationChat()
+
+    }
+
+    private fun createAndLaunchNegociationChat()
+    {
         val currentUser = RealmServices.getCurrentUser(this)!!
 
-        val currentModel = User(currentUser.id)
-        val otherModel = User(loan.user_requester_id)
+        val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
 
-        toast("${currentUser?.firstname} veut négocier avec ${userFirstName}")
+
+        val firstMessage = Message(getString(R.string.firstMessageInNegociation, currentUser.firstname), currentUser.id, time)
+        val listMessages = ListMessages("${currentUser.id}${loan.user_requester_id}".toInt(), mutableListOf(firstMessage))
+
+        Utils.getDatabase().getReference("listMessages").child(listMessages.id.toString()).push().setValue(firstMessage)
+
+        val channel = Channel(loan.id, currentUser.id, loan.user_requester_id, listMessages.id)
+
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").push().setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").push().setValue(channel)
+
+
+        val intent = Intent(ctx, ChatDialogActivity::class.java)
+        intent.putExtra(ChatDialogActivity.DISCUSSION_KEY, channel)
+        startActivity(intent)
+        finish()
     }
 
     private fun findUserInformations()

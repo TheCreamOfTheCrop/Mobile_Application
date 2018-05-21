@@ -114,6 +114,7 @@
     <string name="no_chat_messages">Aucun message</string>
     <string name="send_message_placeholder">Ecrire un message ...</string>
     <string name="send">Envoyer</string>
+    <string name="firstMessageInNegociation">%1$s veut négocier avec vous !</string>
     <string-array name="my_loans_states">
         <item>En attente</item>
         <item>En négociation</item>

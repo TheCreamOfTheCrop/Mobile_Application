@@ -30,14 +30,17 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         val date: TextView = itemView.find(R.id.date)
 
 
-
         val currentUserLayout: LinearLayout = itemView.find(R.id.currentUserLayout)
         val otherUserLayout: LinearLayout = itemView.find(R.id.otherUserLayout)
 
 
         val cal = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRANCE)
-        cal.time = sdf.parse(message.date)
+        if (!message.date.isEmpty())
+        {
+            cal.time = sdf.parse(message.date)
+
+        }
 
         val dateString = "Le ${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH)}/${cal.get(Calendar.YEAR)} " +
                 "à ${cal.get(Calendar.HOUR_OF_DAY)}h${cal.get(Calendar.MINUTE)}"

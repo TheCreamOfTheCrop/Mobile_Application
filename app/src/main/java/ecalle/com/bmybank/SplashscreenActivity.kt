@@ -30,7 +30,7 @@ class SplashscreenActivity : AppCompatActivity()
 
         changeStatusBar(R.color.colorPrimary, this)
 
-        //initializeFakeFirebaseDatas()
+        initializeFakeFirebaseDatas()
 
         Handler().postDelayed({
 
@@ -57,15 +57,15 @@ class SplashscreenActivity : AppCompatActivity()
         val message4 = Message("Je veux la thune pour mon prêt !", user1.id, SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time))
 
 
-        val list = ListMessages(0, mutableListOf(message1, message2))
-        val list2 = ListMessages(1, mutableListOf(message3, message4))
+        val list = ListMessages("${user1.id}${user2.id}".toInt(), mutableListOf(message1, message2))
+        val list2 = ListMessages("${user1.id}${user3.id}".toInt(), mutableListOf(message3, message4))
 
 
-        val channel = Channel(0, null, 14, 32, list.id)
-        val channel2 = Channel(1, null, 14, 16, list2.id)
+        //val channel = Channel(null, 14, 32, list.id)
+        val channel2 = Channel(null, 14, 16, list2.id)
 
-        user1.channels = listOf(channel, channel2)
-        user2.channels = listOf(channel)
+        user1.channels = listOf(channel2)
+        //user2.channels = listOf(channel)
         user3.channels = listOf(channel2)
 
         val userRef = database.getReference("user-channels")
@@ -98,7 +98,7 @@ class SplashscreenActivity : AppCompatActivity()
 
         for (message in list.messages)
         {
-            listMessageRef.child(channel.list_messages_id.toString()).push().setValue(message)
+            //listMessageRef.child(channel.list_messages_id.toString()).push().setValue(message)
         }
 
         for (message in list2.messages)
