@@ -61,7 +61,6 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private val TAG = "MessageActivity"
     private val REQUIRED = "Required"
 
-    private var mDatabase: DatabaseReference? = null
     private var mMessageReference: DatabaseReference? = null
     private var layoutManager: RecyclerView.LayoutManager? = null
     private lateinit var query: Query
@@ -79,8 +78,6 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         otherUser = intent.getSerializableExtra(OTHER_USER_KEY) as User?
 
         currentUser = RealmServices.getCurrentUser(ctx)
-
-        mDatabase = Utils.getDatabase().reference
 
         mMessageReference = Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/listMessages/${channel.list_messages_id}")
 
@@ -194,7 +191,6 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         val message = Message(body, currentUser?.id!!, time)
 
         mMessageReference?.ref?.push()?.setValue(message)
-
     }
 
     private fun loadUserThenDisplayTitle()

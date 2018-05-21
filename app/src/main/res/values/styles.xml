@@ -118,6 +118,12 @@
         <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 
+    <style name="ChannelLastMessage">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
     <style name="BlueLabel" parent="LightGreyLabel">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>

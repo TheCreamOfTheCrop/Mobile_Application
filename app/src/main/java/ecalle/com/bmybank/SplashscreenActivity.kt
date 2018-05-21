@@ -29,6 +29,7 @@ class SplashscreenActivity : AppCompatActivity()
         setContentView(R.layout.splashscreen)
 
         changeStatusBar(R.color.colorPrimary, this)
+
         //initializeFakeFirebaseDatas()
 
         Handler().postDelayed({
