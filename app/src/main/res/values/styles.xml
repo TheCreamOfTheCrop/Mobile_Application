@@ -110,7 +110,12 @@
         <item name="android:fontFamily">@font/roboto_black</item>
         <item name="android:textSize">12sp</item>
         <item name="android:background">@drawable/chat_message_background</item>
+    </style>
 
+    <style name="ChatDateLabel" parent="GreyLabel">
+        <item name="android:textColor">@color/dateGrey</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 
     <style name="BlueLabel" parent="LightGreyLabel">
