@@ -70,6 +70,12 @@
         <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
+    <style name="CustomGreyButton" parent="CustomButton">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
+        <item name="android:background">@drawable/cutom_grey_button_background</item>
+    </style>
+
     <style name="AcceptButton">
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:background">@drawable/accept_button_background</item>
@@ -96,6 +102,12 @@
     <style name="LightGreyLabel" parent="GreyLabel">
         <item name="android:textColor">@color/lightGrey</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="SmallGreyLabel" parent="LightGreyLabel">
+        <item name="android:textColor">@color/lightGrey</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 

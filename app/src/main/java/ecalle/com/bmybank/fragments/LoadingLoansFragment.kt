@@ -20,6 +20,7 @@ import ecalle.com.bmybank.bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.support.v4.onRefresh
 import org.jetbrains.anko.support.v4.startActivity
@@ -111,7 +112,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
 
     private fun setupList()
     {
-        recyclerView.layoutManager = LinearLayoutManager(ctx)
+        recyclerView.layoutManager = LinearLayoutManager(act)
         recyclerView.adapter = LoansAdapter(loans, getLoanClickListener())
 
         recyclerView.visibility = View.VISIBLE

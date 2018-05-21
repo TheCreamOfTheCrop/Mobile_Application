@@ -10,19 +10,19 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.*
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import ecalle.com.bmybank.bo.AddingLoanResponse
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.Message
 import ecalle.com.bmybank.realm.RealmServices
+import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.view_holders.MessageViewHolder
@@ -52,13 +52,6 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private lateinit var messageEditText: EditText
     private var adapter: FirebaseRecyclerAdapter<Message, MessageViewHolder>? = null
 
-    companion object
-    {
-        val DISCUSSION_KEY = "discussionKey"
-        val OTHER_USER_KEY = "otherUserKey"
-    }
-
-    private val TAG = "MessageActivity"
     private val REQUIRED = "Required"
 
     private var mMessageReference: DatabaseReference? = null
@@ -66,6 +59,21 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private lateinit var query: Query
     private lateinit var options: FirebaseRecyclerOptions<Message>
     private lateinit var loader: ProgressBar
+    private lateinit var loanLoader: ProgressBar
+
+    private lateinit var negociatedLoanLayout: LinearLayout
+    private lateinit var amount: TextView
+    private lateinit var rate: TextView
+    private lateinit var delay: TextView
+    private lateinit var modifyAndSendLoan: Button
+
+    private var loan: Loan? = null
+
+    companion object
+    {
+        val DISCUSSION_KEY = "discussionKey"
+        val OTHER_USER_KEY = "otherUserKey"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -77,6 +85,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         channel = intent.getSerializableExtra(DISCUSSION_KEY) as Channel
         otherUser = intent.getSerializableExtra(OTHER_USER_KEY) as User?
 
+
+
         currentUser = RealmServices.getCurrentUser(ctx)
 
         mMessageReference = Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/listMessages/${channel.list_messages_id}")
@@ -85,6 +95,18 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         loader = find(R.id.loader)
         send = find(R.id.send)
         messageEditText = find(R.id.messageEditText)
+        negociatedLoanLayout = find(R.id.negociatedLoanLayout)
+        amount = find(R.id.amount)
+        rate = find(R.id.rate)
+        delay = find(R.id.delay)
+        loanLoader = find(R.id.loanLoader)
+        modifyAndSendLoan = find(R.id.modifyAndSendLoan)
+
+        if (channel.id_loan != null)
+        {
+            loanLoader.visibility = View.VISIBLE
+            generateLoanUi()
+        }
 
         //firebaseListenerInit()
 
@@ -98,7 +120,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
 
         if (otherUser !== null)
         {
-            toolbarTitle = "${otherUser?.lastname} ${otherUser?.firstname}"
+            toolbarTitle = "${otherUser?.firstname} ${otherUser?.lastname}"
             setUp()
 
         }
@@ -110,6 +132,50 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
+
+    }
+
+    private fun generateLoanUi()
+    {
+        if (channel.id_loan != null)
+        {
+            val api = BmyBankApi.getInstance(this)
+            val findUserByIdRequest = api.findLoanById(channel.id_loan!!)
+
+            findUserByIdRequest.enqueue(object : Callback<AddingLoanResponse>
+            {
+                override fun onResponse(call: Call<AddingLoanResponse>, response: Response<AddingLoanResponse>)
+                {
+                    val loanResponse = response.body()
+                    if (loanResponse?.success != null && loanResponse?.success)
+                    {
+                        loan = loanResponse.loan
+                        if (loan != null)
+                        {
+                            amount.text = loan?.amount.toString()
+                            rate.text = loan?.rate.toString()
+                            delay.text = getString(R.string.repayment_loan_item_label, loan?.delay)
+                            loanLoader.visibility = View.GONE
+
+                            if (loan?.user_requester_id == currentUser?.id)
+                            {
+                                modifyAndSendLoan.visibility = View.VISIBLE
+                            }
+
+                            negociatedLoanLayout.visibility = View.VISIBLE
+
+                            scrollToBottom()
+                        }
+                    }
+                }
+
+
+                override fun onFailure(call: Call<AddingLoanResponse>, t: Throwable)
+                {
+                    ecalle.com.bmybank.extensions.log("enable to find loan with id ${channel.id_loan}")
+                }
+            })
+        }
 
     }
 
@@ -146,16 +212,21 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
                 {
                     loader.visibility = View.GONE
                 }
-                recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
 
+                scrollToBottom()
             }
         })
 
         //Populate Item into Adapter
         recyclerView.adapter = adapter
 
-        recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
+        scrollToBottom()
 
+    }
+
+    private fun scrollToBottom()
+    {
+        recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
     }
 
     override fun onStart()
@@ -208,7 +279,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
                 if (userResponse?.success != null && userResponse?.success)
                 {
                     otherUser = userResponse.user
-                    toolbarTitle = "${otherUser?.lastname} ${otherUser?.firstname}"
+                    toolbarTitle = "${otherUser?.firstname} ${otherUser?.lastname}"
                     setUp()
                     adapter?.startListening()
                 }

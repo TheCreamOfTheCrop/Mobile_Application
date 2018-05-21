@@ -40,6 +40,10 @@ interface BmyBankApi
     @POST("loan/findLoan")
     fun findPersonalLoans(@Field("state_id") filter: String = ""): Call<GettingUserLoansResponse>
 
+    @FormUrlEncoded
+    @POST("/loan/searchLoan")
+    fun findLoanById(@Field("id_loan") id: Int): Call<AddingLoanResponse>
+
     @POST("/loan/listPublic")
     fun findPublicLoans(): Call<GettingUserLoansResponse>
 
