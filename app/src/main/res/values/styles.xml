@@ -105,6 +105,14 @@
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="ChatText" parent="LightGreyLabel">
+        <item name="android:textColor">@color/lightGrey</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/chat_message_background</item>
+
+    </style>
+
     <style name="BlueLabel" parent="LightGreyLabel">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>

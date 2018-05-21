@@ -54,11 +54,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         imageViewTwo.setImageResource(R.drawable.ic_list)
         tabs.getTabAt(1)?.customView = cardTwo
 
-
         val cardThree = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
         val imageViewThree = cardThree.find<ImageView>(R.id.icon)
-        imageViewThree.setImageResource(R.drawable.ic_person)
+        imageViewThree.setImageResource(R.drawable.ic_chat)
         tabs.getTabAt(2)?.customView = cardThree
+
+        val cardFour = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
+        val imageViewFour = cardFour.find<ImageView>(R.id.icon)
+        imageViewFour.setImageResource(R.drawable.ic_person)
+        tabs.getTabAt(3)?.customView = cardFour
 
     }
 

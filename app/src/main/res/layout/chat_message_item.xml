@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/currentUserLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <TextView
+            android:id="@+id/userText"
+            style="@style/ChatText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="30dp"
+            android:gravity="end"
+
+            android:textAlignment="textEnd"
+            tools:text="Lorem ipsum blabalbal abalbala balbal ablabala  balbala blabalbalabalbalabalbalabalbalabalbalbalba"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/default_profile"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/otherUserLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/otherUserImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/default_profile"
+            />
+
+
+        <TextView
+            android:id="@+id/otherUsertext"
+            style="@style/ChatText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="10dp"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            tools:text="Lorem ipsum blabalbal abalbala balbal ablabala  balbala blabalbalabalbalabalbalabalbalabalbalbalba"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

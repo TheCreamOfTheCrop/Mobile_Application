@@ -110,6 +110,10 @@
     <string name="quitting_loan_negociation">Souhaitez-vous vraiment annuler cette demande de négociation ?</string>
     <string name="negociation_well_sent">Envoie effectué avec succès !</string>
     <string name="disconnect">Déconnexion</string>
+    <string name="no_channels">Aucune conversations en cours</string>
+    <string name="no_chat_messages">Aucun message</string>
+    <string name="send_message_placeholder">Ecrire un message ...</string>
+    <string name="send">Envoyer</string>
     <string-array name="my_loans_states">
         <item>En attente</item>
         <item>En négociation</item>

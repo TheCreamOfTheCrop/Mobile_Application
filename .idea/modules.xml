@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BmyBank.iml" filepath="$PROJECT_DIR$/BmyBank.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Mobile_Application.iml" filepath="$PROJECT_DIR$/Mobile_Application.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\thoma\Documents\esgi\projet annuel\dev\BmyBank\Mobile_Application.iml" filepath="C:\Users\thoma\Documents\esgi\projet annuel\dev\BmyBank\Mobile_Application.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
