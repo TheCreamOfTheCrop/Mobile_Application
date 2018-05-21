@@ -3,10 +3,7 @@ package ecalle.com.bmybank
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
@@ -25,11 +22,13 @@ import java.util.*
 class SplashscreenActivity : AppCompatActivity()
 {
 
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splashscreen)
 
+        changeStatusBar(R.color.colorPrimary, this)
         //initializeFakeFirebaseDatas()
 
         Handler().postDelayed({
@@ -64,20 +63,35 @@ class SplashscreenActivity : AppCompatActivity()
         val channel = Channel(0, null, 14, 32, list.id)
         val channel2 = Channel(1, null, 14, 16, list2.id)
 
-        user1.channels = listOf(channel.id, channel2.id)
-        user2.channels = listOf(channel.id)
-        user3.channels = listOf(channel2.id)
+        user1.channels = listOf(channel, channel2)
+        user2.channels = listOf(channel)
+        user3.channels = listOf(channel2)
 
         val userRef = database.getReference("user-channels")
 
-        userRef.child(user1.id.toString()).setValue(user1)
-        userRef.child(user2.id.toString()).setValue(user2)
-        userRef.child(user3.id.toString()).setValue(user3)
+        //userRef.child(user1.id.toString()).setValue(user1)
+        //userRef.child(user2.id.toString()).setValue(user2)
+        //userRef.child(user3.id.toString()).setValue(user3)
 
-        val myRef = database.getReference("channels")
+        for (channel in user1.channels)
+        {
+            userRef.child(user1.id.toString()).child("channels").push().setValue(channel)
+        }
 
-        myRef.child(channel.id.toString()).setValue(channel)
-        myRef.child(channel2.id.toString()).setValue(channel2)
+        for (channel in user2.channels)
+        {
+            userRef.child(user2.id.toString()).child("channels").push().setValue(channel)
+        }
+
+        for (channel in user3.channels)
+        {
+            userRef.child(user3.id.toString()).child("channels").push().setValue(channel)
+        }
+
+        //val myRef = database.getReference("channels")
+
+        //myRef.child(channel.id.toString()).setValue(channel)
+        //myRef.child(channel2.id.toString()).setValue(channel2)
 
         val listMessageRef = database.getReference("listMessages")
 
@@ -90,30 +104,6 @@ class SplashscreenActivity : AppCompatActivity()
         {
             listMessageRef.child(channel2.list_messages_id.toString()).push().setValue(message)
         }
-
-        // Read from the database
-        myRef.addValueEventListener(object : ValueEventListener
-        {
-            override fun onDataChange(dataSnapshot: DataSnapshot)
-            {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val channels = mutableListOf<Channel>()
-
-                val value = dataSnapshot.children.mapNotNullTo(channels) {
-                    it.getValue<Channel>(Channel::class.java)
-                }
-
-                Log.d("thomasecalle", "channels are : $channels")
-            }
-
-            override fun onCancelled(error: DatabaseError)
-            {
-                // Failed to read value
-                Log.w("thomasecalle", "Failed to read value.", error.toException())
-            }
-        })
-
 
     }
 

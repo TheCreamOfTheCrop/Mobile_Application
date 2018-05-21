@@ -8,14 +8,17 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
 import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.Message
@@ -63,11 +66,14 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private var layoutManager: RecyclerView.LayoutManager? = null
     private lateinit var query: Query
     private lateinit var options: FirebaseRecyclerOptions<Message>
+    private lateinit var loader: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_dialog)
+
+        changeStatusBar(R.color.colorPrimary, this)
 
         channel = intent.getSerializableExtra(DISCUSSION_KEY) as Channel
         otherUser = intent.getSerializableExtra(OTHER_USER_KEY) as User?
@@ -79,6 +85,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         mMessageReference = Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/listMessages/${channel.list_messages_id}")
 
         recyclerView = find(R.id.recyclerView)
+        loader = find(R.id.loader)
         send = find(R.id.send)
         messageEditText = find(R.id.messageEditText)
 
@@ -138,6 +145,10 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int)
             {
                 super.onItemRangeInserted(positionStart, itemCount)
+                if (loader.visibility == View.VISIBLE)
+                {
+                    loader.visibility = View.GONE
+                }
                 recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
 
             }

@@ -2,41 +2,46 @@ package ecalle.com.bmybank.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.TextView
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.Query
 import ecalle.com.bmybank.ChatDialogActivity
-import ecalle.com.bmybank.LoanViewerActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.ChannelsAdapter
-import ecalle.com.bmybank.extensions.log
-import ecalle.com.bmybank.firebase.ChannelsFinder
-import ecalle.com.bmybank.firebase.ChannelsFinderCallbacks
+import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
-import org.jetbrains.anko.find
+import ecalle.com.bmybank.view_holders.ChannelViewHolder
 import org.jetbrains.anko.support.v4.ctx
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.find
+
 
 /**
  * Created by Thomas Ecalle on 20/05/2018.
  */
-class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener, ChannelsFinderCallbacks
+class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
 {
 
+    private var adapter: FirebaseRecyclerAdapter<Channel, ChannelViewHolder>? = null
+    private var mDatabase: DatabaseReference? = null
+    private var mChannelReference: DatabaseReference? = null
+    private var layoutManager: RecyclerView.LayoutManager? = null
+    private lateinit var query: Query
+    private lateinit var options: FirebaseRecyclerOptions<Channel>
+    private var currentUser: User? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var loader: ProgressBar
-    private lateinit var errorView: LinearLayout
-    private lateinit var errorText: TextView
-    private var channels: MutableList<Channel> = mutableListOf()
-    private lateinit var adapter: ChannelsAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
@@ -44,64 +49,80 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener, Cha
 
         recyclerView = view.find(R.id.recyclerView)
         loader = view.find(R.id.loader)
-        errorView = view.find(R.id.errorView)
-        errorText = view.find(R.id.errorText)
 
-        adapter = ChannelsAdapter(channels, this)
-        recyclerView.layoutManager = LinearLayoutManager(ctx)
 
-        recyclerView.adapter = adapter
+        currentUser = RealmServices.getCurrentUser(ctx)
 
-        loadThenGetChannels()
+        mDatabase = Utils.getDatabase().reference
+
+        mChannelReference = Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels")
+
+
+        recyclerView.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(ctx)
+        recyclerView.layoutManager = layoutManager
+
+        setUp()
 
         return view
     }
 
-    protected fun loadThenGetChannels()
+    private fun setUp()
     {
-        loader.visibility = View.VISIBLE
-        errorView.visibility = View.GONE
-        recyclerView.visibility = View.GONE
 
-        getChannels()
-    }
+        query = mChannelReference?.orderByPriority()!!
 
-    private fun getChannels()
-    {
-        val user = RealmServices.getCurrentUser(ctx)
-        val channelFinder = ChannelsFinder(ctx, this)
+        options = FirebaseRecyclerOptions.Builder<Channel>().setQuery(query, Channel::class.java).build()
 
-        channelFinder.start(user)
-    }
-
-    private fun showInfo(message: String = getString(R.string.no_results))
-    {
-        loader.visibility = View.GONE
-        errorView.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-
-        errorText.text = message
-    }
-
-    override fun onChannelFound(channel: Channel?)
-    {
-        log("onChannelFOund $channel")
-        if (channel != null)
+        adapter = object : FirebaseRecyclerAdapter<Channel, ChannelViewHolder>(options)
         {
-            if (channels.contains(channel))
+            override fun onBindViewHolder(@NonNull holder: ChannelViewHolder, position: Int, model: Channel)
             {
-                val index = channels.indexOf(channel)
-                val initialStory = channels.get(index)
-            }
-            else
-            {
-                channels.add(channel)
+                holder.bind(model, this@ChannelsFragment)
             }
 
-            adapter.notifyDataSetChanged()
-            isEmptyListHandling(false)
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChannelViewHolder
+            {
+                val v = LayoutInflater.from(parent.context).inflate(R.layout.channel_list_item, parent, false)
+                return ChannelViewHolder(v)
+            }
         }
+
+
+
+        adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver()
+        {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int)
+            {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (loader.visibility == View.VISIBLE)
+                {
+                    loader.visibility = View.GONE
+                }
+                recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
+
+            }
+        })
+
+        //Populate Item into Adapter
+        recyclerView.adapter = adapter
+
+        recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
+
     }
+
+    override fun onStart()
+    {
+        super.onStart()
+        adapter?.startListening()
+    }
+
+    override fun onStop()
+    {
+        super.onStop()
+        adapter?.stopListening()
+    }
+
 
     override fun onChannelClick(channel: Channel, user: User?)
     {
@@ -111,38 +132,5 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener, Cha
         startActivity(intent)
     }
 
-    override fun onChannelRemoved(channel: Channel?)
-    {
-        log("onChannelRemoved $channel")
 
-        channels.remove(channel)
-        adapter.notifyDataSetChanged()
-        isEmptyListHandling(false)
-    }
-
-    override fun onNoChannelFound()
-    {
-        log("onNoChannelFOund")
-        isEmptyListHandling(false)
-    }
-
-    override fun onStartSearching()
-    {
-        log("onStartSearching")
-        isEmptyListHandling(true)
-    }
-
-    override fun onNetworkError()
-    {
-        log("onStartSearching")
-        showInfo(getString(R.string.not_internet))
-    }
-
-    private fun isEmptyListHandling(isLoading: Boolean)
-    {
-        loader.visibility = if (isLoading) View.VISIBLE else View.GONE
-        errorView.visibility = if (channels.isEmpty() && !isLoading) View.VISIBLE else View.GONE
-        errorText.text = getString(R.string.no_channels)
-        recyclerView.visibility = if (channels.isEmpty() && !isLoading) View.GONE else View.VISIBLE
-    }
 }

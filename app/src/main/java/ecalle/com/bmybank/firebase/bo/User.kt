@@ -9,5 +9,5 @@ import java.io.Serializable
  */
 data class User(
         val id: Int = 0,
-        var channels: List<Int> = emptyList()
+        var channels: List<Channel> = emptyList()
 ) : Serializable

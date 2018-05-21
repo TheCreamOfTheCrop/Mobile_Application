@@ -1,8 +1,11 @@
 package ecalle.com.bmybank.extensions
 
 import android.app.Fragment
+import android.os.Build
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import ecalle.com.bmybank.custom_components.BeMyDialog
 
@@ -13,6 +16,16 @@ import ecalle.com.bmybank.custom_components.BeMyDialog
 fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
 fun log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
+
+fun AppCompatActivity.changeStatusBar(color: Int, context: AppCompatActivity)
+{
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+    {
+        val window = context.window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ContextCompat.getColor(context, color)
+    }
+}
 
 fun AppCompatActivity.customAlert(type: BeMyDialog.TYPE = BeMyDialog.TYPE.SUCCESS, message: Int, loop: Boolean = true): BeMyDialog
 {

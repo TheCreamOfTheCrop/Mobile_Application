@@ -15,10 +15,7 @@ import ecalle.com.bmybank.bo.AddingLoanResponse
 import ecalle.com.bmybank.bo.AddingNegociationResponse
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
-import ecalle.com.bmybank.extensions.customAlert
-import ecalle.com.bmybank.extensions.log
-import ecalle.com.bmybank.extensions.makeEditTextScrollableInScrollview
-import ecalle.com.bmybank.extensions.textValue
+import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
@@ -58,6 +55,9 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_loan)
+
+        changeStatusBar(R.color.colorPrimary, this)
+
 
         isNegociatingMode = intent.getBooleanExtra(IS_NEGOCIATING_MODE_KEY, false)
 

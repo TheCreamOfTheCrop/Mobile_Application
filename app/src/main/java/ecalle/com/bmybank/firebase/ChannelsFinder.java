@@ -58,6 +58,7 @@ public class ChannelsFinder
                 }
                 else
                 {
+                    /*
                     final ecalle.com.bmybank.firebase.bo.User userInFirebase = dataSnapshot.getValue(ecalle.com.bmybank.firebase.bo.User.class);
                     userChannelsIds.addAll(userInFirebase.getChannels());
 
@@ -115,6 +116,8 @@ public class ChannelsFinder
                             }
                         });
                     }
+
+                    */
                 }
             }
 

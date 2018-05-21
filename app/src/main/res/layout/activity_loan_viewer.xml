@@ -119,6 +119,7 @@
         android:layout_below="@+id/toolbar"
         android:padding="@dimen/generalPadding"
         android:scrollbars="none"
+        android:background="@color/generalBackgroundColor"
         >
 
         <LinearLayout

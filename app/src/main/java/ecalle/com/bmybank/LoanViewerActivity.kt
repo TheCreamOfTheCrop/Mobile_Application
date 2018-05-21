@@ -13,8 +13,10 @@ import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
+import ecalle.com.bmybank.firebase.bo.User
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
+import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.alert
@@ -195,10 +197,20 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     private fun negociate()
     {
+
+        /*
         val intent = Intent(this, AddLoanActivity::class.java)
         intent.putExtra(AddLoanActivity.IS_NEGOCIATING_MODE_KEY, true)
         intent.putExtra(AddLoanActivity.NEGOCIATED_LOAN_KEY, loan)
         startActivityForResult(intent, REQUEST_CODE)
+        */
+
+        val currentUser = RealmServices.getCurrentUser(this)!!
+
+        val currentModel = User(currentUser.id)
+        val otherModel = User(loan.user_requester_id)
+
+        toast("${currentUser?.firstname} veut négocier avec ${userFirstName}")
     }
 
     private fun findUserInformations()
