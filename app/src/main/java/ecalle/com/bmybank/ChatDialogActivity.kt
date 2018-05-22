@@ -17,6 +17,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.bo.AddingLoanResponse
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.extensions.changeStatusBar
@@ -68,6 +69,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private lateinit var rate: TextView
     private lateinit var delay: TextView
     private lateinit var modifyAndSendLoan: Button
+    private lateinit var toolbarOtherUserFirstName: TextView
+    private lateinit var toolbarOtherUserImage: CircleImageView
 
     private var loan: Loan? = null
 
@@ -105,6 +108,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         delay = find(R.id.delay)
         loanLoader = find(R.id.loanLoader)
         modifyAndSendLoan = find(R.id.modifyAndSendLoan)
+        toolbarOtherUserFirstName = find(R.id.toolbarOtherUserFirstName)
+        toolbarOtherUserImage = find(R.id.toolbarOtherUserImage)
 
         if (channel.id_loan != null)
         {
@@ -204,6 +209,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private fun setUp()
     {
 
+        toolbarOtherUserFirstName.text = otherUser?.firstname
+        //toolbarOtherUserImage.src = otherUser?.firstname
 
         query = mMessageReference?.orderByKey()!!
 

@@ -9,9 +9,60 @@
     android:orientation="vertical"
     >
 
-    <include
-        layout="@layout/toolbar"
-        />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <android.support.v7.widget.Toolbar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ToolBarStyle"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    >
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/toolbarOtherUserImage"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/default_profile"/>
+
+                    <TextView
+                        android:id="@+id/toolbarOtherUserFirstName"
+                        style="@style/WhiteLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        tools:text="Marc"
+                        />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -179,6 +230,7 @@
             android:id="@+id/messageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp"
@@ -189,19 +241,21 @@
 
             <EditText
                 android:id="@+id/messageEditText"
-                style="@style/SmallRoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="3"
                 android:gravity="left"
-                android:hint="@string/send_message_placeholder"
-                />
+                android:hint="@string/send_message_placeholder"/>
 
             <Button
                 android:id="@+id/send"
-                style="@style/CustomButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SendButton"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
                 android:text="@string/send"
                 />
         </LinearLayout>
