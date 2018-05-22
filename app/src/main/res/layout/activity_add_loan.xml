@@ -2,6 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -132,54 +133,45 @@
 
                 </LinearLayout>
 
-                <RadioGroup
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:clickable="true"
-                    android:focusable="true"
                     >
 
-                    <RadioButton
+                    <TextView
                         android:id="@+id/publicButton"
                         style="@style/BlueChoiceButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:checked="true"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@string/radiobutton_public_loan"/>
+                        android:background="@drawable/custom_blue_choice_button_background_pressed"
+                        android:text="@string/radiobutton_public_loan"
+                        android:textColor="@color/white"
+                        />
 
-                    <RadioButton
+                    <TextView
                         android:id="@+id/privateButton"
                         style="@style/BlueChoiceButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@string/radiobutton_private_loan"/>
-                </RadioGroup>
+                        android:background="@drawable/custom_blue_choice_button_background"
+                        android:text="@string/radiobutton_private_loan"
+                        android:textColor="@color/colorPrimary"
+                        />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/otherUserLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
                     android:visibility="gone"
                     tools:visibility="visible"
                     >
-
-                    <TextView
-                        style="@style/LightGreyLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/send_to_label"
-                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -198,6 +190,7 @@
 
                         <TextView
                             android:id="@+id/otherUserLastName"
+                            style="@style/AddLoanTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -208,6 +201,7 @@
 
                         <TextView
                             android:id="@+id/otherUserFirstName"
+                            style="@style/AddLoanTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -225,7 +219,7 @@
                     style="@style/RoundedMultilineEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:hint="@string/add_loan_description"
                     />
 
@@ -234,8 +228,24 @@
                     style="@style/CustomButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@string/validate"
+                    />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:backgroundTint="@color/grey"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_cross"
+                    app:borderWidth="0dp"
+                    app:elevation="10dp"
+                    app:fabSize="normal"
                     />
 
             </LinearLayout>

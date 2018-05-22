@@ -2,6 +2,7 @@ package ecalle.com.bmybank
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -41,11 +42,11 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
     private lateinit var rate: EditText
     private lateinit var validate: Button
     private lateinit var errorView: TextView
-    private lateinit var publicButton: RadioButton
-    private lateinit var privateButton: RadioButton
+    private lateinit var publicButton: TextView
+    private lateinit var privateButton: TextView
     private lateinit var scrollView: ScrollView
     private lateinit var loadingDialog: BeMyDialog
-
+    private lateinit var exit: FloatingActionButton
     private lateinit var otherUserLayout: LinearLayout
     private lateinit var otherUserImage: CircleImageView
     private lateinit var otherUserLastName: TextView
@@ -62,8 +63,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_loan)
 
-        changeStatusBar(R.color.colorPrimary, this)
-
+        changeStatusBar(R.color.white, this)
 
         isModifyingMode = intent.getBooleanExtra(IS_MODIFYYING_MODE_KEY, false)
 
@@ -86,16 +86,21 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
         otherUserImage = find(R.id.otherUserImage)
         otherUserLastName = find(R.id.otherUserLastName)
         otherUserFirstName = find(R.id.otherUserFirstName)
+        exit = find(R.id.exit)
 
-        publicButton.isChecked = true
+        publicButton.setOnClickListener(this)
+        privateButton.setOnClickListener(this)
+        exit.setOnClickListener(this)
 
-
+        publicButton.callOnClick()
+        publicButton.isEnabled = false
+        privateButton.isEnabled = false
 
         if (isModifyingMode)
         {
             publicButton.isEnabled = false
             privateButton.isEnabled = false
-            privateButton.isChecked = true
+            privateButton.callOnClick()
 
             description.isEnabled = false
 
@@ -125,12 +130,33 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
             validate.id -> checkThenSend()
             publicButton.id -> toggleButtons()
             privateButton.id -> toggleButtons(false)
+            exit.id -> onBackPressed()
         }
     }
 
     private fun toggleButtons(isPublic: Boolean = true)
     {
         isPublicType = isPublic
+        if (isPublic)
+        {
+            privateButton.isSelected = false
+            privateButton.background = ContextCompat.getDrawable(this, R.drawable.custom_blue_choice_button_background)
+            privateButton.textColor = ContextCompat.getColor(this, R.color.colorPrimary)
+
+            publicButton.isSelected = true
+            publicButton.background = ContextCompat.getDrawable(this, R.drawable.custom_blue_choice_button_background_pressed)
+            publicButton.textColor = ContextCompat.getColor(this, R.color.white)
+        }
+        else
+        {
+            publicButton.isSelected = false
+            publicButton.background = ContextCompat.getDrawable(this, R.drawable.custom_blue_choice_button_background)
+            publicButton.textColor = ContextCompat.getColor(this, R.color.colorPrimary)
+
+            privateButton.isSelected = true
+            privateButton.background = ContextCompat.getDrawable(this, R.drawable.custom_blue_choice_button_background_pressed)
+            privateButton.textColor = ContextCompat.getColor(this, R.color.white)
+        }
     }
 
     override fun onBackPressed()
@@ -166,7 +192,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun negociate()
     {
-        toast("${otherUser.lastname}/${otherUser.firstname}/ is public = ${publicButton.isChecked}")
+        toast("${otherUser.lastname}/${otherUser.firstname}/ is public = ${publicButton.isSelected}")
         /*
 
         loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
