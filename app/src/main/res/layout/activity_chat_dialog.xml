@@ -187,6 +187,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 >
@@ -215,8 +216,7 @@
                 style="@style/CustomGreyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
                 android:text="@string/modifyAndShareMyLoan"
                 android:visibility="gone"
                 tools:visibility="visible"

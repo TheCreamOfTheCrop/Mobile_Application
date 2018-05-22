@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import com.tapadoo.alerter.Alerter
+import ecalle.com.bmybank.R
 import ecalle.com.bmybank.custom_components.BeMyDialog
+import org.jetbrains.anko.act
 
 
 /**
@@ -16,6 +19,30 @@ import ecalle.com.bmybank.custom_components.BeMyDialog
 fun AppCompatActivity.log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
 
 fun log(message: String, tag: String = "thomasecalle", type: Int = Log.INFO) = logger(message, tag, type)
+
+fun AppCompatActivity.alertError(text: String)
+{
+    Alerter.create(this)
+            .setTitle(R.string.error_alerter_title)
+            .setText(text)
+            .setBackgroundColorRes(R.color.red)
+            .setIcon(R.drawable.ic_cross)
+            .enableSwipeToDismiss()
+            .setIconColorFilter(0) // Optional - Removes white tint
+            .show()
+}
+
+fun Fragment.alertError(text: String)
+{
+    Alerter.create(act)
+            .setTitle(R.string.error_alerter_title)
+            .setText(text)
+            .setBackgroundColorRes(R.color.red)
+            .setIcon(R.drawable.ic_cross)
+            .enableSwipeToDismiss()
+            .setIconColorFilter(0) // Optional - Removes white tint
+            .show()
+}
 
 fun AppCompatActivity.changeStatusBar(color: Int, context: AppCompatActivity)
 {

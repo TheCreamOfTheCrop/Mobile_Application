@@ -3,10 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/GeneralContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clipToPadding="false"
+    android:focusableInTouchMode="true"
     tools:context="ecalle.com.bmybank.LoginActivity"
     >
 
@@ -18,98 +19,130 @@
         android:minWidth="90dp"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/formContainer"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:tint="@color/colorPrimary"
+        app:layout_constraintVertical_chainStyle="packed"
         />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/formContainer"
+
+    <EditText
+        android:id="@+id/login"
+        style="@style/GreyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="@dimen/generalCardElevation"
-        app:layout_constraintBottom_toTopOf="@+id/inscription"
+        android:layout_marginEnd="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:hint="@string/emailPlaceholder"
+        android:inputType="textEmailAddress"
+        android:padding="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
-        >
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="20dp"
-            >
-
-            <EditText
-                android:id="@+id/login"
-                style="@style/SmallRoundedEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/emailPlaceholder"
-                android:inputType="textEmailAddress"
-                />
-
-            <EditText
-                android:id="@+id/password"
-                style="@style/SmallRoundedEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/passwordPlaceholder"
-                android:inputType="textPassword"
-                />
-
-            <Button
-                android:id="@+id/validate"
-                style="@style/CustomButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/validate"
-                />
-
-            <TextView
-                android:id="@+id/error"
-                style="@style/ErrorLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                tools:text="Message d'erreur"
-                tools:visibility="visible"
-                />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <ecalle.com.bmybank.custom_components.CustomLinkedCard
-        android:id="@+id/inscription"
+    <EditText
+        android:id="@+id/password"
+        style="@style/GreyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_marginEnd="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginStart="70dp"
+        android:hint="@string/passwordPlaceholder"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/validate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"/>
+
+    <Button
+        android:id="@+id/validate"
+        style="@style/CustomButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/validate"
         app:layout_constraintBottom_toTopOf="@+id/passwordForgotten"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/formContainer"
-        app:text="@string/inscription"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/password"/>
 
     <TextView
         android:id="@+id/passwordForgotten"
-        style="@style/LinkedText"
+        style="@style/VeryLightGreyLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/passwordForgotten"
+        app:layout_constraintBottom_toTopOf="@+id/inscriptionContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/validate"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/inscriptionContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inscription"
-        />
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-20dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/loginwave"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center|top"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                style="@style/SmallWhiteLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inscription_label"
+                />
+
+            <TextView
+                android:id="@+id/inscription"
+                style="@style/BoldSmallWhiteLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="@string/inscription"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

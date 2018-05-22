@@ -57,9 +57,16 @@
         <item name="android:padding">10dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColorHint">@color/labelGrey</item>
+        <item name="android:textColor">@color/labelGrey</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/merriweather_black</item>
         <item name="android:drawablePadding">5dp</item>
+    </style>
+
+    <style name="LoginEditText" parent="GreyEditText">
+        <item name="android:padding">15dp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
     </style>
 
     <style name="AddLoanEditText" parent="GreyEditText">
@@ -67,7 +74,7 @@
         <item name="android:textSize">24sp</item>
         <item name="android:drawableTint">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/labelGrey</item>
     </style>
 
 
@@ -139,6 +146,15 @@
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="SmallWhiteLabel" parent="WhiteLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
+    </style>
+
+    <style name="BoldSmallWhiteLabel" parent="SmallWhiteLabel">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="GreyLabel" parent="NormalText">
         <item name="android:textColor">@color/darkGrey</item>
         <item name="android:textSize">20sp</item>
@@ -148,6 +164,11 @@
         <item name="android:textColor">@color/lightGrey</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_black</item>
+    </style>
+
+    <style name="VeryLightGreyLabel" parent="LightGreyLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
     <style name="SmallGreyLabel" parent="LightGreyLabel">

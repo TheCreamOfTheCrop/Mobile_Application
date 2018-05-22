@@ -7,9 +7,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
+import com.tapadoo.alerter.Alerter
 import ecalle.com.bmybank.bo.LoginResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
+import ecalle.com.bmybank.extensions.alertError
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.textValue
@@ -30,7 +31,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     lateinit private var login: EditText
     lateinit private var password: EditText
-    lateinit private var error: TextView
     private var loadingDialog: BeMyDialog? = null
 
     companion object
@@ -45,7 +45,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
         login = find(R.id.login)
         password = find(R.id.password)
-        error = find(R.id.error)
 
         login.setText("thomasecalle@hotmail.fr")
         password.setText("totoro")
@@ -70,7 +69,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
     {
         when (view?.id)
         {
-            passwordForgotten.id -> startActivity<PasswordForgottenActivity>()
+            passwordForgotten.id ->
+            {
+                //startActivity<PasswordForgottenActivity>()
+            }
             inscription.id -> startActivityForResult<InscriptionActivity>(INSCRIPTION_REQUEST)
             validate.id -> login()
         }
@@ -145,8 +147,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
     private fun showError(message: Int = R.string.wrong_email_or_password, show: Boolean = true)
     {
-        error.text = getString(message)
-        error.visibility = if (show) View.VISIBLE else View.GONE
+        alertError(getString(message))
     }
 }
 

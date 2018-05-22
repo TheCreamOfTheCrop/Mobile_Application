@@ -41,7 +41,6 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
     private lateinit var repayment: EditText
     private lateinit var rate: EditText
     private lateinit var validate: Button
-    private lateinit var errorView: TextView
     private lateinit var publicButton: TextView
     private lateinit var privateButton: TextView
     private lateinit var scrollView: ScrollView
@@ -77,7 +76,6 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
         amount = find(R.id.amount)
         repayment = find(R.id.repayment)
         rate = find(R.id.rate)
-        errorView = find(R.id.errorView)
         scrollView = find(R.id.scrollView)
         publicButton = find(R.id.publicButton)
         privateButton = find(R.id.privateButton)
@@ -304,10 +302,10 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun showInformation(information: String = "", show: Boolean = true, error: Boolean = true)
     {
-        errorView.text = information
-        val color = if (error) ContextCompat.getColor(this, R.color.red) else ContextCompat.getColor(this, R.color.green)
-        errorView.setTextColor(color)
-        errorView.visibility = if (show) View.VISIBLE else View.GONE
+        if (error)
+        {
+            alertError(information)
+        }
         scrollView.fullScroll(ScrollView.FOCUS_UP)
     }
 
