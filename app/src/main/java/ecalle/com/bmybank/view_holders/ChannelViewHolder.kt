@@ -25,6 +25,7 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
     private val otherUserLastName: TextView = itemView.find(R.id.otherUserLastName)
     private val otherUserFirstName: TextView = itemView.find(R.id.otherUserFirstName)
+    private val lastMessage: TextView = itemView.find(R.id.lastMessage)
     private val otherUserImage: ImageView = itemView.find(R.id.otherUserImage)
     private val loader: ProgressBar = itemView.find(R.id.loader)
     private var user: User? = null
@@ -37,6 +38,8 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
 
         val currentUser = RealmServices.getCurrentUser(itemView.context)
+
+        lastMessage.text = channel.last_message
 
         val otherUserId = if (currentUser?.id == channel.id_user_1) channel.id_user_2 else channel.id_user_1
 

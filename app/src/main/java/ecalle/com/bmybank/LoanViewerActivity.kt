@@ -236,6 +236,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
         //listMessageReference.push().setValue(firstMessage)
 
+        channel.last_message = firstMessage.text
         Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
         Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
         listMessageReference.push().setValue(firstMessage)

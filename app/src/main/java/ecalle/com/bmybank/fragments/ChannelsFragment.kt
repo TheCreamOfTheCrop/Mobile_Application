@@ -24,6 +24,7 @@ import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.view_holders.ChannelViewHolder
 import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.toast
 
 
 /**
@@ -70,7 +71,7 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
     private fun setUp()
     {
 
-        query = mChannelReference?.orderByPriority()!!
+        query = mChannelReference?.orderByChild("list_message_id")!!
 
         options = FirebaseRecyclerOptions.Builder<Channel>().setQuery(query, Channel::class.java).build()
 

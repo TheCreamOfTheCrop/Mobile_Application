@@ -265,6 +265,12 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         val message = Message(body, currentUser?.id!!, time)
 
         mMessageReference?.ref?.push()?.setValue(message)
+
+        channel.last_message = message.text
+
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${otherUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+
     }
 
     private fun loadUserThenDisplayTitle()

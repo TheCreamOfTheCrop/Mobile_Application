@@ -62,7 +62,7 @@ class SplashscreenActivity : AppCompatActivity()
 
 
         //val channel = Channel(null, 14, 32, list.id)
-        val channel2 = Channel(null, 14, 16, list2.id)
+        val channel2 = Channel(null, 14, 16, list2.id, message4.text)
 
         user1.channels = listOf(channel2)
         //user2.channels = listOf(channel)

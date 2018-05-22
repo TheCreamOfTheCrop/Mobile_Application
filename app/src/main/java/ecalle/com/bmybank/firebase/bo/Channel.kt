@@ -11,5 +11,6 @@ data class Channel(
         val id_loan: Int? = null,
         val id_user_1: Int = 0,
         val id_user_2: Int = 0,
-        val list_messages_id: Int = -1
+        val list_messages_id: Int = -1,
+        var last_message: String = ""
 ) : Serializable
