@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.ChannelsAdapter
 import ecalle.com.bmybank.bo.UserResponse
@@ -38,6 +39,10 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         }
 
         val currentUser = RealmServices.getCurrentUser(itemView.context)
+
+        Glide.with(itemView.context)
+                .load("http://goo.gl/gEgYUd")
+                .into(otherUserImage)
 
         lastMessage.text = channel.last_message
 

@@ -30,7 +30,7 @@ class SplashscreenActivity : AppCompatActivity()
 
         changeStatusBar(R.color.colorPrimary, this)
 
-        initializeFakeFirebaseDatas()
+        //initializeFakeFirebaseDatas()
 
         Handler().postDelayed({
 
