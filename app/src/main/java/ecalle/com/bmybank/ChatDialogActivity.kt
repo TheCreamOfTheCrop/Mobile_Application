@@ -183,7 +183,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     {
 
 
-        query = mMessageReference?.orderByPriority()!!
+        query = mMessageReference?.orderByKey()!!
 
         options = FirebaseRecyclerOptions.Builder<Message>().setQuery(query, Message::class.java).build()
 
@@ -226,7 +226,10 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
 
     private fun scrollToBottom()
     {
-        recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
+        if (recyclerView != null && adapter != null && adapter?.itemCount != null)
+        {
+            recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
+        }
     }
 
     override fun onStart()

@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.bo.UserResponse
@@ -25,13 +28,13 @@ import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * Created by Thomas Ecalle on 10/04/2018.
@@ -211,26 +214,55 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         startActivityForResult(intent, REQUEST_CODE)
         */
 
+
         createAndLaunchNegociationChat()
 
     }
 
     private fun createAndLaunchNegociationChat()
     {
+        val customAlert = customAlert(BeMyDialog.TYPE.LOADING, R.string.preparing_negociation)
+
         val currentUser = RealmServices.getCurrentUser(this)!!
 
         val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
 
-
         val firstMessage = Message(getString(R.string.firstMessageInNegociation, currentUser.firstname), currentUser.id, time)
         val listMessages = ListMessages("${currentUser.id}${loan.user_requester_id}".toInt(), mutableListOf(firstMessage))
 
-        Utils.getDatabase().getReference("listMessages").child(listMessages.id.toString()).push().setValue(firstMessage)
+        val listMessageReference = Utils.getDatabase().getReference("listMessages").child(listMessages.id.toString())
 
         val channel = Channel(loan.id, currentUser.id, loan.user_requester_id, listMessages.id)
 
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").push().setValue(channel)
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").push().setValue(channel)
+        //listMessageReference.push().setValue(firstMessage)
+
+        listMessageReference.addListenerForSingleValueEvent(object : ValueEventListener
+        {
+            override fun onDataChange(dataSnapshot: DataSnapshot)
+            {
+                val size = dataSnapshot.childrenCount.toInt()
+
+
+                if (size >= 1)
+                {
+                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").child("id_loan").setValue(channel.id_loan)
+                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").child("id_loan").setValue(channel.id_loan)
+
+                }
+                else
+                {
+                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+                }
+
+                listMessageReference.push().setValue(firstMessage)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError)
+            {
+
+            }
+        })
 
 
         val intent = Intent(ctx, ChatDialogActivity::class.java)

@@ -30,7 +30,7 @@ class SplashscreenActivity : AppCompatActivity()
 
         changeStatusBar(R.color.colorPrimary, this)
 
-        //initializeFakeFirebaseDatas()
+        initializeFakeFirebaseDatas()
 
         Handler().postDelayed({
 
@@ -76,17 +76,17 @@ class SplashscreenActivity : AppCompatActivity()
 
         for (channel in user1.channels)
         {
-            userRef.child(user1.id.toString()).child("channels").push().setValue(channel)
+            userRef.child(user1.id.toString()).child("channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
         }
 
         for (channel in user2.channels)
         {
-            userRef.child(user2.id.toString()).child("channels").push().setValue(channel)
+            userRef.child(user2.id.toString()).child("channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
         }
 
         for (channel in user3.channels)
         {
-            userRef.child(user3.id.toString()).child("channels").push().setValue(channel)
+            userRef.child(user3.id.toString()).child("channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
         }
 
         //val myRef = database.getReference("channels")
