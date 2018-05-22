@@ -236,33 +236,9 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
         //listMessageReference.push().setValue(firstMessage)
 
-        listMessageReference.addListenerForSingleValueEvent(object : ValueEventListener
-        {
-            override fun onDataChange(dataSnapshot: DataSnapshot)
-            {
-                val size = dataSnapshot.childrenCount.toInt()
-
-
-                if (size >= 1)
-                {
-                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").child("id_loan").setValue(channel.id_loan)
-                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").child("id_loan").setValue(channel.id_loan)
-
-                }
-                else
-                {
-                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-                    Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-                }
-
-                listMessageReference.push().setValue(firstMessage)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError)
-            {
-
-            }
-        })
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        listMessageReference.push().setValue(firstMessage)
 
 
         val intent = Intent(ctx, ChatDialogActivity::class.java)
