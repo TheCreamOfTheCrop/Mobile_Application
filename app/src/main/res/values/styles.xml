@@ -49,6 +49,26 @@
         <item name="android:fontFamily">@font/merriweather_black</item>
     </style>
 
+    <style name="GreyEditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+    <style name="AddLoanEditText" parent="GreyEditText">
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:drawableTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+
+
     <style name="SmallRoundedEditText" parent="RoundedEditText">
         <item name="android:padding">10dp</item>
         <item name="android:textSize">15sp</item>
@@ -67,7 +87,18 @@
         <item name="android:paddingRight">30dp</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/custom_button_background</item>
         <item name="android:fontFamily">@font/merriweather_black</item>
+    </style>
+
+    <style name="BlueChoiceButton" parent="CustomButton">
+        <item name="android:textColor">@drawable/blue_choice_button_text_color</item>
+        <item name="android:background">@drawable/custom_blue_choice_button_background</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawable">@drawable/custom_blue_choice_button_background</item>
     </style>
 
     <style name="CustomGreyButton" parent="CustomButton">
@@ -157,6 +188,12 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_black</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AddLoanTitle" parent="SmallBlackText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/merriweather_black</item>
+        <item name="android:textColor">@color/darkGrey</item>
     </style>
 
     <style name="whiteTextViewButton">

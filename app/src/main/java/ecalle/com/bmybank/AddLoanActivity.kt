@@ -4,22 +4,18 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import com.squareup.moshi.Moshi
+import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.bo.AddingLoanResponse
-import ecalle.com.bmybank.bo.AddingNegociationResponse
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import kotlinx.android.synthetic.main.activity_add_loan.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -30,15 +26,14 @@ import retrofit2.Response
 /**
  * Created by Thomas Ecalle on 02/04/2018.
  */
-class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
+class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 {
     companion object
     {
-        val IS_NEGOCIATING_MODE_KEY = "etitionMode"
-        val NEGOCIATED_LOAN_KEY = "negociatedLoanKey"
+        val IS_MODIFYYING_MODE_KEY = "isModifyingModeKey"
+        val MODIFYING_LOAN_KEY = "modifyingLoanKey"
+        val MODIFYING_LOAN_OTHER_USER_KEY = "modifyingLoanOtherUserKey"
     }
-
-    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
     private lateinit var description: EditText
     private lateinit var amount: EditText
@@ -46,9 +41,20 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     private lateinit var rate: EditText
     private lateinit var validate: Button
     private lateinit var errorView: TextView
+    private lateinit var publicButton: RadioButton
+    private lateinit var privateButton: RadioButton
     private lateinit var scrollView: ScrollView
     private lateinit var loadingDialog: BeMyDialog
-    private var isNegociatingMode: Boolean = false
+
+    private lateinit var otherUserLayout: LinearLayout
+    private lateinit var otherUserImage: CircleImageView
+    private lateinit var otherUserLastName: TextView
+    private lateinit var otherUserFirstName: TextView
+    private var isPublicType = true
+    private lateinit var otherUser: User
+
+
+    private var isModifyingMode: Boolean = false
     private lateinit var negociatedLoan: Loan
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -59,15 +65,13 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         changeStatusBar(R.color.colorPrimary, this)
 
 
-        isNegociatingMode = intent.getBooleanExtra(IS_NEGOCIATING_MODE_KEY, false)
+        isModifyingMode = intent.getBooleanExtra(IS_MODIFYYING_MODE_KEY, false)
 
-        if (isNegociatingMode && intent.getSerializableExtra(NEGOCIATED_LOAN_KEY) != null)
+        if (isModifyingMode && intent.getSerializableExtra(MODIFYING_LOAN_KEY) != null)
         {
-            negociatedLoan = intent.getSerializableExtra(NEGOCIATED_LOAN_KEY) as Loan
+            negociatedLoan = intent.getSerializableExtra(MODIFYING_LOAN_KEY) as Loan
+            otherUser = intent.getSerializableExtra(MODIFYING_LOAN_OTHER_USER_KEY) as User
         }
-
-        toolbarTitle = if (!isNegociatingMode) getString(R.string.add_loan_title) else getString(R.string.negociating_loan_edition)
-        enableHomeAsUp { onBackPressed() }
 
         description = find(R.id.description)
         amount = find(R.id.amount)
@@ -75,19 +79,39 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         rate = find(R.id.rate)
         errorView = find(R.id.errorView)
         scrollView = find(R.id.scrollView)
+        publicButton = find(R.id.publicButton)
+        privateButton = find(R.id.privateButton)
         validate = find(R.id.validate)
+        otherUserLayout = find(R.id.otherUserLayout)
+        otherUserImage = find(R.id.otherUserImage)
+        otherUserLastName = find(R.id.otherUserLastName)
+        otherUserFirstName = find(R.id.otherUserFirstName)
 
-        if (isNegociatingMode)
+        publicButton.isChecked = true
+
+
+
+        if (isModifyingMode)
         {
-            radioPublic.isEnabled = false
-            radioPrivate.isEnabled = false
+            publicButton.isEnabled = false
+            privateButton.isEnabled = false
+            privateButton.isChecked = true
+
             description.isEnabled = false
 
             amount.setText(negociatedLoan.amount.toString())
             description.setText(negociatedLoan.description)
             rate.setText(negociatedLoan.rate.toString())
             repayment.setText(negociatedLoan.delay.toString())
-            validate.text = getString(R.string.negociate_button_label)
+            validate.text = getString(R.string.modifyAndShareMyLoan)
+
+
+            //otherUserImage
+            otherUserLastName.text = otherUser.lastname
+            otherUserFirstName.text = otherUser.firstname
+
+            otherUserLayout.visibility = View.VISIBLE
+
         }
 
         description.makeEditTextScrollableInScrollview()
@@ -99,7 +123,14 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
         when (view?.id)
         {
             validate.id -> checkThenSend()
+            publicButton.id -> toggleButtons()
+            privateButton.id -> toggleButtons(false)
         }
+    }
+
+    private fun toggleButtons(isPublic: Boolean = true)
+    {
+        isPublicType = isPublic
     }
 
     override fun onBackPressed()
@@ -111,7 +142,7 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
     private fun confirmStoppingLoanEdition()
     {
         alert {
-            message = if (!isNegociatingMode) getString(R.string.quitting_loan_creation_message) else getString(R.string.quitting_loan_negociation)
+            message = if (!isModifyingMode) getString(R.string.quitting_loan_creation_message) else getString(R.string.quittin_loan_modification)
             positiveButton(R.string.yes) {
                 super.onBackPressed()
                 finish()
@@ -129,12 +160,14 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
             amountNotWellSet() -> showInformation(getString(R.string.incorrect_amount))
             rateNotWellSet() -> showInformation(getString(R.string.incorrect_rate))
             repaymentIsNotValid() -> showInformation(getString(R.string.incorrect_repayment))
-            else -> if (!isNegociatingMode) addLoan() else negociate()
+            else -> if (!isModifyingMode) addLoan() else negociate()
         }
     }
 
     private fun negociate()
     {
+        toast("${otherUser.lastname}/${otherUser.firstname}/ is public = ${publicButton.isChecked}")
+        /*
 
         loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
         val delay = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
@@ -176,6 +209,8 @@ class AddLoanActivity : AppCompatActivity(), ToolbarManager, View.OnClickListene
 
             }
         })
+
+        */
 
     }
 

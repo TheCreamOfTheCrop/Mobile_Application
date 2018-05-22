@@ -8,12 +8,10 @@
     android:orientation="vertical"
     >
 
-    <include layout="@layout/toolbar"/>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
@@ -38,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/errorView"
-
             android:orientation="vertical"
             android:scrollbars="none"
             >
@@ -57,8 +54,8 @@
                     >
 
                     <TextView
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/amount_label"
@@ -66,17 +63,14 @@
 
                     <EditText
                         android:id="@+id/amount"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:layout_weight="1"
                         android:drawableEnd="@drawable/ic_euro_symbol"
                         android:drawableRight="@drawable/ic_euro_symbol"
-                        android:gravity="center"
                         android:hint="@string/amount_placeholder"
                         android:inputType="numberDecimal"
-                        android:textColorHint="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
                         />
 
                 </LinearLayout>
@@ -89,26 +83,24 @@
                     >
 
                     <TextView
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/rate_label"
+
                         />
 
                     <EditText
                         android:id="@+id/rate"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:layout_weight="1"
                         android:drawableEnd="@drawable/ic_percent"
                         android:drawableRight="@drawable/ic_percent"
-                        android:gravity="center"
                         android:hint="@string/rate_placeholder"
                         android:inputType="numberDecimal"
-                        android:textColorHint="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
                         />
 
                 </LinearLayout>
@@ -121,8 +113,8 @@
                     >
 
                     <TextView
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanTitle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/repayment_label"
@@ -130,61 +122,103 @@
 
                     <EditText
                         android:id="@+id/repayment"
-                        android:layout_width="wrap_content"
+                        style="@style/AddLoanEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
+                        android:layout_weight="1"
                         android:hint="@string/repayment_default_value"
                         android:inputType="numberDecimal"
-                        android:textColorHint="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        style="@style/BlackTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/month"
                         />
 
                 </LinearLayout>
 
-                <TextView
-                    style="@style/GreyLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/loan_type_label"
-                    />
-
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:checkedButton="@+id/radioPublic"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
                     >
 
                     <RadioButton
-                        android:id="@+id/radioPublic"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/publicButton"
+                        style="@style/BlueChoiceButton"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/radiobutton_public_loan"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        />
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/radiobutton_public_loan"/>
 
                     <RadioButton
-                        android:id="@+id/radioPrivate"
+                        android:id="@+id/privateButton"
+                        style="@style/BlueChoiceButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@string/radiobutton_private_loan"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/otherUserLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    >
+
+                    <TextView
+                        style="@style/LightGreyLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/radiobutton_private_loan"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:text="@string/send_to_label"
                         />
-                </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        >
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/otherUserImage"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/default_profile"
+                            />
+
+                        <TextView
+                            android:id="@+id/otherUserLastName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="lastname"
+                            />
+
+                        <TextView
+                            android:id="@+id/otherUserFirstName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="firstname"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/description"

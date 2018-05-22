@@ -8,9 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.bo.SImpleResponse
 import ecalle.com.bmybank.bo.UserResponse
@@ -48,7 +45,6 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         val USER_FIRSTNAME_KEY = "userFirstNameKey"
         val USER_LASTNAME_KEY = "userLastNameKey"
         val COLOR_KEY = "colorKey"
-        val REQUEST_CODE = 22
     }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
@@ -206,17 +202,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     private fun negociate()
     {
-
-        /*
-        val intent = Intent(this, AddLoanActivity::class.java)
-        intent.putExtra(AddLoanActivity.IS_NEGOCIATING_MODE_KEY, true)
-        intent.putExtra(AddLoanActivity.NEGOCIATED_LOAN_KEY, loan)
-        startActivityForResult(intent, REQUEST_CODE)
-        */
-
-
         createAndLaunchNegociationChat()
-
     }
 
     private fun createAndLaunchNegociationChat()
@@ -286,17 +272,5 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         progressBar.visibility = View.GONE
         userInformations.visibility = View.VISIBLE
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-        if (requestCode == LoanViewerActivity.REQUEST_CODE)
-        {
-            when (resultCode)
-            {
-                Activity.RESULT_OK -> customAlert(message = R.string.negociation_well_sent, loop = false)
-            }
-        }
-    }
-
 
 }

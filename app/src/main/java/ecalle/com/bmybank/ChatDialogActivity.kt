@@ -1,5 +1,7 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.NonNull
 import android.support.v7.app.AppCompatActivity
@@ -18,6 +20,7 @@ import com.google.firebase.database.Query
 import ecalle.com.bmybank.bo.AddingLoanResponse
 import ecalle.com.bmybank.bo.UserResponse
 import ecalle.com.bmybank.extensions.changeStatusBar
+import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.Message
@@ -42,7 +45,6 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
 {
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
-
     private var otherUser: User? = null
     private var currentUser: User? = null
     private lateinit var channel: Channel
@@ -73,6 +75,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     {
         val DISCUSSION_KEY = "discussionKey"
         val OTHER_USER_KEY = "otherUserKey"
+        val REQUEST_CODE = 22
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -135,6 +139,17 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        if (requestCode == ChatDialogActivity.REQUEST_CODE)
+        {
+            when (resultCode)
+            {
+                Activity.RESULT_OK -> customAlert(message = R.string.negociation_well_sent, loop = false)
+            }
+        }
+    }
+
     private fun generateLoanUi()
     {
         if (channel.id_loan != null)
@@ -160,6 +175,13 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
                             if (loan?.user_requester_id == currentUser?.id)
                             {
                                 modifyAndSendLoan.visibility = View.VISIBLE
+                                modifyAndSendLoan.setOnClickListener {
+                                    val intent = Intent(this@ChatDialogActivity, AddLoanActivity::class.java)
+                                    intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
+                                    intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
+                                    intent.putExtra(AddLoanActivity.MODIFYING_LOAN_OTHER_USER_KEY, otherUser)
+                                    startActivityForResult(intent, REQUEST_CODE)
+                                }
                             }
 
                             negociatedLoanLayout.visibility = View.VISIBLE

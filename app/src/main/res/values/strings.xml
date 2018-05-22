@@ -84,7 +84,7 @@
     <string name="no_results">Aucun résultat</string>
     <string name="retry">Réessayer</string>
     <string name="public_loans">Demandes publiques</string>
-    <string name="repayment_label">Remboursement :</string>
+    <string name="repayment_label">Durée (mois) :</string>
     <string name="repayment_default_value">1</string>
     <string name="month">mois</string>
     <string name="incorrect_repayment">Durée de remboursement incorrecte</string>
@@ -117,6 +117,8 @@
     <string name="firstMessageInNegociation">%1$s veut négocier avec vous !</string>
     <string name="modifyAndShareMyLoan">Modifier et partager</string>
     <string name="preparing_negociation">Lancement des débats ...</string>
+    <string name="quittin_loan_modification">Souhaitez-vous vraimemnt quitter la modification du prêt ?</string>
+    <string name="send_to_label">Envoyé à :</string>
     <string-array name="my_loans_states">
         <item>En attente</item>
         <item>En négociation</item>
