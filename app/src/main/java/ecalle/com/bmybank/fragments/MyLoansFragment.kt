@@ -56,7 +56,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
         states.add(Constants.FINISHED_LOANS)
 
         // Creating adapter for spinner
-        val dataAdapter = ArrayAdapter<String>(ctx, android.R.layout.simple_spinner_item, states)
+        val dataAdapter = ArrayAdapter<String>(ctx, R.layout.spinner_item, states)
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
