@@ -18,8 +18,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
 import de.hdodenhof.circleimageview.CircleImageView
-import ecalle.com.bmybank.bo.AddingLoanResponse
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.Utils

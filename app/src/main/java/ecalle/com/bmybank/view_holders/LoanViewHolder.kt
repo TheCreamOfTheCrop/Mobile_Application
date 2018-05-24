@@ -8,7 +8,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
@@ -41,9 +42,9 @@ class LoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         val image = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
         waveLayout.background = ContextCompat.getDrawable(itemView.context, image)
 
-
+        val user = RealmServices.getCurrentUser(itemView.context)
         itemView.setOnClickListener {
-            onLoanClickListener.onLoanClick(loan, firsName.text.toString(), lastName.text.toString(), color)
+            onLoanClickListener.onLoanClick(loan, user, color)
         }
 
         val api = BmyBankApi.getInstance(itemView.context)

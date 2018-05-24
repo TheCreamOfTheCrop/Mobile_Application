@@ -16,8 +16,9 @@ import android.widget.TextView
 import ecalle.com.bmybank.LoanViewerActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.PublicLoansAdapter
-import ecalle.com.bmybank.bo.GettingUserLoansResponse
+import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.ctx
@@ -151,12 +152,11 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
         errorText.text = message
     }
 
-    override fun onPublicLoanClick(loan: Loan, userFirstName: String?, userLastName: String?)
+    override fun onPublicLoanClick(loan: Loan, user: User?)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(PUBLIC_LOAN_KEY, loan)
-        intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
-        intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
+        intent.putExtra(LoanViewerActivity.USER_KEY, user)
         startActivity(intent)
     }
 }

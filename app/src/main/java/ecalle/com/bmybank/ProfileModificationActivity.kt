@@ -9,8 +9,8 @@ import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import com.squareup.moshi.Moshi
-import ecalle.com.bmybank.bo.SImpleResponse
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices

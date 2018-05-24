@@ -16,7 +16,7 @@ import android.widget.TextView
 import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.bo.GettingUserLoansResponse
+import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find

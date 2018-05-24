@@ -1,6 +1,5 @@
 package ecalle.com.bmybank
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -9,8 +8,7 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.bo.SImpleResponse
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.Utils
@@ -21,8 +19,8 @@ import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import org.jetbrains.anko.alert
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -42,8 +40,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     companion object
     {
-        val USER_FIRSTNAME_KEY = "userFirstNameKey"
-        val USER_LASTNAME_KEY = "userLastNameKey"
+        val USER_KEY = "userKey"
         val COLOR_KEY = "colorKey"
     }
 
@@ -62,8 +59,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var userInformations: LinearLayout
 
     private lateinit var loan: Loan
-    private var userFirstName: String? = null
-    private var userLastName: String? = null
+    private var otherUser: User? = null
     private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -94,21 +90,19 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         if (intent.hasExtra(PublicLoansFragment.PUBLIC_LOAN_KEY))
         {
             loan = intent.getSerializableExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) as Loan
-            userFirstName = intent.getStringExtra(USER_FIRSTNAME_KEY)
-            userLastName = intent.getStringExtra(USER_LASTNAME_KEY)
+            otherUser = intent.getStringExtra(USER_KEY) as User?
             accept.visibility = View.VISIBLE
             negociate.visibility = View.VISIBLE
         }
         else if (intent.hasExtra(MyLoansFragment.MY_LOAN_KEY))
         {
             loan = intent.getSerializableExtra(MyLoansFragment.MY_LOAN_KEY) as Loan
-            userFirstName = intent.getStringExtra(USER_FIRSTNAME_KEY)
-            userLastName = intent.getStringExtra(USER_LASTNAME_KEY)
+            otherUser = intent.getStringExtra(USER_KEY) as User?
             accept.visibility = View.GONE
             negociate.visibility = View.GONE
         }
 
-        if (userFirstName.isNullOrEmpty() || userLastName.isNullOrEmpty())
+        if (otherUser == null)
         {
             findUserInformations()
         }
@@ -135,8 +129,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         delay.text = loan.delay.toString()
         accept.setOnClickListener(this)
         negociate.setOnClickListener(this)
-        firstName.text = userFirstName
-        lastName.text = userLastName
+        firstName.text = otherUser?.firstname
+        lastName.text = otherUser?.lastname
 
     }
 
@@ -146,14 +140,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         {
             accept.id ->
             {
-                alert {
-                    message = getString(R.string.accepting_loan_confirmation)
-                    positiveButton(R.string.yes) {
-                        accept()
-                    }
-
-                    negativeButton(R.string.no) {}
-                }.show()
+                accept()
             }
             negociate.id -> negociate()
         }
@@ -161,6 +148,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     private fun accept()
     {
+        /*
         val customAlert = customAlert(BeMyDialog.TYPE.LOADING, R.string.acceptin_loan)
 
         val api = BmyBankApi.getInstance(this)
@@ -198,6 +186,13 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
                 toast(R.string.not_internet)
             }
         })
+
+        */
+
+        val intent = Intent(ctx, PaymentActivity::class.java)
+        intent.putExtra(PaymentActivity.LOAN_KEY, loan)
+        intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
+        startActivity(intent)
     }
 
     private fun negociate()
@@ -231,6 +226,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         val intent = Intent(ctx, ChatDialogActivity::class.java)
         intent.putExtra(ChatDialogActivity.DISCUSSION_KEY, channel)
         startActivity(intent)
+
         finish()
     }
 
@@ -247,12 +243,11 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
                 val userResponse = response.body()
                 if (userResponse?.success != null && userResponse?.success)
                 {
-                    val user = userResponse.user
-                    userFirstName = user.firstname
-                    userLastName = user.lastname
+                    otherUser = userResponse.user
 
-                    firstName.text = userFirstName
-                    lastName.text = userLastName
+
+                    firstName.text = otherUser?.firstname
+                    lastName.text = otherUser?.lastname
 
                     removeLoaderOnNames()
                 }

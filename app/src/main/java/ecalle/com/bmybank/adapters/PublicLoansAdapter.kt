@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.view_holders.PublicLoanViewHolder
 
 /**
@@ -20,7 +21,7 @@ class PublicLoansAdapter(private var list: List<Loan>, private var onPublicLoanC
 
     interface OnPublicLoanClickListener
     {
-        fun onPublicLoanClick(loan: Loan, userFirstName: String?, userLastName: String?)
+        fun onPublicLoanClick(loan: Loan, user: User?)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): PublicLoanViewHolder

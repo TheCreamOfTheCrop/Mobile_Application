@@ -51,6 +51,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".PaymentActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".SplashscreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>

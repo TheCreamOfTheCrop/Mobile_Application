@@ -7,6 +7,7 @@ import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.fragments.LoadingLoansFragment
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import org.jetbrains.anko.support.v4.ctx
 
 /**
@@ -15,12 +16,11 @@ import org.jetbrains.anko.support.v4.ctx
 class InNegociationLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
 
-    override fun onLoanClick(loan: Loan, userFirstName: String?, userLastName: String?, color: LoansAdapter.Color)
+    override fun onLoanClick(loan: Loan, user: User?, color: LoansAdapter.Color)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
         intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
-        intent.putExtra(LoanViewerActivity.USER_FIRSTNAME_KEY, userFirstName)
-        intent.putExtra(LoanViewerActivity.USER_LASTNAME_KEY, userLastName)
+        intent.putExtra(LoanViewerActivity.USER_KEY, user)
         intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)
     }

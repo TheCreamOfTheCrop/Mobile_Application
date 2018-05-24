@@ -7,8 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
-import com.tapadoo.alerter.Alerter
-import ecalle.com.bmybank.bo.LoginResponse
+import ecalle.com.bmybank.services_respnses_bo.LoginResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.alertError
 import ecalle.com.bmybank.extensions.customAlert

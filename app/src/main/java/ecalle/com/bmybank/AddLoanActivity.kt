@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.*
 import com.squareup.moshi.Moshi
 import de.hdodenhof.circleimageview.CircleImageView
-import ecalle.com.bmybank.bo.AddingLoanResponse
-import ecalle.com.bmybank.bo.SImpleResponse
+import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
+import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices

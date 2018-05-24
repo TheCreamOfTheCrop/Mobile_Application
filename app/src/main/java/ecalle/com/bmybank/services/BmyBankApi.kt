@@ -1,7 +1,8 @@
 package ecalle.com.bmybank.services
 
 import android.content.Context
-import ecalle.com.bmybank.bo.*
+import ecalle.com.bmybank.Constants
+import ecalle.com.bmybank.services_respnses_bo.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -16,6 +17,18 @@ import retrofit2.http.PUT
  */
 interface BmyBankApi
 {
+
+    @FormUrlEncoded
+    @POST("https://homologation.lydia-app.com/api/payment/init.json")
+    fun initLydiaPayment(
+            @Field("provider_token") providerToken: String = Constants.LYDIA_PROVIDER_TOKEN,
+            @Field("success_url") successUrl: String,
+            @Field("fail_url") failUrl: String,
+            @Field("recipient") otherUserEmailOrPhone: String,
+            @Field("payer_info") currentUserEmailOrPhone: String,
+            @Field("amount") amount: String,
+            @Field("currency") currency: String = "EUR",
+            @Field("message") message: String): Call<LydiaPaymentInitResponse>
 
     @FormUrlEncoded
     @POST("negociate/add")

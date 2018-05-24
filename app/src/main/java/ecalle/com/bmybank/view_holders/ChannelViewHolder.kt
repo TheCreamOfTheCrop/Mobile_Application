@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.ChannelsAdapter
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.realm.RealmServices

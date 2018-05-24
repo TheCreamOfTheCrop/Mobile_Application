@@ -8,8 +8,9 @@ import android.widget.TextView
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.PublicLoansAdapter
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import org.jetbrains.anko.find
 import retrofit2.Call
@@ -22,11 +23,10 @@ import retrofit2.Response
 class PublicLoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 {
     private val amount: TextView = itemView.find(R.id.amount)
-    private var firsName: String? = null
-    private var lastName: String? = null
     private val rate: TextView = itemView.find(R.id.rate)
     private val percentSymbol: ImageView = itemView.find(R.id.percentSymbol)
     private val repayment: TextView = itemView.find(R.id.repayment)
+    private var user: User? = null
 
     fun bind(loan: Loan, onLoanClickListener: PublicLoansAdapter.OnPublicLoanClickListener)
     {
@@ -50,7 +50,7 @@ class PublicLoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         repayment.text = itemView.context.getString(R.string.repayment_loan_item_label, loan.delay)
 
         itemView.setOnClickListener {
-            onLoanClickListener.onPublicLoanClick(loan, firsName, lastName)
+            onLoanClickListener.onPublicLoanClick(loan, user)
         }
 
         val api = BmyBankApi.getInstance(itemView.context)
@@ -63,9 +63,7 @@ class PublicLoanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 val userResponse = response.body()
                 if (userResponse?.success != null && userResponse?.success)
                 {
-                    val user = userResponse.user
-                    firsName = user.firstname
-                    lastName = user.lastname
+                    user = userResponse.user
                 }
             }
 

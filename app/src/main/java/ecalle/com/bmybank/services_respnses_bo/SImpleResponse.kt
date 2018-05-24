@@ -1,4 +1,4 @@
-package ecalle.com.bmybank.bo
+package ecalle.com.bmybank.services_respnses_bo
 
 /**
  * Created by thomasecalle on 29/03/2018.

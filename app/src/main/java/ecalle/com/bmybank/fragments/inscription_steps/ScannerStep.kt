@@ -11,7 +11,7 @@ import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import ecalle.com.bmybank.InscriptionActivity
 import ecalle.com.bmybank.R
-import ecalle.com.bmybank.bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
