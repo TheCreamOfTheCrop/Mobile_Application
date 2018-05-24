@@ -1,5 +1,6 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -8,7 +9,6 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.Utils
@@ -21,6 +21,7 @@ import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -53,6 +54,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var firstName: TextView
     private lateinit var lastName: TextView
     private lateinit var accept: Button
+    private lateinit var modifyLoan: Button
     private lateinit var negociate: Button
     private lateinit var waveHeader: RelativeLayout
     private lateinit var progressBar: ProgressBar
@@ -78,6 +80,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         waveHeader = find(R.id.waveHeader)
         progressBar = find(R.id.progressBar)
         userInformations = find(R.id.userInformations)
+        modifyLoan = find(R.id.modifyLoan)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -93,6 +96,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             otherUser = intent.getStringExtra(USER_KEY) as User?
             accept.visibility = View.VISIBLE
             negociate.visibility = View.VISIBLE
+            modifyLoan.visibility = View.GONE
         }
         else if (intent.hasExtra(MyLoansFragment.MY_LOAN_KEY))
         {
@@ -100,6 +104,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             otherUser = intent.getStringExtra(USER_KEY) as User?
             accept.visibility = View.GONE
             negociate.visibility = View.GONE
+            modifyLoan.visibility = View.VISIBLE
+
         }
 
         if (otherUser == null)
@@ -123,15 +129,32 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
         waveHeader.background = ContextCompat.getDrawable(this, drawable)
 
-        description.text = loan.description
-        amount.text = loan.amount.toString()
-        rate.text = loan.rate.toString()
-        delay.text = loan.delay.toString()
+        fillInformations()
         accept.setOnClickListener(this)
         negociate.setOnClickListener(this)
+        modifyLoan.setOnClickListener(this)
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        if (requestCode == ChatDialogActivity.REQUEST_CODE)
+        {
+            when (resultCode)
+            {
+                Activity.RESULT_OK ->
+                {
+                    if (data?.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) != null)
+                    {
+                        loan = data.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) as Loan
+                        fillInformations()
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(view: View?)
@@ -143,7 +166,22 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
                 accept()
             }
             negociate.id -> negociate()
+            modifyLoan.id -> modify()
         }
+    }
+
+    override fun onBackPressed()
+    {
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    private fun fillInformations()
+    {
+        description.text = loan.description
+        amount.text = loan.amount.toString()
+        rate.text = loan.rate.toString()
+        delay.text = loan.delay.toString()
     }
 
     private fun accept()
@@ -198,6 +236,14 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private fun negociate()
     {
         createAndLaunchNegociationChat()
+    }
+
+    private fun modify()
+    {
+        val intent = Intent(this@LoanViewerActivity, AddLoanActivity::class.java)
+        intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
+        intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
+        startActivityForResult(intent, ChatDialogActivity.REQUEST_CODE)
     }
 
     private fun createAndLaunchNegociationChat()

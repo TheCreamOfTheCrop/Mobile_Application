@@ -117,9 +117,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
+        android:background="@color/generalBackgroundColor"
         android:padding="@dimen/generalPadding"
         android:scrollbars="none"
-        android:background="@color/generalBackgroundColor"
         >
 
         <LinearLayout
@@ -282,6 +282,19 @@
                     tools:visibility="visible"
                     />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/modifyLoan"
+                style="@style/CustomGreyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="15dp"
+                android:text="@string/modifyMyLoan"
+                android:visibility="gone"
+                tools:visibility="visible"
+
+                />
 
         </LinearLayout>
 

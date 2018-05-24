@@ -1,8 +1,13 @@
 package ecalle.com.bmybank.fragments
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,9 +21,9 @@ import android.widget.TextView
 import ecalle.com.bmybank.AddLoanActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.ctx
@@ -41,11 +46,18 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     private lateinit var retry: Button
     private lateinit var addLoanButton: FloatingActionButton
     private lateinit var loans: List<Loan>
+    private lateinit var broadcastReceiver: BroadcastReceiver
+    private lateinit var intentFilter: IntentFilter
 
 
     abstract fun getLoansType(): String
     abstract fun load()
     abstract fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
+
+    companion object
+    {
+        val RELOAD_ACTION = "reloadAction"
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -59,6 +71,8 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         errorText = view.find(R.id.errorText)
         retry = view.find(R.id.retry)
         addLoanButton = view.find(R.id.addLoanButton)
+
+        setupBroadcastreceiver()
 
 
         swipeRefreshLayout.onRefresh {
@@ -74,11 +88,37 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         return view
     }
 
+    private fun setupBroadcastreceiver()
+    {
+        broadcastReceiver = object : BroadcastReceiver()
+        {
+            override fun onReceive(context: Context?, intent: Intent?)
+            {
+                when (intent?.action)
+                {
+                    RELOAD_ACTION -> load()
+                }
+            }
+
+        }
+
+        intentFilter = IntentFilter()
+        intentFilter.addAction(RELOAD_ACTION)
+    }
+
 
     override fun onResume()
     {
         super.onResume()
+        LocalBroadcastManager.getInstance(ctx).registerReceiver(broadcastReceiver,intentFilter)
         //loadThenGetLoans()
+    }
+
+    override fun onDestroy()
+    {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(ctx).unregisterReceiver(broadcastReceiver)
+
     }
 
     protected fun loadThenGetLoans()

@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
@@ -9,20 +10,21 @@ import android.view.View
 import android.widget.*
 import com.squareup.moshi.Moshi
 import de.hdodenhof.circleimageview.CircleImageView
-import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
-import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.*
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
+import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 /**
  * Created by Thomas Ecalle on 02/04/2018.
@@ -34,6 +36,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
         val IS_MODIFYYING_MODE_KEY = "isModifyingModeKey"
         val MODIFYING_LOAN_KEY = "modifyingLoanKey"
         val MODIFYING_LOAN_OTHER_USER_KEY = "modifyingLoanOtherUserKey"
+        val RETURNED_LOAN_KEY = "returnedLoanKey"
     }
 
     private lateinit var description: EditText
@@ -55,6 +58,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
 
     private var isModifyingMode: Boolean = false
+    private var isModifyingModeToSend: Boolean = false
     private lateinit var negociatedLoan: Loan
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -69,7 +73,12 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
         if (isModifyingMode && intent.getSerializableExtra(MODIFYING_LOAN_KEY) != null)
         {
             negociatedLoan = intent.getSerializableExtra(MODIFYING_LOAN_KEY) as Loan
-            otherUser = intent.getSerializableExtra(MODIFYING_LOAN_OTHER_USER_KEY) as User
+
+            if (intent.getSerializableExtra(MODIFYING_LOAN_OTHER_USER_KEY) != null)
+            {
+                isModifyingModeToSend = true
+                otherUser = intent.getSerializableExtra(MODIFYING_LOAN_OTHER_USER_KEY) as User
+            }
         }
 
         description = find(R.id.description)
@@ -96,24 +105,28 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
         if (isModifyingMode)
         {
+            validate.text = getString(R.string.modifyMyLoan)
             publicButton.isEnabled = false
             privateButton.isEnabled = false
-            privateButton.callOnClick()
-
-            description.isEnabled = false
 
             amount.setText(negociatedLoan.amount.toString())
             description.setText(negociatedLoan.description)
             rate.setText(negociatedLoan.rate.toString())
             repayment.setText(negociatedLoan.delay.toString())
-            validate.text = getString(R.string.modifyAndShareMyLoan)
 
+            if (isModifyingModeToSend)
+            {
+                privateButton.callOnClick()
+                description.isEnabled = false
 
-            //otherUserImage
-            otherUserLastName.text = otherUser.lastname
-            otherUserFirstName.text = otherUser.firstname
+                validate.text = getString(R.string.modifyAndShareMyLoan)
 
-            otherUserLayout.visibility = View.VISIBLE
+                //otherUserImage
+                otherUserLastName.text = otherUser.lastname
+                otherUserFirstName.text = otherUser.firstname
+
+                otherUserLayout.visibility = View.VISIBLE
+            }
 
         }
 
@@ -184,11 +197,100 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
             amountNotWellSet() -> showInformation(getString(R.string.incorrect_amount))
             rateNotWellSet() -> showInformation(getString(R.string.incorrect_rate))
             repaymentIsNotValid() -> showInformation(getString(R.string.incorrect_repayment))
-            else -> if (!isModifyingMode) addLoan() else negociate()
+            else ->
+            {
+                if (!isModifyingMode)
+                {
+                    addLoan()
+                }
+                else if (isModifyingModeToSend)
+                {
+                    sendPrivate()
+                }
+                else
+                {
+                    modify()
+                }
+            }
         }
     }
 
-    private fun negociate()
+    private fun repaymentInMonths(): Int
+    {
+        return if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
+    }
+
+    private fun modify()
+    {
+
+        val api = BmyBankApi.getInstance(this)
+
+        val updateLoanRequest = api.updateLoan(
+                amount = amount.textValue.toFloatOrNull(),
+                description = if (description.textValue !== null) description.textValue else "",
+                rate = rate.textValue.toFloatOrNull(),
+                idLoan = negociatedLoan.id,
+                delay = repaymentInMonths())
+
+        loadingDialog = customAlert(message = R.string.add_loan_loading, type = BeMyDialog.TYPE.LOADING)
+
+
+        updateLoanRequest.enqueue(object : Callback<SImpleResponse>
+        {
+            override fun onResponse(call: Call<SImpleResponse>, response: Response<SImpleResponse>)
+            {
+                loadingDialog.dismiss()
+
+                when
+                {
+                    response.code() == 404 -> showInformation(getString(R.string.server_issue))
+                    response.code() == 400 ->
+                    {
+                        if (response.errorBody() != null)
+                        {
+                            val stringResponse = response.errorBody()!!.string()
+                            val moshi = Moshi.Builder().build()
+                            val jsonAdapter = moshi.adapter(SImpleResponse::class.java)
+                            val response = jsonAdapter.fromJson(stringResponse)
+
+                            showInformation(response.message)
+
+                        }
+                        else
+                        {
+                            showInformation(getString(R.string.impossible_loan_add))
+                        }
+                    }
+                    else ->
+                    {
+                        val loan = Loan()
+                        loan.amount = if (amount.textValue.toFloatOrNull() != null) amount.textValue.toFloat() else negociatedLoan.amount
+                        loan.description = if (description.textValue !== null) description.textValue else ""
+                        loan.rate = if (rate.textValue.toFloatOrNull() != null) rate.textValue.toFloat() else negociatedLoan.rate
+                        loan.id = negociatedLoan.id
+                        loan.delay = repaymentInMonths()
+
+
+                        val resultIntent = Intent()
+                        resultIntent.putExtra(RETURNED_LOAN_KEY, loan)
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }
+                }
+
+
+            }
+
+            override fun onFailure(call: Call<SImpleResponse>, t: Throwable)
+            {
+                //toast("Failure getting user from server, throwable message : ${t.message}")
+                loadingDialog?.dismiss()
+                showInformation(getString(R.string.not_internet))
+            }
+        })
+    }
+
+    private fun sendPrivate()
     {
         toast("${otherUser.lastname}/${otherUser.firstname}/ is public = ${publicButton.isSelected}")
         /*
@@ -240,7 +342,6 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun addLoan()
     {
-        val repaymentValueInMonths = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
 
         val currentUser = RealmServices.getCurrentUser(this)
         val api = BmyBankApi.getInstance(this)
@@ -248,7 +349,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
                 description = if (description.textValue !== null) description.textValue else "",
                 rate = rate.textValue.toFloatOrNull(),
                 userId = currentUser?.id,
-                delay = repaymentValueInMonths)
+                delay = repaymentInMonths())
 
         loadingDialog = customAlert(message = R.string.add_loan_loading, type = BeMyDialog.TYPE.LOADING)
 
@@ -311,22 +412,29 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun amountNotWellSet(): Boolean
     {
-        return amount.textValue.isEmpty() || (amount.textValue.toFloatOrNull() === null)
+        return amount.textValue.isNullOrEmpty() || (amount.textValue.toFloatOrNull() === null)
     }
 
     private fun rateNotWellSet(): Boolean
     {
-        return rate.textValue.isEmpty() || (rate.textValue.toFloatOrNull() === null)
+        return rate.textValue.isNullOrEmpty() || (rate.textValue.toFloatOrNull() === null)
     }
 
     private fun descriptionIsNotWellFormat(): Boolean
     {
+        if (description.textValue.isNullOrEmpty()) return true
+
         return description.textValue.length >= Constants.DESCRIPTION_MAX_LENGTH
     }
 
     private fun repaymentIsNotValid(): Boolean
     {
-        val value = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
-        return value < 0
+        if (repayment.textValue.isNullOrEmpty() && repayment.hint == null)
+        {
+            return true
+        }
+
+        val value = if (repayment.textValue.isNullOrEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toIntOrNull()
+        return value == null || value.toInt() < 0
     }
 }

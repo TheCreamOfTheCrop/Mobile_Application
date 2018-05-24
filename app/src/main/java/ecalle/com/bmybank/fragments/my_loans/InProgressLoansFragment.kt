@@ -3,6 +3,7 @@ package ecalle.com.bmybank.fragments.my_loans
 import android.content.Intent
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.LoanViewerActivity
+import ecalle.com.bmybank.MainActivity
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.fragments.LoadingLoansFragment
 import ecalle.com.bmybank.fragments.MyLoansFragment
@@ -16,6 +17,7 @@ import org.jetbrains.anko.support.v4.ctx
 class InProgressLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
 
+
     override fun onLoanClick(loan: Loan, user: User?, color: LoansAdapter.Color)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
@@ -23,6 +25,7 @@ class InProgressLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClick
         intent.putExtra(LoanViewerActivity.USER_KEY, user)
         intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)
+
     }
 
     override fun getLoanClickListener(): LoansAdapter.OnLoanClickListener

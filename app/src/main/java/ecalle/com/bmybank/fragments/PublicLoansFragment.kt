@@ -45,6 +45,7 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
     companion object
     {
         val PUBLIC_LOAN_KEY = "publicLoanKey"
+        val REQUEST_CODE = 23
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?

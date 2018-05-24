@@ -1,7 +1,10 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
@@ -9,6 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import ecalle.com.bmybank.adapters.PagerAdapter
+import ecalle.com.bmybank.fragments.LoadingLoansFragment
+import ecalle.com.bmybank.fragments.PublicLoansFragment
+import ecalle.com.bmybank.fragments.my_loans.MyPendingLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import org.jetbrains.anko.find
@@ -40,6 +46,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         tabs.setupWithViewPager(viewPager)
 
         setupIcons()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        when (requestCode)
+        {
+            MyPendingLoansFragment.REQUEST_CODE ->
+            {
+                when (resultCode)
+                {
+                    Activity.RESULT_OK ->
+                    {
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(LoadingLoansFragment.RELOAD_ACTION))
+                    }
+                }
+            }
+
+            PublicLoansFragment.REQUEST_CODE ->
+            {
+
+            }
+        }
     }
 
     private fun setupIcons()

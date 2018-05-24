@@ -15,6 +15,10 @@ import org.jetbrains.anko.support.v4.ctx
  */
 class MyPendingLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickListener
 {
+    companion object
+    {
+        val REQUEST_CODE = 22
+    }
 
     override fun onLoanClick(loan: Loan, user: User?, color: LoansAdapter.Color)
     {
@@ -22,7 +26,7 @@ class MyPendingLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClickL
         intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
         intent.putExtra(LoanViewerActivity.USER_KEY, user)
         intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
-        startActivity(intent)
+        activity?.startActivityForResult(intent, MyPendingLoansFragment.REQUEST_CODE)
     }
 
     override fun getLoanClickListener(): LoansAdapter.OnLoanClickListener
