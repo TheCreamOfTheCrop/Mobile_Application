@@ -125,12 +125,23 @@
     <string name="lydia_explanation">*Vous allez être redirigés vers lydia pour procéder au paiement.\n Si vous n\'avez pas de compte lydia, pas d\'inquiétude. Lydia utilisera l\'adresse email que vous nous avez procuré.</string>
     <string name="email_label">Email :</string>
     <string name="loading_lydia">On s\'occupe de tout !</string>
-    <string name="lydia_success_url">https://us-central1-bmybank-2146c.cloudfunctions.net/validPayment?identifier=%1$s&amp;amount=%2$f&amp;payer=%3$d</string>
-    <string name="lydia_failure_url">https://us-central1-bmybank-2146c.cloudfunctions.net/unValidPayment?identifier=%1$s&amp;amount=%2$f&amp;payer=%3$d</string>
+
+
+    <string name="lydia_success_url">https://us-central1-bmybank-2146c.cloudfunctions.net/validPayment?identifier=%1$s&amp;amount=%2$f&amp;payerId=%3$d&amp;payerName=%4$s&amp;receiverId=%5$d&amp;receiverName=%6$s</string>
+    <string name="lydia_failure_url">https://us-central1-bmybank-2146c.cloudfunctions.net/unValidPayment?identifier=%1$s&amp;amount=%2$f&amp;payerId=%3$d&amp;payerName=%4$s&amp;receiverId=%5$d&amp;receiverName=%6$s</string>
+
     <string name="lydia_payment_succeed">Le paiement est effectué, félicitation !</string>
     <string name="lydia_payment_failed">Lydia nous informe que le paiement a échoué, désolé !</string>
     <string name="modifyMyLoan">Modifier ma demande</string>
 
+
+    <!-- FCM Related Strings -->
+    <string name="default_notification_channel_id" translatable="false">ecalle.com.bmybank.default_notification_channel_id</string>
+    <string name="data_type">data_type</string>
+    <string name="direct_message">direct_message</string>
+    <string name="data_message">message</string>
+    <string name="data_title">title</string>
+    <string name="data_message_id">message_id</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

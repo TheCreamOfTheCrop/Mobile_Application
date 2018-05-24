@@ -4,19 +4,27 @@ import android.content.Context
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.services_respnses_bo.*
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 /**
  * Created by Thomas Ecalle on 11/03/2018.
  */
 interface BmyBankApi
 {
+
+    @POST("https://us-central1-bmybank-2146c.cloudfunctions.net/sendChatMessage")
+    fun sendChatMessage(
+            @Query("current_user_id") currentUserId: Int,
+            @Query("other_user_id") otherUserId: Int,
+            @Query("message") messageToJson: String,
+            @Query("channel") channelToJson: String): Call<SImpleResponse>
+
+    @POST("https://us-central1-bmybank-2146c.cloudfunctions.net/sendChatMessage")
+    fun see(@Body body: RequestBody): Call<SImpleResponse>
 
     @FormUrlEncoded
     @POST("https://homologation.lydia-app.com/api/payment/init.json")

@@ -115,14 +115,15 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
 
         val realAmount: Float = if (loan.amount > 1000) 1000f else loan.amount
 
+        val stringAmount: String = "%.2f".format(realAmount)
+
         val lydiaRequest = api.initLydiaPayment(
                 otherUserEmailOrPhone = otherUser?.email!!,
                 currentUserEmailOrPhone = currentUser.email,
-                successUrl = getString(R.string.lydia_success_url, identifier, realAmount, currentUser.id),
-                failUrl = getString(R.string.lydia_failure_url, identifier, realAmount, currentUser.id),
-                amount = realAmount.toString(),
+                successUrl = getString(R.string.lydia_success_url, identifier, realAmount, currentUser.id, currentUser.firstname, otherUser?.id, otherUser?.firstname),
+                failUrl = getString(R.string.lydia_success_url, identifier, realAmount, currentUser.id, currentUser.firstname, otherUser?.id, otherUser?.firstname),
+                amount = stringAmount,
                 message = loan.description.toString())
-
 
         lydiaRequest.enqueue(object : Callback<LydiaPaymentInitResponse>
         {

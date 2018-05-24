@@ -11,7 +11,10 @@ import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import com.google.firebase.iid.FirebaseInstanceId
 import ecalle.com.bmybank.adapters.PagerAdapter
+import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.fragments.LoadingLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.fragments.my_loans.MyPendingLoansFragment
@@ -34,6 +37,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initFCM()
 
         currentUser = RealmServices.getCurrentUser(this)
 
@@ -68,6 +73,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
 
             }
         }
+    }
+
+    private fun sendRegistrationToServer(token: String?)
+    {
+        log("sendRegistrationToServer: sending token to server: " + token!!)
+        val reference = Utils.getDatabase().reference
+        reference.child("users")
+                .child(RealmServices.getCurrentUser(this)?.id.toString())
+                .child("messaging_token")
+                .setValue(token)
+    }
+
+
+    private fun initFCM()
+    {
+        val token = FirebaseInstanceId.getInstance().token
+        log("initFCM: token: " + token!!)
+        sendRegistrationToServer(token)
+
     }
 
     private fun setupIcons()

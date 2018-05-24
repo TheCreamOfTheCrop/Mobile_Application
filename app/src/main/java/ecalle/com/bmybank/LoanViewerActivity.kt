@@ -254,7 +254,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
         val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
 
-        val firstMessage = Message(getString(R.string.firstMessageInNegociation, currentUser.firstname), currentUser.id, time)
+        val firstMessage = Message(getString(R.string.firstMessageInNegociation, currentUser.firstname), currentUser.id, time, currentUser?.firstname!!)
         val listMessages = ListMessages("${currentUser.id}${loan.user_requester_id}".toInt(), mutableListOf(firstMessage))
 
         val listMessageReference = Utils.getDatabase().getReference("listMessages").child(listMessages.id.toString())
