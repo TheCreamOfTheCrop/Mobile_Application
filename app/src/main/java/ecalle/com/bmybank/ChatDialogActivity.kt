@@ -17,20 +17,18 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
-import com.squareup.moshi.Moshi
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.extensions.customAlert
-import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.Message
+import ecalle.com.bmybank.firebase.bo.Notification
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
-import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.view_holders.MessageViewHolder
 import org.jetbrains.anko.ctx
@@ -291,52 +289,16 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
         val message = Message(body, currentUser?.id!!, time, currentUser?.firstname!!)
 
-        //mMessageReference?.ref?.push()?.setValue(message)
+        mMessageReference?.ref?.push()?.setValue(message)
 
         channel.last_message = message.text
 
-        //Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-        //Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${otherUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${otherUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
 
-        val api = BmyBankApi.getInstance(this)
+        val notification = Notification(otherUser?.id!!, "Nouveau message de ${otherUser?.firstname}", message.text)
 
-        val currentUserID = currentUser?.id
-        val otherUserID = otherUser?.id
-
-        log("sending chat essage with iduser1 = ${channel.id_user_1} and isuser2 = ${channel.id_user_2}")
-        val moshi = Moshi.Builder().build()
-        val jsonChannelAdapter = moshi.adapter(Channel::class.java)
-        val jsonMessageAdapter = moshi.adapter(Message::class.java)
-
-        val channelJson = jsonChannelAdapter.toJson(channel)
-        val messageJson = jsonMessageAdapter.toJson(message)
-
-
-        val sendChatMessageRequest = api.sendChatMessage(
-                currentUserId = currentUserID!!,
-                otherUserId = otherUserID!!,
-                messageToJson = messageJson,
-                channelToJson = channelJson
-        )
-
-
-        sendChatMessageRequest.enqueue(object : Callback<SImpleResponse>
-        {
-            override fun onResponse(call: Call<SImpleResponse>, response: Response<SImpleResponse>)
-            {
-                val chatResponse = response.body()
-                if (chatResponse?.success != null && chatResponse?.success)
-                {
-                    log("successfuly sent chat message to firebase")
-                }
-            }
-
-
-            override fun onFailure(call: Call<SImpleResponse>, t: Throwable)
-            {
-                log("unable to send chat message")
-            }
-        })
+        Utils.getDatabase().getReference("/notifications").push().setValue(notification)
 
     }
 
