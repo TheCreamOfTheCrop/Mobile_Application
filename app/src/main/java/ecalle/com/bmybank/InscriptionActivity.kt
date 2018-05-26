@@ -2,6 +2,7 @@ package ecalle.com.bmybank
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -23,6 +24,7 @@ class InscriptionActivity :
         InscriptionListeningActivity
 {
     private var user: User? = null
+    private var avatar: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -87,9 +89,9 @@ class InscriptionActivity :
         log("validated user informations: $user")
     }
 
-    override fun onAvatarSelected(uri: String)
+    override fun onAvatarSelected(avatarBitMap: Bitmap)
     {
-        this.user?.avatar = uri
+        this.avatar = avatarBitMap
     }
 
     override fun onAccountValidation(isValid: Boolean)
@@ -102,4 +104,8 @@ class InscriptionActivity :
         return this.user
     }
 
+    override fun getAvatar(): Bitmap?
+    {
+        return this.avatar
+    }
 }

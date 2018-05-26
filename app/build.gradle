@@ -86,13 +86,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:15.0.0'
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
     implementation 'com.firebaseui:firebase-ui:3.3.1'
+    implementation 'com.google.firebase:firebase-storage:15.0.2'
+    implementation 'com.firebaseui:firebase-ui-storage:3.3.1'
 
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.github.bumptech.glide:glide:4.7.1'
+    kapt 'com.github.bumptech.glide:compiler:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     implementation 'com.tapadoo.android:alerter:2.0.5'
 }
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'

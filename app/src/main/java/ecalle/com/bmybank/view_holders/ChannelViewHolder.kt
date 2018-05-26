@@ -5,15 +5,17 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
+import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.ChannelsAdapter
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import org.jetbrains.anko.find
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,10 +42,6 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
         val currentUser = RealmServices.getCurrentUser(itemView.context)
 
-        Glide.with(itemView.context)
-                .load("http://goo.gl/gEgYUd")
-                .into(otherUserImage)
-
         lastMessage.text = channel.last_message
 
         val otherUserId = if (currentUser?.id == channel.id_user_1) channel.id_user_2 else channel.id_user_1
@@ -65,6 +63,7 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                     otherUserFirstName.visibility = View.VISIBLE
                     otherUserLastName.visibility = View.VISIBLE
                     loader.visibility = View.GONE
+                    loadAvatar()
                 }
             }
 
@@ -74,5 +73,27 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 log("enable to find user with id $otherUserId")
             }
         })
+    }
+
+    private fun loadAvatar()
+    {
+        var emailWithoutSpecialCharacters =user?.email?.replace("@", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
+
+
+        if (emailWithoutSpecialCharacters != null)
+        {
+            val firebaseStorage = FirebaseStorage.getInstance()
+            val reference = firebaseStorage.reference.child("${Constants.PROFILE_PICTURES_NODE}/$emailWithoutSpecialCharacters")
+
+            // Load the image using Glide
+            GlideApp.with(itemView.context)
+                    .load(reference)
+                    .placeholder(R.drawable.default_profile)
+                    .error(R.drawable.default_profile)
+                    .into(otherUserImage)
+
+        }
     }
 }

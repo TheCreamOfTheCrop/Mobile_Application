@@ -1,5 +1,6 @@
 package ecalle.com.bmybank.interfaces
 
+import android.graphics.Bitmap
 import ecalle.com.bmybank.realm.bo.User
 
 /**
@@ -8,7 +9,8 @@ import ecalle.com.bmybank.realm.bo.User
 interface InscriptionListeningActivity
 {
     fun onUserInformationsValidated(user: User)
-    fun onAvatarSelected(uri: String)
+    fun onAvatarSelected(avatarBitMap: Bitmap)
     fun onAccountValidation(isValid: Boolean)
     fun getActualUser(): User?
+    fun getAvatar(): Bitmap?
 }

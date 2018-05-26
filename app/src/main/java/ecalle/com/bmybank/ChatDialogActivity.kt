@@ -17,9 +17,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
+import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.extensions.changeStatusBar
 import ecalle.com.bmybank.extensions.customAlert
+import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.Message
@@ -209,7 +211,24 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     {
 
         toolbarOtherUserFirstName.text = otherUser?.firstname
-        //toolbarOtherUserImage.src = otherUser?.firstname
+        var emailWithoutSpecialCharacters = otherUser?.email?.replace("@", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
+
+
+        if (emailWithoutSpecialCharacters != null)
+        {
+            val firebaseStorage = FirebaseStorage.getInstance()
+            val reference = firebaseStorage.reference.child("${Constants.PROFILE_PICTURES_NODE}/$emailWithoutSpecialCharacters")
+
+            // Load the image using Glide
+            GlideApp.with(this)
+                    .load(reference)
+                    .placeholder(R.drawable.default_profile)
+                    .error(R.drawable.default_profile)
+                    .into(toolbarOtherUserImage)
+        }
+
 
         query = mMessageReference?.orderByKey()!!
 

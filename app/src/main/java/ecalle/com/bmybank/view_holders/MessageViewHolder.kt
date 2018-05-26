@@ -5,7 +5,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.firebase.storage.FirebaseStorage
+import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
+import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.firebase.bo.Message
 import ecalle.com.bmybank.realm.bo.User
 import org.jetbrains.anko.find
@@ -29,7 +32,6 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         val userText: TextView = itemView.find(R.id.userText)
         val date: TextView = itemView.find(R.id.date)
 
-
         val currentUserLayout: LinearLayout = itemView.find(R.id.currentUserLayout)
         val otherUserLayout: LinearLayout = itemView.find(R.id.otherUserLayout)
 
@@ -52,6 +54,7 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             otherUserLayout.visibility = View.GONE
             userText.text = message.text
             date.text = dateString
+            loadAvatar(currentUser, userImage)
         }
         else
         {
@@ -59,6 +62,30 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             currentUserLayout.visibility = View.GONE
             otherUserText.text = message.text
             otherDate.text = dateString
+            loadAvatar(otherUser, otherUserImage)
+        }
+    }
+
+    private fun loadAvatar(user: User, imageView: ImageView)
+    {
+        var emailWithoutSpecialCharacters = user?.email?.replace("@", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
+
+
+        if (emailWithoutSpecialCharacters != null)
+        {
+            val firebaseStorage = FirebaseStorage.getInstance()
+            val reference = firebaseStorage.reference.child("${Constants.PROFILE_PICTURES_NODE}/$emailWithoutSpecialCharacters")
+
+            // Load the image using Glide
+            GlideApp.with(itemView.context)
+                    .load(reference)
+                    .placeholder(R.drawable.default_profile)
+                    .error(R.drawable.default_profile)
+                    .centerCrop()
+                    .into(imageView)
+
         }
     }
 }

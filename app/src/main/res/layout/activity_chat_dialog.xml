@@ -34,8 +34,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="horizontal"
+                    android:layout_marginRight="?attr/actionBarSize"
                     >
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -44,6 +45,8 @@
                         android:layout_height="30dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/white"
                         android:src="@drawable/default_profile"/>
 
                     <TextView

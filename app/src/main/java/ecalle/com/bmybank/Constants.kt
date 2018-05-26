@@ -23,5 +23,6 @@ class Constants
         val BAD_RATE = 3.0
         val NORMAL_RATE = 10.0
         val LYDIA_PROVIDER_TOKEN = "5afeed242c336502991747 "
+        val PROFILE_PICTURES_NODE = "profile_pictures"
     }
 }

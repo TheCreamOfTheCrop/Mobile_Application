@@ -8,9 +8,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
+import com.bumptech.glide.Glide
+import com.firebase.ui.storage.images.FirebaseImageLoader
+import com.google.firebase.storage.FirebaseStorage
+import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
+import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.firebase.bo.ListMessages
@@ -59,6 +64,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var waveHeader: RelativeLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var userInformations: LinearLayout
+    private lateinit var avatar: CircleImageView
 
     private lateinit var loan: Loan
     private var otherUser: User? = null
@@ -81,6 +87,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         progressBar = find(R.id.progressBar)
         userInformations = find(R.id.userInformations)
         modifyLoan = find(R.id.modifyLoan)
+        avatar = find(R.id.avatar)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -312,6 +319,26 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     {
         progressBar.visibility = View.GONE
         userInformations.visibility = View.VISIBLE
+
+        var emailWithoutSpecialCharacters = otherUser?.email?.replace("@", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
+
+
+        if (emailWithoutSpecialCharacters != null)
+        {
+            val firebaseStorage = FirebaseStorage.getInstance()
+            val reference = firebaseStorage.reference.child("${Constants.PROFILE_PICTURES_NODE}/$emailWithoutSpecialCharacters")
+
+            // Load the image using Glide
+           GlideApp.with(this)
+                   .load(reference)
+                   .placeholder(R.drawable.default_profile)
+                   .error(R.drawable.default_profile)
+                   .into(avatar)
+
+        }
+
     }
 
 }

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -66,7 +67,6 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        val listeningActivity = activity as InscriptionListeningActivity
         if (requestCode == AvatarStep.REQUEST_SELECT_IMAGE_IN_ALBUM && resultCode == Activity.RESULT_OK)
         {
             try
@@ -75,9 +75,8 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
                 log("getting image from gallery, uri is : $capturedImageUri")
 
                 avatarImageView.setImageURI(capturedImageUri)
-                listeningActivity.onAvatarSelected(capturedImageUri.toString())
 
-
+                setupBitmap()
             }
             catch (e: Exception)
             {
@@ -88,7 +87,21 @@ class AvatarStep : Fragment(), Step, View.OnClickListener
         {
             val photo = data?.extras?.get("data") as Bitmap
             avatarImageView.setImageBitmap(photo)
+            setupBitmap()
         }
+    }
+
+    fun setupBitmap()
+    {
+        val listeningActivity = activity as InscriptionListeningActivity
+
+        avatarImageView.setDrawingCacheEnabled(true)
+        avatarImageView.buildDrawingCache()
+        val bitmap = (avatarImageView.drawable as BitmapDrawable).bitmap
+
+
+        listeningActivity.onAvatarSelected(bitmap)
+
     }
 
     override fun onSelected()
