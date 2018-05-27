@@ -109,7 +109,7 @@ class ScannerStep : Fragment(), BlockingStep
     {
         var emailWithoutSpecialCharacters = user?.email?.replace("@", "")
         emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
-        emailWithoutSpecialCharacters.plus(".jpg")
+        emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
 
         if (bitmap != null && emailWithoutSpecialCharacters != null)
         {
