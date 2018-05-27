@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.Query
+import com.google.firebase.database.*
 import ecalle.com.bmybank.ChatDialogActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.ChannelsAdapter
@@ -22,9 +22,8 @@ import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.view_holders.ChannelViewHolder
-import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.toast
+import org.jetbrains.anko.support.v4.ctx
 
 
 /**
@@ -42,6 +41,7 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
     private var currentUser: User? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var loader: ProgressBar
+    private lateinit var emptyView: LinearLayout
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -50,6 +50,7 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
 
         recyclerView = view.find(R.id.recyclerView)
         loader = view.find(R.id.loader)
+        emptyView = view.find(R.id.emptyView)
 
 
         currentUser = RealmServices.getCurrentUser(ctx)
@@ -89,6 +90,28 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
             }
         }
 
+        mChannelReference?.addListenerForSingleValueEvent(object : ValueEventListener
+        {
+            override fun onDataChange(dataSnapshot: DataSnapshot)
+            {
+                //onDataChange called so remove progress bar
+                loader.visibility = View.GONE
+
+                val hasChildren = dataSnapshot.hasChildren()
+                if (!hasChildren)
+                {
+                    emptyView.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError)
+            {
+
+            }
+        })
+
+
+
 
 
         adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver()
@@ -96,12 +119,20 @@ class ChannelsFragment : Fragment(), ChannelsAdapter.OnChannelClickListener
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int)
             {
                 super.onItemRangeInserted(positionStart, itemCount)
-                if (loader.visibility == View.VISIBLE)
-                {
-                    loader.visibility = View.GONE
-                }
+                loader.visibility = View.GONE
+                emptyView.visibility = View.GONE
+
                 recyclerView.scrollToPosition(adapter?.itemCount?.minus(1)!!)
 
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int)
+            {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                if (itemCount == 1)
+                {
+                    emptyView.visibility = View.VISIBLE
+                }
             }
         })
 
