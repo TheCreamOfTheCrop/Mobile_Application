@@ -51,7 +51,11 @@ interface BmyBankApi
                    @Field("amount") amount: Float?,
                    @Field("rate") rate: Float?,
                    @Field("delay") delay: Int?,
-                   @Field("description") description: String?): Call<SImpleResponse>
+                   @Field("description") description: String?,
+                   @Field("loan_type") loanType: String? = Constants.PUBLIC_LOAN,
+                   @Field("user_provider_id") providerId: Int? = null
+
+    ): Call<SImpleResponse>
 
     @FormUrlEncoded
     @POST("loan/accept")

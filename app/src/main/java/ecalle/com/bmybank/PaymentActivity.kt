@@ -1,5 +1,6 @@
 package ecalle.com.bmybank
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -22,6 +23,7 @@ import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.services_respnses_bo.LydiaPaymentInitResponse
 import ecalle.com.bmybank.services_respnses_bo.Payment
+import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -151,8 +153,14 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
             }
 
         })
+    }
 
-
+    override fun onBackPressed()
+    {
+        val resultIntent = Intent()
+        resultIntent.putExtra(AddLoanActivity.RETURNED_LOAN_KEY, loan)
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     private fun lookForAnswer()
@@ -186,11 +194,13 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
                 {
                     failure.visibility = View.GONE
                     success.visibility = View.VISIBLE
+                    acceptOnApi()
                 }
                 else
                 {
                     success.visibility = View.GONE
                     failure.visibility = View.VISIBLE
+
                 }
             }
 
@@ -201,6 +211,28 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
         })
     }
 
+    private fun acceptOnApi()
+    {
+        val api = BmyBankApi.getInstance(this)
+        val acceptRequest = api.acceptDirectLoan(loan.id)
+        acceptRequest.enqueue(object : Callback<SImpleResponse>
+        {
+            override fun onResponse(call: Call<SImpleResponse>, response: Response<SImpleResponse>)
+            {
+                val acceptResponse = response.body()
+                if (acceptResponse?.success != null && acceptResponse?.success)
+                {
+                    toast("accepted on API")
+                }
+            }
+
+
+            override fun onFailure(call: Call<SImpleResponse>, t: Throwable)
+            {
+                toast(R.string.not_internet)
+            }
+        })
+    }
 
     private fun findUserInformations()
     {

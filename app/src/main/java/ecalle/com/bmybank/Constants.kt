@@ -24,5 +24,9 @@ class Constants
         val NORMAL_RATE = 10.0
         val LYDIA_PROVIDER_TOKEN = "5afeed242c336502991747 "
         val PROFILE_PICTURES_NODE = "profile_pictures"
+        val PUBLIC_LOAN = "public"
+        val PRIVATE_LOAN = "prive"
+        val STATE_WAITING = "en attente"
+        val STATE_IN_PROGRESS = "en cours"
     }
 }

@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
-import com.bumptech.glide.Glide
-import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
@@ -148,7 +146,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        if (requestCode == ChatDialogActivity.REQUEST_CODE)
+        if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
         {
             when (resultCode)
             {
@@ -250,7 +248,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         val intent = Intent(this@LoanViewerActivity, AddLoanActivity::class.java)
         intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
         intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
-        startActivityForResult(intent, ChatDialogActivity.REQUEST_CODE)
+        startActivityForResult(intent, ChatDialogActivity.MODIFYING_REQUEST_CODE)
     }
 
     private fun createAndLaunchNegociationChat()

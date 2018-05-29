@@ -1,6 +1,7 @@
 package ecalle.com.bmybank
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -12,6 +13,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -20,7 +22,6 @@ import com.google.firebase.database.Query
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.extensions.changeStatusBar
-import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.firebase.bo.Channel
@@ -45,8 +46,9 @@ import java.util.*
 /**
  * Created by Thomas Ecalle on 20/05/2018.
  */
-class ChatDialogActivity : AppCompatActivity(), ToolbarManager
+class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
 {
+
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
     private var otherUser: User? = null
@@ -70,9 +72,20 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     private lateinit var amount: TextView
     private lateinit var rate: TextView
     private lateinit var delay: TextView
+
+    private lateinit var privateAmount: TextView
+    private lateinit var privateFirstName: TextView
+    private lateinit var privateLastName: TextView
+    private lateinit var privateRate: TextView
+    private lateinit var privateRepayment: TextView
+    private lateinit var accept: Button
+
+
     private lateinit var modifyAndSendLoan: Button
     private lateinit var toolbarOtherUserFirstName: TextView
     private lateinit var toolbarOtherUserImage: CircleImageView
+    private lateinit var privateNegociatedLoan: LinearLayout
+    private lateinit var publicNegociatedLoan: LinearLayout
 
     private var loan: Loan? = null
 
@@ -80,7 +93,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
     {
         val DISCUSSION_KEY = "discussionKey"
         val OTHER_USER_KEY = "otherUserKey"
-        val REQUEST_CODE = 22
+        val MODIFYING_REQUEST_CODE = 22
+        val PAYING_REQUEST_CODE = 5
 
     }
 
@@ -111,19 +125,25 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
         modifyAndSendLoan = find(R.id.modifyAndSendLoan)
         toolbarOtherUserFirstName = find(R.id.toolbarOtherUserFirstName)
         toolbarOtherUserImage = find(R.id.toolbarOtherUserImage)
+        privateNegociatedLoan = find(R.id.privateNegociatedLoan)
+        publicNegociatedLoan = find(R.id.publicNegociatedLoan)
+        privateAmount = find(R.id.privateAmount)
+        privateRate = find(R.id.privateRate)
+        privateRepayment = find(R.id.privateRepayment)
+        privateLastName = find(R.id.privateLastName)
+        privateFirstName = find(R.id.privateFirstName)
+        accept = find(R.id.accept)
+
 
         if (channel.id_loan != null)
         {
-            loanLoader.visibility = View.VISIBLE
+            //loanLoader.visibility = View.VISIBLE
             generateLoanUi()
         }
 
         //firebaseListenerInit()
 
-        send.setOnClickListener {
-            submitMessage()
-            messageEditText.setText("")
-        }
+        send.setOnClickListener(this)
 
         enableHomeAsUp { onBackPressed() }
 
@@ -145,15 +165,119 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
 
     }
 
+    override fun onClick(view: View?)
+    {
+        when (view?.id)
+        {
+            send.id ->
+            {
+                submitMessage()
+                messageEditText.setText("")
+                hideKeyboard()
+                scrollToBottom()
+            }
+            modifyAndSendLoan.id ->
+            {
+                val intent = Intent(this@ChatDialogActivity, AddLoanActivity::class.java)
+                intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
+                intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
+                intent.putExtra(AddLoanActivity.MODIFYING_LOAN_OTHER_USER_KEY, otherUser)
+                startActivityForResult(intent, MODIFYING_REQUEST_CODE)
+            }
+            accept.id ->
+            {
+                val intent = Intent(ctx, PaymentActivity::class.java)
+                intent.putExtra(PaymentActivity.LOAN_KEY, loan)
+                intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
+                startActivityForResult(intent, ChatDialogActivity.PAYING_REQUEST_CODE)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        if (requestCode == ChatDialogActivity.REQUEST_CODE)
+        if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
         {
             when (resultCode)
             {
-                Activity.RESULT_OK -> customAlert(message = R.string.negociation_well_sent, loop = false)
+                Activity.RESULT_OK ->
+                {
+                    if (data?.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) != null)
+                    {
+                        loan = data.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) as Loan
+                        fillInformations()
+                    }
+                }
             }
         }
+        else if (requestCode == ChatDialogActivity.PAYING_REQUEST_CODE)
+        {
+            when (resultCode)
+            {
+                Activity.RESULT_OK ->
+                {
+                    if (data?.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) != null)
+                    {
+                        loan = data.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) as Loan
+                        negociatedLoanLayout.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fillInformations()
+    {
+        if (loan?.state_id == Constants.STATE_WAITING)
+        {
+            negociatedLoanLayout.visibility = View.VISIBLE
+
+            amount.text = loan?.amount.toString()
+            rate.text = loan?.rate.toString()
+            delay.text = getString(R.string.repayment_loan_item_label, loan?.delay)
+            loanLoader.visibility = View.GONE
+
+            if (loan?.user_provider_id != null)
+            {
+                if (loan?.user_requester_id == currentUser?.id)
+                {
+                    privateLastName.text = currentUser?.lastname
+                    privateFirstName.text = currentUser?.firstname
+                    accept.visibility = View.GONE
+                }
+                else
+                {
+                    privateLastName.text = otherUser?.lastname
+                    privateFirstName.text = otherUser?.firstname
+                    accept.setOnClickListener(this)
+                }
+                privateNegociatedLoan.visibility = View.VISIBLE
+                privateAmount.text = loan?.amount.toString()
+                privateRate.text = loan?.rate.toString()
+                privateRepayment.text = getString(R.string.repayment_loan_item_label, loan?.delay)
+            }
+            else
+            {
+                amount.text = loan?.amount.toString()
+                rate.text = loan?.rate.toString()
+                delay.text = getString(R.string.repayment_loan_item_label, loan?.delay)
+                loanLoader.visibility = View.GONE
+                publicNegociatedLoan.visibility = View.VISIBLE
+                if (loan?.user_requester_id == currentUser?.id)
+                {
+                    modifyAndSendLoan.visibility = View.VISIBLE
+                    modifyAndSendLoan.setOnClickListener(this)
+
+
+                }
+            }
+
+
+
+
+            scrollToBottom()
+        }
+
     }
 
     private fun generateLoanUi()
@@ -173,26 +297,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
                         loan = loanResponse.loan
                         if (loan != null)
                         {
-                            amount.text = loan?.amount.toString()
-                            rate.text = loan?.rate.toString()
-                            delay.text = getString(R.string.repayment_loan_item_label, loan?.delay)
-                            loanLoader.visibility = View.GONE
-
-                            if (loan?.user_requester_id == currentUser?.id)
-                            {
-                                modifyAndSendLoan.visibility = View.VISIBLE
-                                modifyAndSendLoan.setOnClickListener {
-                                    val intent = Intent(this@ChatDialogActivity, AddLoanActivity::class.java)
-                                    intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
-                                    intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
-                                    intent.putExtra(AddLoanActivity.MODIFYING_LOAN_OTHER_USER_KEY, otherUser)
-                                    startActivityForResult(intent, REQUEST_CODE)
-                                }
-                            }
-
-                            negociatedLoanLayout.visibility = View.VISIBLE
-
-                            scrollToBottom()
+                            fillInformations()
                         }
                     }
                 }
@@ -205,6 +310,16 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager
             })
         }
 
+    }
+
+    private fun hideKeyboard()
+    {
+        val view = this.currentFocus
+        if (view != null)
+        {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun setUp()

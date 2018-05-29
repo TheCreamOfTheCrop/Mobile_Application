@@ -20,7 +20,6 @@ import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
 import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.find
-import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -292,19 +291,24 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun sendPrivate()
     {
-        toast("${otherUser.lastname}/${otherUser.firstname}/ is public = ${publicButton.isSelected}")
-        /*
-
         loadingDialog = customAlert(message = R.string.negociating_loading, type = BeMyDialog.TYPE.LOADING)
         val delay = if (repayment.textValue.isEmpty()) repayment.hint.toString().toInt() else repayment.textValue.toInt()
 
         val api = BmyBankApi.getInstance(this)
-        val request = api.addNegociation(negociatedLoan.id, amount.textValue.toFloatOrNull(), rate.textValue.toFloatOrNull(), delay)
+        val request = api.updateLoan(
+                idLoan = negociatedLoan.id,
+                amount = amount.textValue.toFloatOrNull(),
+                rate = rate.textValue.toFloatOrNull(),
+                delay = delay,
+                description = if (description.textValue !== null) description.textValue else "",
+                loanType = "prive",
+                providerId = otherUser?.id
+        )
 
 
-        request.enqueue(object : Callback<AddingNegociationResponse>
+        request.enqueue(object : Callback<SImpleResponse>
         {
-            override fun onResponse(call: Call<AddingNegociationResponse>, response: Response<AddingNegociationResponse>)
+            override fun onResponse(call: Call<SImpleResponse>, response: Response<SImpleResponse>)
             {
 
                 loadingDialog.dismiss()
@@ -318,8 +322,22 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
                     val acceptResponse = response.body()
                     if (acceptResponse?.success!!)
                     {
-                        setResult(Activity.RESULT_OK)
+
+                        val loan = Loan()
+                        loan.amount = if (amount.textValue.toFloatOrNull() != null) amount.textValue.toFloat() else negociatedLoan.amount
+                        loan.description = if (description.textValue !== null) description.textValue else ""
+                        loan.rate = if (rate.textValue.toFloatOrNull() != null) rate.textValue.toFloat() else negociatedLoan.rate
+                        loan.id = negociatedLoan.id
+                        loan.delay = repaymentInMonths()
+                        loan.loan_type = "prive"
+                        loan.user_provider_id = otherUser?.id
+
+
+                        val resultIntent = Intent()
+                        resultIntent.putExtra(RETURNED_LOAN_KEY, loan)
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
+
                     }
                     else
                     {
@@ -328,7 +346,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
                 }
             }
 
-            override fun onFailure(call: Call<AddingNegociationResponse>, t: Throwable)
+            override fun onFailure(call: Call<SImpleResponse>, t: Throwable)
             {
                 //toast("Failure getting user from server, throwable message : ${t.message}")
                 showInformation(getString(R.string.not_internet))
@@ -336,7 +354,6 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
             }
         })
 
-        */
 
     }
 

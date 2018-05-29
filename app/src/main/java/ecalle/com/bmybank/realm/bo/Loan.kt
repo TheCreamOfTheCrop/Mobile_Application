@@ -17,6 +17,7 @@ open class Loan(
         loan_type: String = "",
         state_id: String = "",
         user_requester_id: Int = 0,
+        user_provider_id: Int? = null,
         delay: Int = 0
 ) : RealmObject(), Serializable
 {
@@ -27,9 +28,10 @@ open class Loan(
     open var amount: Float = 0F
     open var rate: Float = 0F
     open var description: String? = null
-    open var loanType: String = ""
-    open var stateId: String = ""
+    open var loan_type: String = ""
+    open var state_id: String = ""
     open var user_requester_id: Int = 0
+    open var user_provider_id: Int? = null
     open var delay: Int = 0
 
     enum class LOANTYPE(type: String)
@@ -54,10 +56,11 @@ open class Loan(
         this.creationdate = creationdate
         this.amount = amount
         this.rate = rate
-        this.loanType = loan_type
-        this.stateId = state_id
+        this.loan_type = loan_type
+        this.state_id = state_id
         this.description = description
         this.user_requester_id = user_requester_id
+        this.user_provider_id = user_provider_id
         this.delay = delay
     }
 }
