@@ -26,6 +26,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
     companion object
     {
         val MY_LOAN_KEY = "myLoanKey"
+        val IN_PROGRESS_LOAN_KEY = "inProgressLoanKey"
     }
 
     private lateinit var spinner: Spinner

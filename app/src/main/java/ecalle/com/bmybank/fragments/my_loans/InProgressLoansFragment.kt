@@ -21,7 +21,7 @@ class InProgressLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClick
     override fun onLoanClick(loan: Loan, user: User?, color: LoansAdapter.Color)
     {
         val intent = Intent(ctx, LoanViewerActivity::class.java)
-        intent.putExtra(MyLoansFragment.MY_LOAN_KEY, loan)
+        intent.putExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY, loan)
         intent.putExtra(LoanViewerActivity.USER_KEY, user)
         intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)

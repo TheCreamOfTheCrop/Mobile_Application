@@ -63,6 +63,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var progressBar: ProgressBar
     private lateinit var userInformations: LinearLayout
     private lateinit var avatar: CircleImageView
+    private lateinit var inProgressLoanLayout: LinearLayout
+    private lateinit var waitingLoanLayout: LinearLayout
 
     private lateinit var loan: Loan
     private var otherUser: User? = null
@@ -86,6 +88,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         userInformations = find(R.id.userInformations)
         modifyLoan = find(R.id.modifyLoan)
         avatar = find(R.id.avatar)
+        inProgressLoanLayout = find(R.id.inProgressLoanLayout)
+        waitingLoanLayout = find(R.id.waitingLoanLayout)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -95,22 +99,11 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             finish()
         }
 
-        if (intent.hasExtra(PublicLoansFragment.PUBLIC_LOAN_KEY))
+        when
         {
-            loan = intent.getSerializableExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) as Loan
-            otherUser = intent.getStringExtra(USER_KEY) as User?
-            accept.visibility = View.VISIBLE
-            negociate.visibility = View.VISIBLE
-            modifyLoan.visibility = View.GONE
-        }
-        else if (intent.hasExtra(MyLoansFragment.MY_LOAN_KEY))
-        {
-            loan = intent.getSerializableExtra(MyLoansFragment.MY_LOAN_KEY) as Loan
-            otherUser = intent.getStringExtra(USER_KEY) as User?
-            accept.visibility = View.GONE
-            negociate.visibility = View.GONE
-            modifyLoan.visibility = View.VISIBLE
-
+            intent.hasExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) -> publicLoanInProgress()
+            intent.hasExtra(MyLoansFragment.MY_LOAN_KEY) -> myWaitingLoan()
+            intent.hasExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY) -> myLoanInProgress()
         }
 
         if (otherUser == null)
@@ -141,6 +134,36 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
+    }
+
+    private fun myWaitingLoan()
+    {
+        inProgressLoanLayout.visibility = View.GONE
+        waitingLoanLayout.visibility = View.VISIBLE
+        loan = intent.getSerializableExtra(MyLoansFragment.MY_LOAN_KEY) as Loan
+        otherUser = intent.getStringExtra(USER_KEY) as User?
+        accept.visibility = View.GONE
+        negociate.visibility = View.GONE
+        modifyLoan.visibility = View.VISIBLE
+    }
+
+    private fun publicLoanInProgress()
+    {
+        inProgressLoanLayout.visibility = View.GONE
+        waitingLoanLayout.visibility = View.VISIBLE
+        loan = intent.getSerializableExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) as Loan
+        otherUser = intent.getStringExtra(USER_KEY) as User?
+        accept.visibility = View.VISIBLE
+        negociate.visibility = View.VISIBLE
+        modifyLoan.visibility = View.GONE
+    }
+
+    private fun myLoanInProgress()
+    {
+        inProgressLoanLayout.visibility = View.VISIBLE
+        waitingLoanLayout.visibility = View.GONE
+        loan = intent.getSerializableExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY) as Loan
+        otherUser = intent.getStringExtra(USER_KEY) as User?
     }
 
 
@@ -191,47 +214,6 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     private fun accept()
     {
-        /*
-        val customAlert = customAlert(BeMyDialog.TYPE.LOADING, R.string.acceptin_loan)
-
-        val api = BmyBankApi.getInstance(this)
-        val request = api.acceptDirectLoan(loan.id)
-
-        request.enqueue(object : Callback<SImpleResponse>
-        {
-            override fun onResponse(call: Call<SImpleResponse>, response: Response<SImpleResponse>)
-            {
-                customAlert.dismiss()
-
-                if (response.code() == 400)
-                {
-                    toast("error 400")
-                }
-                else
-                {
-                    val acceptResponse = response.body()
-                    if (acceptResponse?.success!!)
-                    {
-                        toast("Prêt accepté !")
-                    }
-                    else
-                    {
-                        toast(acceptResponse.message)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<SImpleResponse>, t: Throwable)
-            {
-                //toast("Failure getting user from server, throwable message : ${t.message}")
-                customAlert.dismiss()
-
-                toast(R.string.not_internet)
-            }
-        })
-
-        */
-
         val intent = Intent(ctx, PaymentActivity::class.java)
         intent.putExtra(PaymentActivity.LOAN_KEY, loan)
         intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
@@ -329,11 +311,11 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             val reference = firebaseStorage.reference.child("${Constants.PROFILE_PICTURES_NODE}/$emailWithoutSpecialCharacters")
 
             // Load the image using Glide
-           GlideApp.with(this)
-                   .load(reference)
-                   .placeholder(R.drawable.default_profile)
-                   .error(R.drawable.default_profile)
-                   .into(avatar)
+            GlideApp.with(this)
+                    .load(reference)
+                    .placeholder(R.drawable.default_profile)
+                    .error(R.drawable.default_profile)
+                    .into(avatar)
 
         }
 
