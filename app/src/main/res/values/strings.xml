@@ -142,6 +142,7 @@
     <string name="data_message">message</string>
     <string name="data_title">title</string>
     <string name="data_message_id">message_id</string>
+    <string name="historique_des_transactions">Historique des transactions</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

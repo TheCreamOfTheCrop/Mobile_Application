@@ -39,11 +39,8 @@ interface BmyBankApi
             @Field("message") message: String): Call<LydiaPaymentInitResponse>
 
     @FormUrlEncoded
-    @POST("negociate/add")
-    fun addNegociation(@Field("id_loan") idLoan: Int?,
-                       @Field("amount") amount: Float?,
-                       @Field("rate") rate: Float?,
-                       @Field("delay") delay: Int?): Call<AddingNegociationResponse>
+    @POST("refund/list")
+    fun getRefunds(@Field("loan_id") idLoan: Int?): Call<RefundsResponse>
 
     @FormUrlEncoded
     @POST("loan/update")

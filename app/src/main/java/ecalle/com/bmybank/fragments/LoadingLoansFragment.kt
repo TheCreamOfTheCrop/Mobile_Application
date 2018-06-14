@@ -152,10 +152,12 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
 
     private fun setupList()
     {
-        recyclerView.layoutManager = LinearLayoutManager(act)
-        recyclerView.adapter = LoansAdapter(loans, getLoanClickListener())
+        activity?.let {
+            recyclerView.layoutManager = LinearLayoutManager(act)
+            recyclerView.adapter = LoansAdapter(loans, getLoanClickListener())
 
-        recyclerView.visibility = View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
+        }
 
     }
 

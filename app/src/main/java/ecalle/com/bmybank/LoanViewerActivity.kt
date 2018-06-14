@@ -5,12 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.*
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
+import ecalle.com.bmybank.adapters.RefundsAdapter
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.GlideApp
@@ -22,8 +25,10 @@ import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
+import ecalle.com.bmybank.realm.bo.Refund
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.RefundsResponse
 import ecalle.com.bmybank.services_respnses_bo.UserResponse
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
@@ -66,6 +71,11 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var inProgressLoanLayout: LinearLayout
     private lateinit var waitingLoanLayout: LinearLayout
 
+    private lateinit var refundsRecyclerView: RecyclerView
+    private lateinit var refundsAdapter: RefundsAdapter
+    private lateinit var refundsList: MutableList<Refund>
+    private lateinit var refundsLoader: ProgressBar
+
     private lateinit var loan: Loan
     private var otherUser: User? = null
     private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
@@ -90,6 +100,8 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         avatar = find(R.id.avatar)
         inProgressLoanLayout = find(R.id.inProgressLoanLayout)
         waitingLoanLayout = find(R.id.waitingLoanLayout)
+        refundsRecyclerView = find(R.id.recyclerView)
+        refundsLoader = find(R.id.refundsLoader)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -164,8 +176,40 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         waitingLoanLayout.visibility = View.GONE
         loan = intent.getSerializableExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY) as Loan
         otherUser = intent.getStringExtra(USER_KEY) as User?
+        getRefundsThenShow()
     }
 
+    private fun getRefundsThenShow()
+    {
+        val api = BmyBankApi.getInstance(ctx)
+        val findUserByIdRequest = api.getRefunds(loan.id)
+
+        findUserByIdRequest.enqueue(object : Callback<RefundsResponse>
+        {
+            override fun onResponse(call: Call<RefundsResponse>, response: Response<RefundsResponse>)
+            {
+                val res = response.body()
+                if (res?.success != null && res?.success)
+                {
+                    refundsList = res.refunds
+                    refundsAdapter = RefundsAdapter(refundsList)
+
+                    refundsRecyclerView.layoutManager = LinearLayoutManager(ctx)
+                    refundsRecyclerView.adapter = refundsAdapter
+
+                    refundsLoader.visibility = View.GONE
+                    refundsRecyclerView.visibility = View.VISIBLE
+                }
+            }
+
+
+            override fun onFailure(call: Call<RefundsResponse>, t: Throwable)
+            {
+                toast(R.string.not_internet)
+            }
+        })
+
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
