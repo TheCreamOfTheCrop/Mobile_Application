@@ -1,6 +1,5 @@
 package ecalle.com.bmybank
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -50,6 +49,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
     private lateinit var loader: BeMyDialog
     private lateinit var identifier: String
     private var isRefund = false
+    private var loanWasAccepted = false
 
 
     companion object
@@ -178,10 +178,25 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
 
     override fun onBackPressed()
     {
-        val resultIntent = Intent()
-        resultIntent.putExtra(AddLoanActivity.RETURNED_LOAN_KEY, loan)
-        setResult(Activity.RESULT_OK, resultIntent)
+        val resultIntent = Intent(this, MainActivity::class.java)
+        startActivity(resultIntent)
         finish()
+        /*
+        if (loanWasAccepted)
+        {
+            val resultIntent = Intent(this, MainActivity::class.java)
+            startActivity(resultIntent)
+            finish()
+        }
+        else
+        {
+            val resultIntent = Intent()
+            resultIntent.putExtra(AddLoanActivity.RETURNED_LOAN_KEY, loan)
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
+        */
+
     }
 
     private fun lookForAnswer()
@@ -222,6 +237,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
                     else
                     {
                         acceptOnApi()
+                        loanWasAccepted = true
                     }
                 }
                 else

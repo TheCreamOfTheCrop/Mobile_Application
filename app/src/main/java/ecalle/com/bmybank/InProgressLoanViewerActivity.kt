@@ -98,7 +98,6 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         }
 
         loan = intent.getSerializableExtra(MyLoansFragment.LOAN_KEY) as Loan
-        otherUser = intent.getStringExtra(USER_KEY) as User?
         currentUser = RealmServices.getCurrentUser(this)
         getRefundsThenShow()
 
@@ -108,14 +107,8 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         }
 
 
-        if (otherUser == null)
-        {
-            findUserInformations()
-        }
-        else
-        {
-            removeLoaderOnNames()
-        }
+        findUserInformations()
+
 
         color = intent.getSerializableExtra(InProgressLoanViewerActivity.COLOR_KEY) as LoansAdapter.Color?
 
@@ -205,44 +198,77 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         delay.text = loan.delay.toString()
     }
 
-    private fun findUserInformations()
+    private fun getRequesterInformations()
     {
         val api = BmyBankApi.getInstance(ctx)
-        val findUserByIdRequest = api.findUserById(loan.user_requester_id)
+        loan.user_provider_id?.let {
+            val findUserByIdRequest = api.findUserById(loan.user_requester_id!!)
 
 
-        findUserByIdRequest.enqueue(object : Callback<UserResponse>
-        {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>)
+            findUserByIdRequest.enqueue(object : Callback<UserResponse>
             {
-                val userResponse = response.body()
-                if (userResponse?.success != null && userResponse?.success)
+                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>)
                 {
-                    otherUser = userResponse.user
+                    val userResponse = response.body()
+                    if (userResponse?.success != null && userResponse?.success)
+                    {
+                        firstName.text = userResponse.user.firstname
+                        lastName.text = userResponse.user.lastname
 
-
-                    firstName.text = otherUser?.firstname
-                    lastName.text = otherUser?.lastname
-
-                    removeLoaderOnNames()
+                        removeLoaderOnNames(userResponse.user)
+                    }
                 }
-            }
 
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable)
+                override fun onFailure(call: Call<UserResponse>, t: Throwable)
+                {
+                    toast(R.string.not_internet)
+                }
+            })
+        }
+    }
+
+    private fun getProviderInformations()
+    {
+
+        val api = BmyBankApi.getInstance(ctx)
+        loan.user_provider_id?.let {
+            val findUserByIdRequest = api.findUserById(loan.user_provider_id!!)
+
+
+            findUserByIdRequest.enqueue(object : Callback<UserResponse>
             {
-                toast(R.string.not_internet)
-            }
-        })
+                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>)
+                {
+                    val userResponse = response.body()
+                    if (userResponse?.success != null && userResponse?.success)
+                    {
+                        otherUser = userResponse.user
+                    }
+                }
+
+
+                override fun onFailure(call: Call<UserResponse>, t: Throwable)
+                {
+                    toast(R.string.not_internet)
+                }
+            })
+        }
+    }
+
+    private fun findUserInformations()
+    {
+        getProviderInformations()
+        getRequesterInformations()
 
     }
 
-    private fun removeLoaderOnNames()
+    private fun removeLoaderOnNames(user: User)
     {
         progressBar.visibility = View.GONE
         userInformations.visibility = View.VISIBLE
 
-        var emailWithoutSpecialCharacters = otherUser?.email?.replace("@", "")
+        var emailWithoutSpecialCharacters = user?.email?.replace("@", "")
         emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")
         emailWithoutSpecialCharacters = emailWithoutSpecialCharacters.plus(".jpg")
 
