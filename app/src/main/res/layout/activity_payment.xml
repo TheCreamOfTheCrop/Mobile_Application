@@ -39,7 +39,20 @@
             style="@style/GreyLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             tools:text="1200"
+            />
+
+        <EditText
+            android:id="@+id/amountEditText"
+            style="@style/AddLoanEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:drawableEnd="@drawable/ic_euro_symbol"
+            android:drawableRight="@drawable/ic_euro_symbol"
+            android:inputType="numberDecimal"
+            android:text="0"
             />
 
     </LinearLayout>

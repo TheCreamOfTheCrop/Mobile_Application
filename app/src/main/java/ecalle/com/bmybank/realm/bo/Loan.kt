@@ -12,6 +12,7 @@ open class Loan(
         creationdate: String = "",
         id: Int = 0,
         amount: Float = 0F,
+        totalRefunded: Float = 0F,
         description: String = "",
         rate: Float = 0F,
         loan_type: String = "",
@@ -26,6 +27,7 @@ open class Loan(
     open var uid: String = ""
     open var creationdate: String = ""
     open var amount: Float = 0F
+    open var totalRefunded: Float = 0F
     open var rate: Float = 0F
     open var description: String? = null
     open var loan_type: String = ""
@@ -55,6 +57,7 @@ open class Loan(
         this.uid = uid
         this.creationdate = creationdate
         this.amount = amount
+        this.totalRefunded = totalRefunded
         this.rate = rate
         this.loan_type = loan_type
         this.state_id = state_id
@@ -63,5 +66,7 @@ open class Loan(
         this.user_provider_id = user_provider_id
         this.delay = delay
     }
+
+    fun getNeededRefund(): Float = amount + (amount * (rate / 100))
 }
 

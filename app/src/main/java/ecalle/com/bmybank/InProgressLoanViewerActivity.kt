@@ -14,15 +14,8 @@ import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.adapters.RefundsAdapter
-import ecalle.com.bmybank.custom_components.BeMyDialog
-import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.firebase.GlideApp
-import ecalle.com.bmybank.firebase.Utils
-import ecalle.com.bmybank.firebase.bo.Channel
-import ecalle.com.bmybank.firebase.bo.ListMessages
-import ecalle.com.bmybank.firebase.bo.Message
 import ecalle.com.bmybank.fragments.MyLoansFragment
-import ecalle.com.bmybank.fragments.PublicLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.Refund
@@ -36,14 +29,12 @@ import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 /**
  * Created by Thomas Ecalle on 10/04/2018.
  */
-class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
+class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickListener
 {
 
 
@@ -61,15 +52,12 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var rate: TextView
     private lateinit var firstName: TextView
     private lateinit var lastName: TextView
-    private lateinit var accept: Button
-    private lateinit var modifyLoan: Button
-    private lateinit var negociate: Button
     private lateinit var waveHeader: RelativeLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var userInformations: LinearLayout
     private lateinit var avatar: CircleImageView
-    private lateinit var inProgressLoanLayout: LinearLayout
-    private lateinit var waitingLoanLayout: LinearLayout
+    private lateinit var refundsLayout: LinearLayout
+    private lateinit var repay: Button
 
     private lateinit var refundsRecyclerView: RecyclerView
     private lateinit var refundsAdapter: RefundsAdapter
@@ -77,13 +65,14 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     private lateinit var refundsLoader: ProgressBar
 
     private lateinit var loan: Loan
+    private var currentUser: User? = null
     private var otherUser: User? = null
     private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_loan_viewer)
+        setContentView(R.layout.activity_in_progress_loan_viewer)
 
         description = find(R.id.description)
         amount = find(R.id.amount)
@@ -91,17 +80,14 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         delay = find(R.id.delay)
         firstName = find(R.id.firstName)
         lastName = find(R.id.lastName)
-        accept = find(R.id.accept)
-        negociate = find(R.id.negociate)
         waveHeader = find(R.id.waveHeader)
         progressBar = find(R.id.progressBar)
         userInformations = find(R.id.userInformations)
-        modifyLoan = find(R.id.modifyLoan)
         avatar = find(R.id.avatar)
-        inProgressLoanLayout = find(R.id.inProgressLoanLayout)
-        waitingLoanLayout = find(R.id.waitingLoanLayout)
+        refundsLayout = find(R.id.refundsLayout)
         refundsRecyclerView = find(R.id.recyclerView)
         refundsLoader = find(R.id.refundsLoader)
+        repay = find(R.id.repay)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -111,12 +97,16 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             finish()
         }
 
-        when
+        loan = intent.getSerializableExtra(MyLoansFragment.LOAN_KEY) as Loan
+        otherUser = intent.getStringExtra(USER_KEY) as User?
+        currentUser = RealmServices.getCurrentUser(this)
+        getRefundsThenShow()
+
+        if (loan.user_requester_id == currentUser?.id)
         {
-            intent.hasExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) -> publicLoanInProgress()
-            intent.hasExtra(MyLoansFragment.MY_LOAN_KEY) -> myWaitingLoan()
-            intent.hasExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY) -> myLoanInProgress()
+            repay.visibility = View.VISIBLE
         }
+
 
         if (otherUser == null)
         {
@@ -127,7 +117,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             removeLoaderOnNames()
         }
 
-        color = intent.getSerializableExtra(LoanViewerActivity.COLOR_KEY) as LoansAdapter.Color?
+        color = intent.getSerializableExtra(InProgressLoanViewerActivity.COLOR_KEY) as LoansAdapter.Color?
 
         if (color == null)
         {
@@ -140,43 +130,10 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         waveHeader.background = ContextCompat.getDrawable(this, drawable)
 
         fillInformations()
-        accept.setOnClickListener(this)
-        negociate.setOnClickListener(this)
-        modifyLoan.setOnClickListener(this)
+        repay.setOnClickListener(this)
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
-    }
-
-    private fun myWaitingLoan()
-    {
-        inProgressLoanLayout.visibility = View.GONE
-        waitingLoanLayout.visibility = View.VISIBLE
-        loan = intent.getSerializableExtra(MyLoansFragment.MY_LOAN_KEY) as Loan
-        otherUser = intent.getStringExtra(USER_KEY) as User?
-        accept.visibility = View.GONE
-        negociate.visibility = View.GONE
-        modifyLoan.visibility = View.VISIBLE
-    }
-
-    private fun publicLoanInProgress()
-    {
-        inProgressLoanLayout.visibility = View.GONE
-        waitingLoanLayout.visibility = View.VISIBLE
-        loan = intent.getSerializableExtra(PublicLoansFragment.PUBLIC_LOAN_KEY) as Loan
-        otherUser = intent.getStringExtra(USER_KEY) as User?
-        accept.visibility = View.VISIBLE
-        negociate.visibility = View.VISIBLE
-        modifyLoan.visibility = View.GONE
-    }
-
-    private fun myLoanInProgress()
-    {
-        inProgressLoanLayout.visibility = View.VISIBLE
-        waitingLoanLayout.visibility = View.GONE
-        loan = intent.getSerializableExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY) as Loan
-        otherUser = intent.getStringExtra(USER_KEY) as User?
-        getRefundsThenShow()
     }
 
     private fun getRefundsThenShow()
@@ -215,17 +172,7 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     {
         if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
         {
-            when (resultCode)
-            {
-                Activity.RESULT_OK ->
-                {
-                    if (data?.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) != null)
-                    {
-                        loan = data.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) as Loan
-                        fillInformations()
-                    }
-                }
-            }
+
         }
     }
 
@@ -233,12 +180,14 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
     {
         when (view?.id)
         {
-            accept.id ->
+            repay.id ->
             {
-                accept()
+                val intent = Intent(ctx, PaymentActivity::class.java)
+                intent.action = PaymentActivity.REFUND_ACTION
+                intent.putExtra(PaymentActivity.LOAN_KEY, loan)
+                intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
+                startActivity(intent)
             }
-            negociate.id -> negociate()
-            modifyLoan.id -> modify()
         }
     }
 
@@ -254,57 +203,6 @@ class LoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         amount.text = loan.amount.toString()
         rate.text = loan.rate.toString()
         delay.text = loan.delay.toString()
-    }
-
-    private fun accept()
-    {
-        val intent = Intent(ctx, PaymentActivity::class.java)
-        intent.putExtra(PaymentActivity.LOAN_KEY, loan)
-        intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
-        startActivity(intent)
-    }
-
-    private fun negociate()
-    {
-        createAndLaunchNegociationChat()
-    }
-
-    private fun modify()
-    {
-        val intent = Intent(this@LoanViewerActivity, AddLoanActivity::class.java)
-        intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
-        intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
-        startActivityForResult(intent, ChatDialogActivity.MODIFYING_REQUEST_CODE)
-    }
-
-    private fun createAndLaunchNegociationChat()
-    {
-        val customAlert = customAlert(BeMyDialog.TYPE.LOADING, R.string.preparing_negociation)
-
-        val currentUser = RealmServices.getCurrentUser(this)!!
-
-        val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().time)
-
-        val firstMessage = Message(getString(R.string.firstMessageInNegociation, currentUser.firstname), currentUser.id, time, currentUser?.firstname!!)
-        val listMessages = ListMessages("${currentUser.id}${loan.user_requester_id}".toInt(), mutableListOf(firstMessage))
-
-        val listMessageReference = Utils.getDatabase().getReference("listMessages").child(listMessages.id.toString())
-
-        val channel = Channel(loan.id, currentUser.id, loan.user_requester_id, listMessages.id)
-
-        //listMessageReference.push().setValue(firstMessage)
-
-        channel.last_message = firstMessage.text
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${loan.user_requester_id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-        listMessageReference.push().setValue(firstMessage)
-
-
-        val intent = Intent(ctx, ChatDialogActivity::class.java)
-        intent.putExtra(ChatDialogActivity.DISCUSSION_KEY, channel)
-        startActivity(intent)
-
-        finish()
     }
 
     private fun findUserInformations()

@@ -39,7 +39,20 @@ interface ToolbarManager
 
     fun changeColor(color: LoansAdapter.Color, context: AppCompatActivity)
     {
-        val colorId = if (color == LoansAdapter.Color.BLUE) R.color.colorPrimary else R.color.colorAccent
+        var colorId = 0
+
+        if (color == LoansAdapter.Color.BLUE)
+        {
+            colorId = R.color.colorPrimary
+        }
+        else if (color == LoansAdapter.Color.ORANGE)
+        {
+            colorId = R.color.colorAccent
+        }
+        else
+        {
+            colorId = R.color.labelGrey
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {

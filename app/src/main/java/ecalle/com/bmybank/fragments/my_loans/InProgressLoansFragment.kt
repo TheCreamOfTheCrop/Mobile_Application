@@ -2,8 +2,7 @@ package ecalle.com.bmybank.fragments.my_loans
 
 import android.content.Intent
 import ecalle.com.bmybank.Constants
-import ecalle.com.bmybank.LoanViewerActivity
-import ecalle.com.bmybank.MainActivity
+import ecalle.com.bmybank.InProgressLoanViewerActivity
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.fragments.LoadingLoansFragment
 import ecalle.com.bmybank.fragments.MyLoansFragment
@@ -20,10 +19,10 @@ class InProgressLoansFragment : LoadingLoansFragment(), LoansAdapter.OnLoanClick
 
     override fun onLoanClick(loan: Loan, user: User?, color: LoansAdapter.Color)
     {
-        val intent = Intent(ctx, LoanViewerActivity::class.java)
-        intent.putExtra(MyLoansFragment.IN_PROGRESS_LOAN_KEY, loan)
-        intent.putExtra(LoanViewerActivity.USER_KEY, user)
-        intent.putExtra(LoanViewerActivity.COLOR_KEY, color)
+        val intent = Intent(ctx, InProgressLoanViewerActivity::class.java)
+        intent.putExtra(MyLoansFragment.LOAN_KEY, loan)
+        intent.putExtra(InProgressLoanViewerActivity.USER_KEY, user)
+        intent.putExtra(InProgressLoanViewerActivity.COLOR_KEY, color)
         startActivity(intent)
 
     }

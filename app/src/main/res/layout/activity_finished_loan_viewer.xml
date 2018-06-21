@@ -234,75 +234,72 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/description"
-                style="@style/LightGreyLabel"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:lines="4"
-                android:textAlignment="center"
-                tools:text="@string/lorem"
-                />
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:id="@+id/gainzTitle"
+                    style="@style/BlackTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    />
+
+                <TextView
+                    android:id="@+id/totalGainz"
+                    style="@style/GreenLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:drawableEnd="@drawable/ic_euro_symbol"
+                    android:drawableRight="@drawable/ic_euro_symbol"
+                    android:drawableTint="@color/green"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    tools:text="1000"
+                    tools:visibility="visible"/>
+            </LinearLayout>
+
 
             <LinearLayout
-                android:id="@+id/waitingLoanLayout"
+                android:id="@+id/refundsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="vertical"
-                    android:padding="@dimen/generalPadding"
-                    >
-
-                    <Button
-                        android:id="@+id/negociate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="15dp"
-                        android:background="@drawable/light_button_background"
-                        android:fontFamily="@font/roboto_bold"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:text="@string/negociate_button_label"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        />
-
-                    <Button
-                        android:id="@+id/accept"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/acccept_button_background"
-                        android:fontFamily="@font/roboto_bold"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:text="@string/accept_loan"
-                        android:textColor="@color/white"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/modifyLoan"
-                    style="@style/CustomGreyButton"
+                <TextView
+                    style="@style/SmallGreyLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="15dp"
-                    android:text="@string/modifyMyLoan"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/historique_des_transactions"
+                    android:textAlignment="center"
                     />
 
+                <ProgressBar
+                    android:id="@+id/refundsLoader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    />
 
             </LinearLayout>
 

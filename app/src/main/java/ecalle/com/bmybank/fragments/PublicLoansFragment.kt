@@ -13,13 +13,14 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import ecalle.com.bmybank.LoanViewerActivity
+import ecalle.com.bmybank.InProgressLoanViewerActivity
+import ecalle.com.bmybank.PendingLoanViewerActivity
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.PublicLoansAdapter
-import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.ctx
 import org.jetbrains.anko.support.v4.onRefresh
@@ -155,9 +156,9 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
 
     override fun onPublicLoanClick(loan: Loan, user: User?)
     {
-        val intent = Intent(ctx, LoanViewerActivity::class.java)
-        intent.putExtra(PUBLIC_LOAN_KEY, loan)
-        intent.putExtra(LoanViewerActivity.USER_KEY, user)
+        val intent = Intent(ctx, PendingLoanViewerActivity::class.java)
+        intent.putExtra(PublicLoansFragment.PUBLIC_LOAN_KEY, loan)
+        intent.putExtra(InProgressLoanViewerActivity.USER_KEY, user)
         startActivity(intent)
     }
 }

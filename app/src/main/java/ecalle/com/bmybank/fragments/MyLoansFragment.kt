@@ -10,7 +10,6 @@ import android.widget.*
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.fragments.my_loans.FinishedLoansFragment
-import ecalle.com.bmybank.fragments.my_loans.InNegociationLoansFragment
 import ecalle.com.bmybank.fragments.my_loans.InProgressLoansFragment
 import ecalle.com.bmybank.fragments.my_loans.MyPendingLoansFragment
 import org.jetbrains.anko.find
@@ -25,8 +24,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
 
     companion object
     {
-        val MY_LOAN_KEY = "myLoanKey"
-        val IN_PROGRESS_LOAN_KEY = "inProgressLoanKey"
+        val LOAN_KEY = "myLoanKey"
     }
 
     private lateinit var spinner: Spinner
@@ -52,7 +50,6 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
         // Spinner Drop down elements
         val states = ArrayList<String>()
         states.add(Constants.PENDING_LOANS)
-        states.add(Constants.IN_NEGOCIATION_LOANS)
         states.add(Constants.IN_PROGRESS_LOANS)
         states.add(Constants.FINISHED_LOANS)
 
@@ -84,7 +81,6 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
         var fragment = when (item)
         {
             Constants.IN_PROGRESS_LOANS -> InProgressLoansFragment()
-            Constants.IN_NEGOCIATION_LOANS -> InNegociationLoansFragment()
             Constants.FINISHED_LOANS -> FinishedLoansFragment()
             else ->
             {

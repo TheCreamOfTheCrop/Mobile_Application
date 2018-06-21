@@ -16,15 +16,13 @@ import com.google.firebase.database.DatabaseError
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.customAlert
 import ecalle.com.bmybank.extensions.log
+import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.firebase.Utils
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.LydiaPaymentInitResponse
-import ecalle.com.bmybank.services_respnses_bo.Payment
-import ecalle.com.bmybank.services_respnses_bo.SImpleResponse
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_respnses_bo.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import retrofit2.Call
@@ -40,6 +38,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
 {
 
     private lateinit var amount: TextView
+    private lateinit var amountEditText: EditText
     private lateinit var success: TextView
     private lateinit var failure: TextView
     private lateinit var email: EditText
@@ -50,12 +49,14 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
     private lateinit var currentUser: User
     private lateinit var loader: BeMyDialog
     private lateinit var identifier: String
+    private var isRefund = false
 
 
     companion object
     {
         val LOAN_KEY = "loanKey"
         val OTHER_USER_KEY = "otherUserKey"
+        val REFUND_ACTION = "refundAction"
     }
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -64,6 +65,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
         setContentView(R.layout.activity_payment)
 
         amount = find(R.id.amount)
+        amountEditText = find(R.id.amountEditText)
         email = find(R.id.email)
         send = find(R.id.send)
         exit = find(R.id.exit)
@@ -72,6 +74,18 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
 
         loan = intent.getSerializableExtra(LOAN_KEY) as Loan
         otherUser = intent.getSerializableExtra(OTHER_USER_KEY) as User?
+
+        if (intent.action == PaymentActivity.REFUND_ACTION)
+        {
+            isRefund = true
+            amount.visibility = View.GONE
+            amountEditText.visibility = View.VISIBLE
+        }
+        else
+        {
+            amount.visibility = View.VISIBLE
+            amountEditText.visibility = View.GONE
+        }
 
         currentUser = RealmServices.getCurrentUser(this)!!
 
@@ -113,9 +127,16 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
         val time = Calendar.getInstance().timeInMillis
         identifier = "${loan.id}$time"
 
-        log("sent to lydia : ${email.text},${otherUser?.email},${loan.amount},,${loan.description} with identifier : $identifier")
+        log("sent to lydia : ${email.text},${otherUser?.email},${loan.amount},${loan.description} with identifier : $identifier")
 
-        val realAmount: Float = if (loan.amount > 1000) 1000f else loan.amount
+        val realAmount: Float = if (isRefund)
+        {
+            if (amountEditText.textValue.toFloat() > 1000) 1000f else amountEditText.textValue.toFloat()
+        }
+        else
+        {
+            if (loan.amount > 1000) 1000f else loan.amount
+        }
 
         val stringAmount: String = "%.2f".format(realAmount)
 
@@ -194,7 +215,14 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
                 {
                     failure.visibility = View.GONE
                     success.visibility = View.VISIBLE
-                    acceptOnApi()
+                    if (isRefund)
+                    {
+                        refundOnApi()
+                    }
+                    else
+                    {
+                        acceptOnApi()
+                    }
                 }
                 else
                 {
@@ -208,6 +236,29 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
             {
                 log("listening to payments, onChildReMoved ${snapshot.toString()}")
             }
+        })
+    }
+
+    private fun refundOnApi()
+    {
+        val amount = if (amountEditText.textValue.toFloat() > 1000) 1000f else amountEditText.textValue.toFloat()
+        val api = BmyBankApi.getInstance(this)
+        val request = api.addRefund(loan.id, amount)
+        request.enqueue(object : Callback<AddRefundsResponse>
+        {
+            override fun onResponse(call: Call<AddRefundsResponse>?, response: Response<AddRefundsResponse>?)
+            {
+                if (response?.body()?.success!!)
+                {
+                    toast(R.string.repayment_done)
+                }
+            }
+
+            override fun onFailure(call: Call<AddRefundsResponse>?, t: Throwable?)
+            {
+                toast(R.string.not_internet)
+            }
+
         })
     }
 

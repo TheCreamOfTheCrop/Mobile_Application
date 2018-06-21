@@ -17,13 +17,6 @@ interface BmyBankApi
 {
 
     @POST("https://us-central1-bmybank-2146c.cloudfunctions.net/sendChatMessage")
-    fun sendChatMessage(
-            @Query("current_user_id") currentUserId: Int,
-            @Query("other_user_id") otherUserId: Int,
-            @Query("message") messageToJson: String,
-            @Query("channel") channelToJson: String): Call<SImpleResponse>
-
-    @POST("https://us-central1-bmybank-2146c.cloudfunctions.net/sendChatMessage")
     fun see(@Body body: RequestBody): Call<SImpleResponse>
 
     @FormUrlEncoded
@@ -37,6 +30,11 @@ interface BmyBankApi
             @Field("amount") amount: String,
             @Field("currency") currency: String = "EUR",
             @Field("message") message: String): Call<LydiaPaymentInitResponse>
+
+    @FormUrlEncoded
+    @POST("refund/add")
+    fun addRefund(@Field("loan_id") idLoan: Int,
+                  @Field("amount") amount: Float): Call<AddRefundsResponse>
 
     @FormUrlEncoded
     @POST("refund/list")

@@ -55,7 +55,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".LoanViewerActivity"
+            android:name=".InProgressLoanViewerActivity"
             android:screenOrientation="portrait"/>
 
         <activity
@@ -65,6 +65,15 @@
         <activity
             android:name=".PaymentActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".FinishedLoanViewerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".PendingLoanViewerActivity"
+            android:screenOrientation="portrait"/>
+
 
         <service
             android:name=".firebase.services.BmyFirebaseMessagingService">
