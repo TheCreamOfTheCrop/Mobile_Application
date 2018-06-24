@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,6 +23,8 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.services_respnses_bo.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
 import retrofit2.Call
@@ -176,8 +179,11 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
         })
     }
 
+
+
     override fun onBackPressed()
     {
+
         val resultIntent = Intent(this, MainActivity::class.java)
         startActivity(resultIntent)
         finish()
@@ -221,6 +227,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener
 
             override fun onChildAdded(snapshot: DataSnapshot?, p1: String?)
             {
+
                 val payment = snapshot?.getValue(Payment::class.java)
 
                 log("listening to payments, onChildAdded ${snapshot.toString()}")
