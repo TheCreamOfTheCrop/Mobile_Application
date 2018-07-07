@@ -23,7 +23,7 @@ import ecalle.com.bmybank.extensions.log
 import ecalle.com.bmybank.extensions.toast
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -147,6 +147,8 @@
     <string name="gainz_interest">Intérêts versés : </string>
     <string name="repay">Rembourser</string>
     <string name="repayment_done">Virement effectué</string>
+    <string name="users_advices_label">Les notes des utilisateurs :</string>
+    <string name="empty_notes">Aucune note pour le moment</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

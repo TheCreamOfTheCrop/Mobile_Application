@@ -74,6 +74,10 @@
             android:name=".PendingLoanViewerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ProfileViewerActivity"
+            android:screenOrientation="portrait"/>
+
 
         <service
             android:name=".firebase.services.BmyFirebaseMessagingService">

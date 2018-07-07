@@ -2,7 +2,7 @@ package ecalle.com.bmybank.services
 
 import android.content.Context
 import ecalle.com.bmybank.Constants
-import ecalle.com.bmybank.services_respnses_bo.*
+import ecalle.com.bmybank.services_responses_bo.*
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -16,8 +16,9 @@ import retrofit2.http.*
 interface BmyBankApi
 {
 
-    @POST("https://us-central1-bmybank-2146c.cloudfunctions.net/sendChatMessage")
-    fun see(@Body body: RequestBody): Call<SImpleResponse>
+    @FormUrlEncoded
+    @POST("/note/listNote")
+    fun getNotes(@Field("user_id") id: Int): Call<NoteListReponse>
 
     @FormUrlEncoded
     @POST("https://homologation.lydia-app.com/api/payment/init.json")

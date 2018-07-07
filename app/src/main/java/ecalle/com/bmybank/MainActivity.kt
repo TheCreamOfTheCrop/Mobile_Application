@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -109,6 +110,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         val cardThree = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView
         val imageViewThree = cardThree.find<ImageView>(R.id.icon)
         imageViewThree.setImageResource(R.drawable.ic_chat)
+        imageViewThree.setColorFilter(ContextCompat.getColor(this, R.color.black), android.graphics.PorterDuff.Mode.MULTIPLY)
         tabs.getTabAt(2)?.customView = cardThree
 
         val cardFour = LayoutInflater.from(this).inflate(R.layout.tab_layout_header_item, null) as CardView

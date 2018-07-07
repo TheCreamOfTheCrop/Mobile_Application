@@ -1,4 +1,4 @@
-package ecalle.com.bmybank.services_respnses_bo
+package ecalle.com.bmybank.services_responses_bo
 
 import ecalle.com.bmybank.realm.bo.Negociation
 

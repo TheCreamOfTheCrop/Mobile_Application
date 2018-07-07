@@ -31,8 +31,8 @@ import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.AddingLoanResponse
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.AddingLoanResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import ecalle.com.bmybank.view_holders.MessageViewHolder
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find

@@ -24,8 +24,8 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.Refund
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.RefundsResponse
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.RefundsResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
 import org.jetbrains.anko.toast
@@ -121,6 +121,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         waveHeader.background = ContextCompat.getDrawable(this, drawable)
 
         fillInformations()
+        avatar.setOnClickListener(this)
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
@@ -189,7 +190,15 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
     {
         when (view?.id)
         {
+            avatar.id ->
+            {
+                val intent = Intent(PendingLoanViewerActivity@ this, ProfileViewerActivity::class.java)
+                intent.putExtra(ProfileViewerActivity.USER_ID_KEY, loan.user_requester_id)
+                val firstName = if (loan.user_requester_id == currentUser?.id) currentUser?.firstname else otherUser?.firstname
+                intent.putExtra(ProfileViewerActivity.USER_FIRSTNAME_KEY, firstName)
 
+                startActivity(intent)
+            }
         }
     }
 

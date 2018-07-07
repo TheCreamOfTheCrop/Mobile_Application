@@ -15,7 +15,7 @@ import ecalle.com.bmybank.firebase.bo.Channel
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import org.jetbrains.anko.find
 import retrofit2.Call
 import retrofit2.Callback

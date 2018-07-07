@@ -8,7 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi

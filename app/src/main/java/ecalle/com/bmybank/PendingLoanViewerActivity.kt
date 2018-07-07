@@ -24,7 +24,7 @@ import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.UserResponse
+import ecalle.com.bmybank.services_responses_bo.UserResponse
 import kotlinx.android.synthetic.main.activity_loan_viewer.*
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.find
@@ -46,7 +46,6 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
     companion object
     {
         val USER_KEY = "userKey"
-        val COLOR_KEY = "colorKey"
     }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
@@ -137,6 +136,9 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
         accept.setOnClickListener(this)
         negociate.setOnClickListener(this)
         modifyLoan.setOnClickListener(this)
+        avatar.setOnClickListener(this)
+
+
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
@@ -160,6 +162,16 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
             }
             negociate.id -> negociate()
             modifyLoan.id -> modify()
+            avatar.id ->
+            {
+                val intent = Intent(PendingLoanViewerActivity@ this, ProfileViewerActivity::class.java)
+                intent.putExtra(ProfileViewerActivity.USER_ID_KEY, loan.user_requester_id)
+                val firstName = if (loan.user_requester_id == currentUser?.id) currentUser?.firstname else otherUser?.firstname
+                intent.putExtra(ProfileViewerActivity.USER_FIRSTNAME_KEY, firstName)
+                intent.putExtra(ProfileViewerActivity.COLOR_KEY, color)
+
+                startActivity(intent)
+            }
         }
     }
 

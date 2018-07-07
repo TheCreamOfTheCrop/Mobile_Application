@@ -23,7 +23,7 @@ import ecalle.com.bmybank.R
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
-import ecalle.com.bmybank.services_respnses_bo.GettingUserLoansResponse
+import ecalle.com.bmybank.services_responses_bo.GettingUserLoansResponse
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.ctx
