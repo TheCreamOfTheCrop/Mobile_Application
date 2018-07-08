@@ -3,6 +3,7 @@ package ecalle.com.bmybank.realm.bo
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.io.Serializable
+import java.util.*
 
 /**
  * Created by Thomas Ecalle on 04/04/2018.
@@ -10,6 +11,7 @@ import java.io.Serializable
 open class Loan(
         uid: String = "",
         creationdate: String = "",
+        acceptationDate: String? = null,
         id: Int = 0,
         amount: Float = 0F,
         totalRefunded: Float = 0F,
@@ -26,6 +28,7 @@ open class Loan(
     open var id: Int = 0
     open var uid: String = ""
     open var creationdate: String = ""
+    open var acceptationDate: String? = ""
     open var amount: Float = 0F
     open var totalRefunded: Float = 0F
     open var rate: Float = 0F
@@ -56,6 +59,7 @@ open class Loan(
         this.id = id
         this.uid = uid
         this.creationdate = creationdate
+        this.acceptationDate = acceptationDate
         this.amount = amount
         this.totalRefunded = totalRefunded
         this.rate = rate
@@ -68,5 +72,22 @@ open class Loan(
     }
 
     fun getNeededRefund(): Float = amount + (amount * (rate / 100))
+
+    fun isLate(): Boolean
+    {
+        if (acceptationDate == null) return true
+
+        val currentTimestamp = System.currentTimeMillis()
+
+        val currentDate = Calendar.getInstance()
+        val acceptationDate = Calendar.getInstance()
+        currentDate.time = Date(currentTimestamp)
+
+        acceptationDate.time = Date(this.acceptationDate?.toLong()!!)
+
+        val diff = currentDate.get(Calendar.MONTH) - acceptationDate.get(Calendar.MONTH)
+
+        return diff > delay
+    }
 }
 

@@ -156,6 +156,10 @@
     <string name="adding_note_loading">Envoie de votre note</string>
     <string name="note_added_with_success">Note ajoutée !</string>
     <string name="fields_error">Veuillez renseigner tous les champs</string>
+    <string name="alert_delay">L\'utilisateur n\'a pas remboursé le prêt dans les temps, vous pouvez dès à présent lui attibuer une note ou nous contacter pour en savoir plus quant à vos droits</string>
+    <string name="contact">Nous contacter</string>
+    <string name="loan_delay_alert_email_subject">ALerte, prêt non réglé</string>
+    <string name="alert_loan_delay_email_intent_label">Envoyer un email</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

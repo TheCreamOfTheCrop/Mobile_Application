@@ -98,7 +98,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
                 }
                 else
                 {
-                    showError(show = false)
                     val loginResponse = andRegisterResponse.body()
                     if (loginResponse?.result?.user != null)
                     {

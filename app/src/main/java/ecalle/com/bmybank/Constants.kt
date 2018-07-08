@@ -29,5 +29,6 @@ class Constants
         val PRIVATE_LOAN = "prive"
         val STATE_WAITING = "en attente"
         val STATE_IN_PROGRESS = "en cours"
+        val ADMIN_EMAIL_ADRESS = "bmybank.presta@gmail.com"
     }
 }

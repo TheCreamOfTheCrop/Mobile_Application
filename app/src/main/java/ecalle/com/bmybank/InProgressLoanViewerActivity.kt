@@ -3,11 +3,13 @@ package ecalle.com.bmybank
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ShareCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.firebase.storage.FirebaseStorage
@@ -21,6 +23,7 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.Refund
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_responses_bo.NoteListReponse
 import ecalle.com.bmybank.services_responses_bo.RefundsResponse
 import ecalle.com.bmybank.services_responses_bo.UserResponse
 import org.jetbrains.anko.ctx
@@ -69,6 +72,11 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
     private var otherUser: User? = null
     private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
 
+    private lateinit var noteContainer: LinearLayout
+    private lateinit var noteLabel: TextView
+    private lateinit var noteButton: TextView
+    private lateinit var contactButton: TextView
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -88,6 +96,11 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         refundsRecyclerView = find(R.id.recyclerView)
         refundsLoader = find(R.id.refundsLoader)
         repay = find(R.id.repay)
+
+        noteContainer = find(R.id.noteContainer)
+        noteLabel = find(R.id.noteLabel)
+        noteButton = find(R.id.noteButton)
+        contactButton = find(R.id.contactButton)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
@@ -118,15 +131,67 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         }
 
         changeColor(color!!, this)
-        val drawable = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
+        val drawableId = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
 
-        waveHeader.background = ContextCompat.getDrawable(this, drawable)
+        val drawable = ContextCompat.getDrawable(this, drawableId)
+        if (loan.isLate())
+        {
+            /*
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                drawable?.setTint(ContextCompat.getColor(this, R.color.red))
+                showAlertHeader(this)
+            }
+            */
+
+            if (currentUser?.id != loan.user_requester_id)
+            {
+                noteContainer.visibility = View.VISIBLE
+                handleNotation()
+            }
+
+        }
+
+
+        waveHeader.background = drawable
 
         fillInformations()
         repay.setOnClickListener(this)
         avatar.setOnClickListener(this)
+        noteButton.setOnClickListener(this)
+        contactButton.setOnClickListener(this)
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
+
+    }
+
+    private fun handleNotation()
+    {
+        val api = BmyBankApi.getInstance(ctx)
+        val loanNotesRequest = api.getLoanNotes(loan.id)
+
+        loanNotesRequest.enqueue(object : Callback<NoteListReponse>
+        {
+
+
+            override fun onResponse(call: Call<NoteListReponse>?, response: Response<NoteListReponse>?)
+            {
+                val res = response?.body()
+                if (res?.success != null && res.success)
+                {
+                    if (res.note.isEmpty())
+                    {
+                        noteButton.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NoteListReponse>?, t: Throwable?)
+            {
+                Log.i("thomas", "Error on getting notes from API")
+            }
+        })
+
 
     }
 
@@ -164,9 +229,13 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
+        if (requestCode == FinishedLoanViewerActivity.ADD_NOTE_REQUEST_CODE)
         {
-
+            if (resultCode == Activity.RESULT_OK)
+            {
+                noteButton.visibility = View.GONE
+                toast(R.string.note_added_with_success)
+            }
         }
     }
 
@@ -191,6 +260,28 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
                 intent.putExtra(ProfileViewerActivity.COLOR_KEY, color)
 
                 startActivity(intent)
+            }
+            noteButton.id ->
+            {
+                val intent = Intent(FinishedLoanViewerActivity@ this, AddNoteActivity::class.java)
+                intent.putExtra(AddNoteActivity.LOAN_ID_KEY, loan.id)
+                intent.putExtra(AddNoteActivity.USER_ID_KEY, loan.user_requester_id)
+
+                startActivityForResult(intent, FinishedLoanViewerActivity.ADD_NOTE_REQUEST_CODE)
+            }
+            contactButton.id ->
+            {
+                val shareBuilder = ShareCompat.IntentBuilder.from(this)
+                shareBuilder.setType("message/rfc822")
+                shareBuilder.addEmailTo(Constants.ADMIN_EMAIL_ADRESS)
+                shareBuilder.setSubject(getString(R.string.loan_delay_alert_email_subject))
+
+                val pendingIntent = shareBuilder.intent
+
+                if (pendingIntent.resolveActivity(getPackageManager()) != null)
+                {
+                    startActivity(pendingIntent)
+                }
             }
         }
     }

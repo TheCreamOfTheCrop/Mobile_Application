@@ -37,6 +37,19 @@ interface ToolbarManager
         toolbar.setNavigationOnClickListener { up() }
     }
 
+    fun showAlertHeader(context: AppCompatActivity)
+    {
+        val colorId = R.color.red
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            val window = context.window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = ContextCompat.getColor(context, colorId)
+        }
+
+        toolbar.setBackgroundColor(ContextCompat.getColor(context, colorId))
+    }
+
     fun changeColor(color: LoansAdapter.Color, context: AppCompatActivity)
     {
         var colorId = 0

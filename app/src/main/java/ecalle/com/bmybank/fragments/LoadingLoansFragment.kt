@@ -203,14 +203,13 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
 
     private fun showInfo(message: String = getString(R.string.no_results))
     {
-        onUiThread {
+        if (activity != null)
+        {
             loader.visibility = View.GONE
             errorView.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
 
             errorText.text = message
-
         }
-
     }
 }
