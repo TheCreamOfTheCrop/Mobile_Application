@@ -25,10 +25,7 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.services_responses_bo.GettingUserLoansResponse
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.support.v4.ctx
-import org.jetbrains.anko.support.v4.onRefresh
-import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -110,7 +107,7 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
     override fun onResume()
     {
         super.onResume()
-        LocalBroadcastManager.getInstance(ctx).registerReceiver(broadcastReceiver,intentFilter)
+        LocalBroadcastManager.getInstance(ctx).registerReceiver(broadcastReceiver, intentFilter)
         //loadThenGetLoans()
     }
 
@@ -206,10 +203,14 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
 
     private fun showInfo(message: String = getString(R.string.no_results))
     {
-        loader.visibility = View.GONE
-        errorView.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
+        onUiThread {
+            loader.visibility = View.GONE
+            errorView.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
 
-        errorText.text = message
+            errorText.text = message
+
+        }
+
     }
 }

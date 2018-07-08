@@ -4,11 +4,13 @@ import android.content.Context
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.services_responses_bo.*
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+import retrofit2.http.PUT
 
 /**
  * Created by Thomas Ecalle on 11/03/2018.
@@ -19,6 +21,18 @@ interface BmyBankApi
     @FormUrlEncoded
     @POST("/note/listNote")
     fun getNotes(@Field("user_id") id: Int): Call<NoteListReponse>
+
+    @FormUrlEncoded
+    @POST("/note/findLoanNote")
+    fun getLoanNotes(@Field("loan_id") id: Int): Call<NoteListReponse>
+
+    @FormUrlEncoded
+    @POST("/note/add")
+    fun addNote(
+            @Field("note") note: Float,
+            @Field("comments") comment: String,
+            @Field("user_id") userId: Int,
+            @Field("loan_id") id: Int): Call<AddNoteResponse>
 
     @FormUrlEncoded
     @POST("https://homologation.lydia-app.com/api/payment/init.json")

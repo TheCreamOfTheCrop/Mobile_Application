@@ -130,6 +130,56 @@
             >
 
             <LinearLayout
+                android:id="@+id/noteContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginStart="22dp"
+                android:background="@drawable/primary_rounded_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_star"
+                    android:tint="@color/colorAccent"
+                    />
+
+                <TextView
+                    android:id="@+id/noteLabel"
+                    style="@style/SmallWhiteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/note_user_label"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+
+                <Button
+                    android:id="@+id/noteButton"
+                    style="@style/whiteTextViewButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/note_button_label"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -297,7 +347,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:minHeight="200dp"
                     android:padding="10dp"
                     />
 

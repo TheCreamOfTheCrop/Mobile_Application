@@ -20,6 +20,7 @@ class Constants
         val IN_PROGRESS_LOANS = "En cours"
         val IN_NEGOCIATION_LOANS = "En négociation"
         val FINISHED_LOANS = "finis"
+        val FINISHED_LOANS_LABEL = "Terminés"
         val BAD_RATE = 3.0
         val NORMAL_RATE = 10.0
         val LYDIA_PROVIDER_TOKEN = "5afeed242c336502991747 "

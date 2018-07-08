@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -24,6 +25,7 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.realm.bo.Refund
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_responses_bo.NoteListReponse
 import ecalle.com.bmybank.services_responses_bo.RefundsResponse
 import ecalle.com.bmybank.services_responses_bo.UserResponse
 import org.jetbrains.anko.ctx
@@ -43,7 +45,8 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
 
     companion object
     {
-        val USER_KEY = "userKey"
+        const val USER_KEY = "userKey"
+        const val ADD_NOTE_REQUEST_CODE = 2
     }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
@@ -65,6 +68,10 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
     private lateinit var refundsAdapter: RefundsAdapter
     private lateinit var refundsList: MutableList<Refund>
     private lateinit var refundsLoader: ProgressBar
+
+    private lateinit var noteContainer: LinearLayout
+    private lateinit var noteLabel: TextView
+    private lateinit var noteButton: TextView
 
     private lateinit var loan: Loan
     private var otherUser: User? = null
@@ -91,6 +98,10 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         totalGainz = find(R.id.totalGainz)
         gainzTitle = find(R.id.gainzTitle)
 
+        noteContainer = find(R.id.noteContainer)
+        noteLabel = find(R.id.noteLabel)
+        noteButton = find(R.id.noteButton)
+
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
 
@@ -102,7 +113,14 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         loan = intent.getSerializableExtra(MyLoansFragment.LOAN_KEY) as Loan
         otherUser = intent.getStringExtra(USER_KEY) as User?
         currentUser = RealmServices.getCurrentUser(this)
+
+        if (currentUser?.id != loan.user_requester_id)
+        {
+            handleNotation()
+        }
+
         getRefundsThenShow()
+
 
         if (otherUser == null)
         {
@@ -122,8 +140,39 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
 
         fillInformations()
         avatar.setOnClickListener(this)
+        noteButton.setOnClickListener(this)
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
+
+    }
+
+    private fun handleNotation()
+    {
+        val api = BmyBankApi.getInstance(ctx)
+        val loanNotesRequest = api.getLoanNotes(loan.id)
+
+        loanNotesRequest.enqueue(object : Callback<NoteListReponse>
+        {
+
+
+            override fun onResponse(call: Call<NoteListReponse>?, response: Response<NoteListReponse>?)
+            {
+                val res = response?.body()
+                if (res?.success != null && res.success)
+                {
+                    if (res.note.isEmpty())
+                    {
+                        noteContainer.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NoteListReponse>?, t: Throwable?)
+            {
+                Log.i("thomas", "Error on getting notes from API")
+            }
+        })
+
 
     }
 
@@ -180,9 +229,13 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
+        if (requestCode == FinishedLoanViewerActivity.ADD_NOTE_REQUEST_CODE)
         {
-
+            if (resultCode == Activity.RESULT_OK)
+            {
+                noteContainer.visibility = View.GONE
+                toast(R.string.note_added_with_success)
+            }
         }
     }
 
@@ -198,6 +251,14 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
                 intent.putExtra(ProfileViewerActivity.USER_FIRSTNAME_KEY, firstName)
 
                 startActivity(intent)
+            }
+            noteButton.id ->
+            {
+                val intent = Intent(FinishedLoanViewerActivity@ this, AddNoteActivity::class.java)
+                intent.putExtra(AddNoteActivity.LOAN_ID_KEY, loan.id)
+                intent.putExtra(AddNoteActivity.USER_ID_KEY, loan.user_requester_id)
+
+                startActivityForResult(intent, FinishedLoanViewerActivity.ADD_NOTE_REQUEST_CODE)
             }
         }
     }
@@ -233,6 +294,10 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
 
                     firstName.text = otherUser?.firstname
                     lastName.text = otherUser?.lastname
+
+                    noteLabel.text = getString(R.string.note_user_label, otherUser?.firstname)
+                    noteLabel.visibility = View.VISIBLE
+
 
                     removeLoaderOnNames()
                 }

@@ -51,7 +51,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
         val states = ArrayList<String>()
         states.add(Constants.PENDING_LOANS)
         states.add(Constants.IN_PROGRESS_LOANS)
-        states.add(Constants.FINISHED_LOANS)
+        states.add(Constants.FINISHED_LOANS_LABEL)
 
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter<String>(ctx, R.layout.spinner_item, states)
@@ -81,7 +81,7 @@ class MyLoansFragment : Fragment(), View.OnClickListener, AdapterView.OnItemSele
         var fragment = when (item)
         {
             Constants.IN_PROGRESS_LOANS -> InProgressLoansFragment()
-            Constants.FINISHED_LOANS -> FinishedLoansFragment()
+            Constants.FINISHED_LOANS_LABEL -> FinishedLoansFragment()
             else ->
             {
                 MyPendingLoansFragment()

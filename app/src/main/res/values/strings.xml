@@ -149,6 +149,13 @@
     <string name="repayment_done">Virement effectué</string>
     <string name="users_advices_label">Les notes des utilisateurs :</string>
     <string name="empty_notes">Aucune note pour le moment</string>
+    <string name="note_user_label">Noter %1$s pour ce prêt</string>
+    <string name="note_button_label">Noter</string>
+    <string name="note_comment_hint">Ajouter un commentaire</string>
+    <string name="add_note_title">Donnez votre avis !</string>
+    <string name="adding_note_loading">Envoie de votre note</string>
+    <string name="note_added_with_success">Note ajoutée !</string>
+    <string name="fields_error">Veuillez renseigner tous les champs</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

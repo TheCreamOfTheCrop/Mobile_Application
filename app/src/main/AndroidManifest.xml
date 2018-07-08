@@ -78,6 +78,10 @@
             android:name=".ProfileViewerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".AddNoteActivity"
+            android:screenOrientation="portrait"/>
+
 
         <service
             android:name=".firebase.services.BmyFirebaseMessagingService">

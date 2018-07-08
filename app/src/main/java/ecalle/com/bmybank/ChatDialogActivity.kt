@@ -91,10 +91,10 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
     companion object
     {
-        val DISCUSSION_KEY = "discussionKey"
-        val OTHER_USER_KEY = "otherUserKey"
-        val MODIFYING_REQUEST_CODE = 22
-        val PAYING_REQUEST_CODE = 5
+        const val DISCUSSION_KEY = "discussionKey"
+        const val OTHER_USER_KEY = "otherUserKey"
+        const val MODIFYING_REQUEST_CODE = 22
+        const val PAYING_REQUEST_CODE = 5
 
     }
 
@@ -144,6 +144,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
         //firebaseListenerInit()
 
         send.setOnClickListener(this)
+        toolbarOtherUserImage.setOnClickListener(this)
 
         enableHomeAsUp { onBackPressed() }
 
@@ -190,6 +191,16 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
                 intent.putExtra(PaymentActivity.LOAN_KEY, loan)
                 intent.putExtra(PaymentActivity.OTHER_USER_KEY, otherUser)
                 startActivityForResult(intent, ChatDialogActivity.PAYING_REQUEST_CODE)
+            }
+            toolbarOtherUserImage.id ->
+            {
+                if (otherUser == null) return
+
+                val intent = Intent(PendingLoanViewerActivity@ this, ProfileViewerActivity::class.java)
+                intent.putExtra(ProfileViewerActivity.USER_ID_KEY, otherUser?.id)
+                intent.putExtra(ProfileViewerActivity.USER_FIRSTNAME_KEY, otherUser?.firstname)
+
+                startActivity(intent)
             }
         }
     }

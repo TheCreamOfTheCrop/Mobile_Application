@@ -47,7 +47,7 @@ open class Loan(
         PENDING("en attente"),
         IN_NEGOCIATION("en négociation"),
         IN_PROGRESS("en cours"),
-        FINISHED("finis"),
+        FINISHED("Terminés"),
     }
 
 
