@@ -130,19 +130,12 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
             color = LoansAdapter.Color.BLUE
         }
 
-        changeColor(color!!, this)
-        val drawableId = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
+        var drawableId = if (color == LoansAdapter.Color.BLUE) R.drawable.vague else R.drawable.orange_wave
 
-        val drawable = ContextCompat.getDrawable(this, drawableId)
         if (loan.isLate())
         {
-            /*
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
-                drawable?.setTint(ContextCompat.getColor(this, R.color.red))
-                showAlertHeader(this)
-            }
-            */
+            color = LoansAdapter.Color.RED
+            drawableId = R.drawable.red_wave
 
             if (currentUser?.id != loan.user_requester_id)
             {
@@ -151,9 +144,9 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
             }
 
         }
+        changeColor(color!!, this)
 
-
-        waveHeader.background = drawable
+        waveHeader.background = ContextCompat.getDrawable(this, drawableId)
 
         fillInformations()
         repay.setOnClickListener(this)

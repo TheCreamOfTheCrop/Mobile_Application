@@ -131,7 +131,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
             removeLoaderOnNames()
         }
 
-        color = LoansAdapter.Color.Grey
+        color = LoansAdapter.Color.GREY
 
         changeColor(color!!, this)
         val drawable = R.drawable.grey_wave

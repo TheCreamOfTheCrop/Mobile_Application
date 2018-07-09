@@ -7,6 +7,7 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.fragments.inscription_steps.AvatarStep
+import ecalle.com.bmybank.fragments.inscription_steps.RGPDFragment
 import ecalle.com.bmybank.fragments.inscription_steps.ScannerStep
 import ecalle.com.bmybank.fragments.inscription_steps.UserInformationsStep
 
@@ -16,14 +17,15 @@ import ecalle.com.bmybank.fragments.inscription_steps.UserInformationsStep
 class InscriptionStepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm, context)
 {
 
-    override fun getCount() = 3
+    override fun getCount() = 4
 
     override fun createStep(position: Int): Step = with(position) {
         return when (position)
         {
             0 -> UserInformationsStep()
             1 -> AvatarStep()
-            else -> ScannerStep()
+            2 -> ScannerStep()
+            else -> RGPDFragment()
         }
     }
 
@@ -42,11 +44,16 @@ class InscriptionStepperAdapter(fm: FragmentManager, context: Context) : Abstrac
                                 .setBackButtonLabel(R.string.stepper_informations)
                                 .setEndButtonLabel(R.string.stepper_identity_scanner)
                                 .setTitle(R.string.stepper_avatar).create()
-                    else ->
+                    2 ->
                         StepViewModel.Builder(context)
                                 .setBackButtonLabel(R.string.stepper_avatar)
-                                .setEndButtonLabel(R.string.validate)
+                                .setEndButtonLabel(R.string.stepper_rgpd)
                                 .setTitle(R.string.stepper_identity_scanner).create()
+                    else ->
+                        StepViewModel.Builder(context)
+                                .setBackButtonLabel(R.string.stepper_identity_scanner)
+                                .setEndButtonLabel(R.string.validate)
+                                .setTitle(R.string.stepper_rgpd).create()
                 }
             }
 

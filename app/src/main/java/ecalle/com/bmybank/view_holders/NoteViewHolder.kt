@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.Constants
@@ -94,6 +95,8 @@ class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
                         GlideApp.with(itemView.context)
                                 .load(reference)
                                 .placeholder(R.drawable.default_profile)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) // <= ADDED
+                                .skipMemoryCache(true)
                                 .error(R.drawable.default_profile)
                                 .into(image)
                     }

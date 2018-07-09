@@ -160,6 +160,14 @@
     <string name="contact">Nous contacter</string>
     <string name="loan_delay_alert_email_subject">ALerte, prêt non réglé</string>
     <string name="alert_loan_delay_email_intent_label">Envoyer un email</string>
+    <string name="rgpd_dialog_title">Vos données personnelles !</string>
+    <string name="rgpd_dialog_info">Dans le cadre du bon fonctionnement de cette application, nous recoltons certaines informations qui nous sont nécéssaires, les voici :</string>
+    <string name="rgpd_dialog_info_second_part">Dansle cadre de la loi RGPD, nous demendons votre accord pour stocker ces informations, sans quoi votre compte ne pourra être crée.</string>
+    <string name="rgpd_email">Votre adresse E-mail</string>
+    <string name="rgpd_firstname">Votre prénom</string>
+    <string name="rgpd_lastname">Votre nom de famille</string>
+    <string name="rgpd_dialog_validation_message">En validant votre inscription, vous acceptez que nous gardions ces informations dans notre base de données.\nIl vous sera toujours possible par la suite de supprimer votre compte et vos informations personnelles.</string>
+    <string name="stepper_rgpd">RGPD</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

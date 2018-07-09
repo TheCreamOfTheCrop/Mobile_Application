@@ -10,7 +10,6 @@ import android.widget.Toast
 import com.tapadoo.alerter.Alerter
 import ecalle.com.bmybank.R
 import ecalle.com.bmybank.custom_components.BeMyDialog
-import org.jetbrains.anko.act
 
 
 /**
@@ -32,13 +31,12 @@ fun AppCompatActivity.alertError(text: String)
             .show()
 }
 
-fun Fragment.alertError(text: String)
+fun AppCompatActivity.alertInfo(text: String)
 {
-    Alerter.create(act)
-            .setTitle(R.string.error_alerter_title)
+    Alerter.create(this)
             .setText(text)
-            .setBackgroundColorRes(R.color.red)
-            .setIcon(R.drawable.ic_cross)
+            .setBackgroundColorRes(R.color.green)
+            .setIcon(R.drawable.ic_validate)
             .enableSwipeToDismiss()
             .setIconColorFilter(0) // Optional - Removes white tint
             .show()

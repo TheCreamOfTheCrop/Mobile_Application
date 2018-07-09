@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
@@ -351,6 +352,8 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
             GlideApp.with(this)
                     .load(reference)
                     .placeholder(R.drawable.default_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) // <= ADDED
+                    .skipMemoryCache(true)
                     .error(R.drawable.default_profile)
                     .into(toolbarOtherUserImage)
         }

@@ -54,17 +54,12 @@ interface ToolbarManager
     {
         var colorId = 0
 
-        if (color == LoansAdapter.Color.BLUE)
+        colorId = when (color)
         {
-            colorId = R.color.colorPrimary
-        }
-        else if (color == LoansAdapter.Color.ORANGE)
-        {
-            colorId = R.color.colorAccent
-        }
-        else
-        {
-            colorId = R.color.labelGrey
+            LoansAdapter.Color.BLUE -> R.color.colorPrimary
+            LoansAdapter.Color.ORANGE -> R.color.colorAccent
+            LoansAdapter.Color.RED -> R.color.red
+            else -> R.color.labelGrey
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

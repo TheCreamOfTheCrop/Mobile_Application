@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.dialog_bemybank.*
 /**
  * Created by Thomas Ecalle on 04/03/2018.
  */
-class BeMyDialog private constructor(context: Context?, message: String, type: TYPE, loop: Boolean) : Dialog(context), Animator.AnimatorListener
+class BeMyDialog private constructor(context: Context?, message: String, type: TYPE, loop: Boolean)
+    : Dialog(context), Animator.AnimatorListener
 {
     private var message: String
     private var type: TYPE

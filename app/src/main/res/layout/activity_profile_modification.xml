@@ -3,24 +3,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="@dimen/generalPadding"
     >
-
-    <TextView
-        android:id="@+id/errorView"
-        style="@style/ErrorLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:padding="@dimen/generalPadding"
-        android:text="teeest"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -39,6 +26,53 @@
             android:orientation="vertical"
             >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:padding="@dimen/generalPadding"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/default_profile"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="vertical"
+                    >
+
+                    <Button
+                        android:id="@+id/gallery"
+                        style="@style/LittleCustomButton"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fromGallery"
+                        />
+
+                    <Button
+                        android:id="@+id/camera"
+                        style="@style/LittleCustomButton"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/fromCamera"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
             <ecalle.com.bmybank.custom_components.CustomLinedTitle
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +81,7 @@
 
             <EditText
                 android:id="@+id/email"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/emailPlaceholder"
@@ -56,7 +90,7 @@
 
             <EditText
                 android:id="@+id/previousPassword"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/previousPassword"
@@ -65,7 +99,7 @@
 
             <EditText
                 android:id="@+id/password"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/newPassword"
@@ -74,7 +108,7 @@
 
             <EditText
                 android:id="@+id/confirmPassword"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirmPasswordPlaceholder"
@@ -89,7 +123,7 @@
 
             <EditText
                 android:id="@+id/firstName"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/firstNamePlaceholder"
@@ -98,7 +132,7 @@
 
             <EditText
                 android:id="@+id/lastName"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lastNamePlaceholder"

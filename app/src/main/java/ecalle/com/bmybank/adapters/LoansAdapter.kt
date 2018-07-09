@@ -16,7 +16,7 @@ class LoansAdapter(private var list: List<Loan>, private var onLoanClickListener
 {
     enum class Color
     {
-        BLUE, ORANGE, Grey
+        BLUE, ORANGE, GREY, RED
     }
 
     interface OnLoanClickListener

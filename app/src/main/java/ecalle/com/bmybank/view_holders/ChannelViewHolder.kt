@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
@@ -91,6 +92,8 @@ class ChannelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             GlideApp.with(itemView.context)
                     .load(reference)
                     .placeholder(R.drawable.default_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) // <= ADDED
+                    .skipMemoryCache(true)
                     .error(R.drawable.default_profile)
                     .into(otherUserImage)
 

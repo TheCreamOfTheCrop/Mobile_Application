@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import ecalle.com.bmybank.Constants
 import ecalle.com.bmybank.R
@@ -83,6 +84,8 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                     .load(reference)
                     .placeholder(R.drawable.default_profile)
                     .error(R.drawable.default_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) // <= ADDED
+                    .skipMemoryCache(true)
                     .centerCrop()
                     .into(imageView)
 

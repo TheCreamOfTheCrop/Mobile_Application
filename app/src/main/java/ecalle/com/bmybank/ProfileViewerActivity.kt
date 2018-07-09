@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.TextView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
@@ -67,14 +68,7 @@ class ProfileViewerActivity : AppCompatActivity(), ToolbarManager
 
             toolbarTitle = intent.getStringExtra(USER_FIRSTNAME_KEY) ?: ""
 
-            var color = intent.getSerializableExtra(ProfileViewerActivity.COLOR_KEY) as LoansAdapter.Color?
-
-            if (color == null)
-            {
-                color = LoansAdapter.Color.BLUE
-            }
-
-            changeColor(color!!, this)
+            changeColor(LoansAdapter.Color.BLUE, this)
 
             findUserInformations(userId)
             findUserNotes(userId)
@@ -161,6 +155,8 @@ class ProfileViewerActivity : AppCompatActivity(), ToolbarManager
                         GlideApp.with(ctx)
                                 .load(reference)
                                 .placeholder(R.drawable.default_profile)
+                                .error(R.drawable.default_profile)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .error(R.drawable.default_profile)
                                 .into(image)
                     }
