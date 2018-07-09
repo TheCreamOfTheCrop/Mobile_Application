@@ -148,7 +148,11 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
     {
         if (requestCode == ChatDialogActivity.MODIFYING_REQUEST_CODE)
         {
-
+            if (resultCode == Activity.RESULT_OK)
+            {
+                this.loan = data?.getSerializableExtra(AddLoanActivity.RETURNED_LOAN_KEY) as Loan
+                fillInformations()
+            }
         }
     }
 
@@ -193,7 +197,7 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
         val intent = Intent(this@PendingLoanViewerActivity, AddLoanActivity::class.java)
         intent.putExtra(AddLoanActivity.IS_MODIFYYING_MODE_KEY, true)
         intent.putExtra(AddLoanActivity.MODIFYING_LOAN_KEY, loan)
-        startActivityForResult(intent, ChatDialogActivity.PAYING_REQUEST_CODE)
+        startActivityForResult(intent, ChatDialogActivity.MODIFYING_REQUEST_CODE)
     }
 
     private fun createAndLaunchNegociationChat()
