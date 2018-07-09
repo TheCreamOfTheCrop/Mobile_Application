@@ -82,6 +82,10 @@
             android:name=".AddNoteActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".RGPDActivity"
+            android:screenOrientation="portrait"/>
+
 
         <service
             android:name=".firebase.services.BmyFirebaseMessagingService">

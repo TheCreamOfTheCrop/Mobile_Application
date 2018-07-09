@@ -168,6 +168,17 @@
     <string name="rgpd_lastname">Votre nom de famille</string>
     <string name="rgpd_dialog_validation_message">En validant votre inscription, vous acceptez que nous gardions ces informations dans notre base de données.\nIl vous sera toujours possible par la suite de supprimer votre compte et vos informations personnelles.</string>
     <string name="stepper_rgpd">RGPD</string>
+    <string name="rgpd_profile_screen_item">Vos données personnelles</string>
+    <string name="rgpd_activity_explanation">Pour le bon fonctionnement de l\'application, nous avons certaines données vous concerant en tant qu\'utilisateur.\n\nLors de votre inscription, vous nous avez autorisez à les garder en base de données.\n\nIl vous est cependant tout à fait possible de recevoir par mail l'ensemble des informations que nous avons à votre sujet, voire même de nous demander de détruire celles-ci.</string>
+    <string name="rgpd_activity_warning">Attention ! Toute suppression de données entraînera la suppression de votre compte sur cette application.</string>
+    <string name="send_by_mail">Envoyez les moi par mail</string>
+    <string name="your_personal_data_email_subject">Vos données personnelles</string>
+    <string name="personnal_data_email_body">\n\nVoici les informations que nous avons sur vous :\nPrénom : %1$s\nNom : %2$s\nEmail : %3$s\n</string>
+    <string name="contact_demand_subject">Demande de contact</string>
+    <string name="delete_data">Supprimez mes données</string>
+    <string name="confirm_deleting_user">Confirmez-vous la suppression totale de vos données de l\'application ?\nCette manipulation ne pourra en aucun cas être annulée par la suite</string>
+    <string name="deleting_user_loading">Suppression des données en cours...</string>
+    <string name="deleting_data_success">Suppression des données effectuée</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>

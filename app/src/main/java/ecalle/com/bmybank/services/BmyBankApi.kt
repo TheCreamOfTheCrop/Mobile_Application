@@ -117,6 +117,10 @@ interface BmyBankApi
     @POST("/user")
     fun findUserById(@Field("id") id: Int): Call<UserResponse>
 
+    @FormUrlEncoded
+    @POST("/user/delete")
+    fun deleteUser(@Field("id") id: Int): Call<SImpleResponse>
+
     companion object
     {
         private val url = "https://still-cove-11874.herokuapp.com/"
