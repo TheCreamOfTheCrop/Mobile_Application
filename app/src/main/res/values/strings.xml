@@ -76,7 +76,7 @@
     <string name="in_negociation_loans_title">En Négociation</string>
     <string name="finished_loans_title">Finis</string>
     <string name="quitting_loan_creation_message">Voulez-vous vraiment annuler la création de votre prêt ?</string>
-    <string name="incorrect_amount">Montant incorrect</string>
+    <string name="incorrect_amount">Montant incorrect ! Le montant maximum est de 1000 euros</string>
     <string name="loan_well_added">Demande de prêt envoyée</string>
     <string name="incorrect_rate">Taux d\'intérêts incorrect</string>
     <string name="impossible_loan_add">Impossible d\'ajouter ce prêt</string>

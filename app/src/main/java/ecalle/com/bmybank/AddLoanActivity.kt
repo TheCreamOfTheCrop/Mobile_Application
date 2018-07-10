@@ -429,7 +429,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun amountNotWellSet(): Boolean
     {
-        return amount.textValue.isNullOrEmpty() || (amount.textValue.toFloatOrNull() === null)
+        return amount.textValue.isNullOrEmpty() || (amount.textValue.toFloatOrNull() === null) || amount.textValue.toFloat() > 1000
     }
 
     private fun rateNotWellSet(): Boolean
@@ -439,7 +439,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
 
     private fun descriptionIsNotWellFormat(): Boolean
     {
-        if (description.textValue.isNullOrEmpty()) return true
+        if (description.textValue.isNullOrEmpty()) return false
 
         return description.textValue.length >= Constants.DESCRIPTION_MAX_LENGTH
     }
