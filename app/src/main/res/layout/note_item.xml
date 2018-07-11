@@ -15,7 +15,7 @@
         android:src="@drawable/default_profile"
         app:layout_constraintBottom_toTopOf="@id/comment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/firstName"
         />
 
     <TextView
@@ -62,10 +62,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:textSize="14sp"
+        android:layout_marginTop="15dp"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/image"
         app:layout_constraintTop_toBottomOf="@id/image"
         tools:text="SUper commentaire"
         />

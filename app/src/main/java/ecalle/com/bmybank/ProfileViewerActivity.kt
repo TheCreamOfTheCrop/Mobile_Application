@@ -139,7 +139,7 @@ class ProfileViewerActivity : AppCompatActivity(), ToolbarManager
                     toolbarTitle = if (user?.firstname != null) user?.firstname!! else ""
                     firstName.text = user?.firstname
                     lastName.text = user?.lastname
-                    ratingBar.rating = 3f
+                    ratingBar.rating = user?.note ?: 0f
 
                     var emailWithoutSpecialCharacters = user?.email?.replace("@", "")
                     emailWithoutSpecialCharacters = emailWithoutSpecialCharacters?.replace(".", "")

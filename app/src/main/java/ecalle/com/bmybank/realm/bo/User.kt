@@ -15,6 +15,7 @@ open class User(id: Int = 0,
                 firstname: String = "",
                 avatar: String = "",
                 description: String = "",
+                note: Float? = 0f,
                 isAccountValidate: Boolean = true) : RealmObject(), Serializable
 {
     @PrimaryKey
@@ -26,6 +27,7 @@ open class User(id: Int = 0,
     open var firstname: String = ""
     open var avatar: String? = null
     open var description: String? = null
+    open var note: Float? = 0f
     open var isAccountValidate: Boolean = true
 
     init
@@ -38,6 +40,7 @@ open class User(id: Int = 0,
         this.firstname = firstname
         this.avatar = avatar
         this.description = description
+        this.note = note
         this.isAccountValidate = isAccountValidate
     }
 }
