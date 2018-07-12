@@ -207,7 +207,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         lineChart.xAxis.granularity = 1f
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart.xAxis.valueFormatter = BMyXValuesFormatter(xAxis)
-        //lineChart.xAxis.setDrawAxisLine(false)
+        lineChart.xAxis.setDrawAxisLine(false)
 
         lineChart.axisRight.isEnabled = false
 
@@ -220,8 +220,8 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
 
         lineChart.description = null
 
-        lineChart.axisLeft.setDrawGridLines(false)
-        lineChart.xAxis.setDrawGridLines(false)
+        //lineChart.axisLeft.setDrawGridLines(false)
+        //lineChart.xAxis.setDrawGridLines(false)
 
         lineChart.setVisibleXRange(1f, 3f)
         lineChart.setVisibleYRange(1f, amountWithRate / loan.delay * 4, lineChart.axisLeft.axisDependency)
