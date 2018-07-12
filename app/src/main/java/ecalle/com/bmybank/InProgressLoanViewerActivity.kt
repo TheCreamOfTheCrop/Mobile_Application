@@ -208,7 +208,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
 
         lineChart.axisLeft.setDrawAxisLine(false)
 
-        lineChart.axisLeft.setDrawLabels(false)
+        //lineChart.axisLeft.setDrawLabels(false)
         lineChart.axisLeft.axisMinimum = 0f
         lineChart.axisLeft.axisMaximum = amountWithRate
         lineChart.axisLeft.granularity = 10f
