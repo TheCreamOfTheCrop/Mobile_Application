@@ -22,6 +22,9 @@ interface BmyBankApi
     @POST("/note/listNote")
     fun getNotes(@Field("user_id") id: Int): Call<NoteListReponse>
 
+    @POST("/note/listNoteMadeByUser")
+    fun getCreatedNotes(): Call<NoteListReponse>
+
     @FormUrlEncoded
     @POST("/note/findLoanNote")
     fun getLoanNotes(@Field("loan_id") id: Int): Call<NoteListReponse>

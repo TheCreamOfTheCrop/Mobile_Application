@@ -9,14 +9,14 @@ import java.io.Serializable
  */
 open class Refund(
         id: Int = 0,
-        amount: Int = 0,
+        amount: Float = 0f,
         loan_id: Int = 0,
         creationdate: String = ""
 ) : RealmObject(), Serializable
 {
     @PrimaryKey
     open var id: Int = 0
-    open var amount: Int = 0
+    open var amount: Float = 0f
     open var loan_id: Int = 0
     open var creationdate: String = ""
 

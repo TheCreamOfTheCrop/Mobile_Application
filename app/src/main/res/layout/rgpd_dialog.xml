@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_person_rgpd"
-            app:layout_constraintBottom_toTopOf="@+id/validationMessage"
+            app:layout_constraintBottom_toTopOf="@+id/loansIcon"
             app:layout_constraintEnd_toStartOf="@id/lastName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/firstNameIcon"
@@ -121,19 +121,68 @@
             app:layout_constraintTop_toTopOf="@id/lastNameIcon"
             />
 
+        <ImageView
+            android:id="@+id/loansIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_euro_symbol"
+            app:layout_constraintBottom_toTopOf="@+id/chatIcon"
+            app:layout_constraintEnd_toStartOf="@id/loans"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastNameIcon"
+            />
+
+        <TextView
+            android:id="@+id/loans"
+            style="@style/NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/rgpd_loans"
+            app:layout_constraintStart_toEndOf="@id/loansIcon"
+            app:layout_constraintTop_toTopOf="@id/loansIcon"
+            />
+
+        <ImageView
+            android:id="@+id/chatIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_chat"
+            android:tint="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/validationMessage"
+            app:layout_constraintEnd_toStartOf="@id/chat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loansIcon"
+            />
+
+        <TextView
+            android:id="@+id/chat"
+            style="@style/NormalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/rgpd_chat"
+            app:layout_constraintStart_toEndOf="@id/chatIcon"
+            app:layout_constraintTop_toTopOf="@id/chatIcon"
+            />
+
         <TextView
             android:id="@+id/validationMessage"
             style="@style/MediumGreyLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:gravity="start"
             android:text="@string/rgpd_dialog_validation_message"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lastNameIcon"
+            app:layout_constraintTop_toBottomOf="@id/chatIcon"
             />
 
 

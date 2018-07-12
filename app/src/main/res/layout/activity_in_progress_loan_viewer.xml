@@ -130,80 +130,6 @@
             android:orientation="vertical"
             >
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginBottom="20dp"
-                android:focusable="true"
-                />
-
-            <LinearLayout
-                android:id="@+id/noteContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/primary_rounded_background"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="15dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                >
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_warning"
-                    android:tint="@color/red"
-                    />
-
-                <TextView
-                    android:id="@+id/noteLabel"
-                    style="@style/SmallWhiteText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/alert_delay"
-                    android:textAlignment="center"
-                    />
-
-                <Button
-                    android:id="@+id/noteButton"
-                    style="@style/whiteTextViewButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:text="@string/note_button_label"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    />
-
-                <Button
-                    android:id="@+id/contactButton"
-                    style="@style/CustomButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:text="@string/contact"
-                    />
-
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -309,6 +235,127 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/noteContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/primary_rounded_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                >
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_warning"
+                    android:tint="@color/red"
+                    />
+
+                <TextView
+                    android:id="@+id/noteLabel"
+                    style="@style/SmallWhiteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/alert_delay"
+                    android:textAlignment="center"
+                    />
+
+                <Button
+                    android:id="@+id/noteButton"
+                    style="@style/whiteTextViewButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/note_button_label"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    />
+
+                <Button
+                    android:id="@+id/contactButton"
+                    style="@style/CustomButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/contact"
+                    />
+
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginBottom="20dp"
+                android:focusable="true"
+                />
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/blue_circle_background"
+                android:elevation="25dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_background"
+                    android:elevation="15dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/restAmount"
+                        style="@style/RestToPayAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableEnd="@drawable/ic_euro_symbol"
+                        android:drawableRight="@drawable/ic_euro_symbol"
+                        android:gravity="center"
+                        tools:text="90"
+                        />
+
+                    <TextView
+                        style="@style/RestToPayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reste à payer"
+
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
             <TextView
                 android:id="@+id/description"
                 style="@style/LightGreyLabel"
@@ -358,9 +405,9 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
                     android:minHeight="200dp"
                     android:padding="10dp"
                     />

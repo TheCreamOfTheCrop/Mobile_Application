@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="@dimen/generalPadding"
     >
@@ -46,7 +47,7 @@
 
             <EditText
                 android:id="@+id/email"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/emailPlaceholder"
@@ -55,7 +56,7 @@
 
             <EditText
                 android:id="@+id/password"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/passwordPlaceholder"
@@ -64,7 +65,7 @@
 
             <EditText
                 android:id="@+id/confirmPassword"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirmPasswordPlaceholder"
@@ -79,7 +80,7 @@
 
             <EditText
                 android:id="@+id/firstName"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/firstNamePlaceholder"
@@ -88,7 +89,7 @@
 
             <EditText
                 android:id="@+id/lastName"
-                style="@style/RoundedEditText"
+                style="@style/GreyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lastNamePlaceholder"

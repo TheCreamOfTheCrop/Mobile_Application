@@ -10,14 +10,18 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import ecalle.com.bmybank.adapters.LoansAdapter
 import ecalle.com.bmybank.adapters.RefundsAdapter
+import ecalle.com.bmybank.custom_components.BMyXValuesFormatter
 import ecalle.com.bmybank.firebase.GlideApp
 import ecalle.com.bmybank.fragments.MyLoansFragment
 import ecalle.com.bmybank.realm.RealmServices
@@ -34,6 +38,8 @@ import org.jetbrains.anko.toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -79,6 +85,12 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
     private var currentUser: User? = null
     private var color: LoansAdapter.Color? = LoansAdapter.Color.BLUE
 
+    private lateinit var scrollView: ScrollView
+
+    private lateinit var lineChart: LineChart
+    private lateinit var lineData: LineData
+    private lateinit var acceptationDateCalendar: Calendar
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -98,6 +110,8 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         refundsLoader = find(R.id.refundsLoader)
         totalGainz = find(R.id.totalGainz)
         gainzTitle = find(R.id.gainzTitle)
+        lineChart = find(R.id.lineChart)
+        scrollView = find(R.id.scrollView)
 
         noteContainer = find(R.id.noteContainer)
         noteLabel = find(R.id.noteLabel)
@@ -106,7 +120,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
 
-
+        scrollView.smoothScrollTo(0, 0)
 
         if (intent == null)
         {
@@ -116,6 +130,9 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         loan = intent.getSerializableExtra(MyLoansFragment.LOAN_KEY) as Loan
         otherUser = intent.getStringExtra(USER_KEY) as User?
         currentUser = RealmServices.getCurrentUser(this)
+
+        startFillingUpChart()
+
 
         if (currentUser?.id != loan.user_requester_id)
         {
@@ -147,6 +164,80 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
         firstName.text = otherUser?.firstname
         lastName.text = otherUser?.lastname
 
+    }
+
+    private fun startFillingUpChart()
+    {
+        val xAxis = mutableListOf<Int>()
+        val amountWithRate = (loan.amount * (1 + loan.rate / 100))
+
+        val acceptationDateTimestamp = loan.acceptationDate?.toLongOrNull() ?: return
+        acceptationDateCalendar = Calendar.getInstance()
+        acceptationDateCalendar.time = Date(acceptationDateTimestamp)
+
+
+        if (acceptationDateCalendar.get(Calendar.MONTH) == 0)
+        {
+            xAxis.add(11)
+        }
+        else
+        {
+            xAxis.add(acceptationDateCalendar.get(Calendar.MONTH).minus(1) % 12)
+        }
+
+        for (i in 0..loan.delay)
+        {
+            xAxis.add(acceptationDateCalendar.get(Calendar.MONTH).plus(i) % 12)
+        }
+
+        lineChart.xAxis.axisMinimum = 0f
+        lineChart.xAxis.axisMaximum = loan.delay.toFloat()
+        lineChart.xAxis.granularity = 1f
+        lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        lineChart.xAxis.valueFormatter = BMyXValuesFormatter(xAxis)
+        lineChart.xAxis.setDrawAxisLine(false)
+
+        lineChart.axisRight.isEnabled = false
+
+        lineChart.axisLeft.setDrawAxisLine(false)
+
+        //lineChart.axisLeft.setDrawLabels(false)
+        lineChart.axisLeft.axisMinimum = 0f
+        lineChart.axisLeft.axisMaximum = amountWithRate + 200f
+        lineChart.axisLeft.isGranularityEnabled = true
+        lineChart.axisLeft.granularity = amountWithRate / 3
+
+        lineChart.description = null
+
+        //lineChart.axisLeft.setDrawGridLines(false)
+        //lineChart.xAxis.setDrawGridLines(false)
+
+        lineChart.setVisibleXRange(1f, 3f)
+        lineChart.setVisibleYRange(1f, amountWithRate / loan.delay * (loan.delay + 1), lineChart.axisLeft.axisDependency)
+
+        val entries = ArrayList<Entry>()
+
+        for (i in 0..loan.delay)
+        {
+            entries.add(Entry((i + 1).toFloat(), amountWithRate / loan.delay))
+        }
+
+        val lineDataSet = LineDataSet(entries, "Remboursement souhaité")
+
+        lineDataSet.color = ContextCompat.getColor(ctx, R.color.colorAccent)
+        lineDataSet.valueTextSize = 20f
+        lineDataSet.valueTextColor = ContextCompat.getColor(ctx, R.color.colorAccent)
+        lineDataSet.lineWidth = 3f
+        lineDataSet.setDrawValues(false)
+
+        lineData = LineData(lineDataSet)
+
+        lineChart.data = lineData
+        lineChart.isLogEnabled = true
+        lineChart.setDrawBorders(false)
+        lineChart.legend.form = Legend.LegendForm.CIRCLE
+
+        lineChart.invalidate()
     }
 
     private fun handleNotation()
@@ -192,6 +283,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
                 if (res?.success != null && res?.success)
                 {
                     refundsList = res.refunds
+                    fillChartWithRefunds(refundsList)
                     refundsAdapter = RefundsAdapter(refundsList)
 
                     refundsRecyclerView.layoutManager = LinearLayoutManager(ctx)
@@ -200,7 +292,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
                     refundsLoader.visibility = View.GONE
                     refundsRecyclerView.visibility = View.VISIBLE
 
-                    var total = 0
+                    var total = 0f
                     for (refund in refundsList)
                     {
                         total += refund.amount
@@ -228,6 +320,60 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
             }
         })
 
+    }
+
+    private fun fillChartWithRefunds(refunds: List<Refund>)
+    {
+
+        loan.acceptationDate?.toLongOrNull() ?: return
+        if (refunds.isEmpty()) return
+
+        val entries = ArrayList<Entry>()
+
+        var lastEntry = Entry()
+        var lastIndex = -1f
+
+        refunds.forEachIndexed { index, refund ->
+            run {
+
+                val monthIndex = getRefundMonthIndex(refund.creationdate)
+                if (monthIndex == lastIndex)
+                {
+                    lastEntry.y = lastEntry.y + refund.amount.toFloat()
+                }
+                else
+                {
+                    lastIndex = monthIndex
+                    lastEntry = Entry(monthIndex, refund.amount.toFloat())
+                }
+
+
+                entries.add(lastEntry)
+            }
+        }
+
+        val lineDataSet = LineDataSet(entries, "Remboursement réel")
+
+        lineDataSet.color = ContextCompat.getColor(ctx, R.color.colorPrimary)
+        lineDataSet.valueTextSize = 20f
+        lineDataSet.valueTextColor = ContextCompat.getColor(ctx, R.color.colorPrimary)
+        lineDataSet.lineWidth = 3f
+
+        lineData.addDataSet(lineDataSet)
+
+        lineData.notifyDataChanged()
+        lineChart.notifyDataSetChanged()
+        lineChart.invalidate()
+    }
+
+    private fun getRefundMonthIndex(stringTimeStamp: String): Float
+    {
+        val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRANCE).parse(stringTimeStamp)
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        return (calendar.get(Calendar.MONTH) - acceptationDateCalendar.get(Calendar.MONTH) + 1).toFloat()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

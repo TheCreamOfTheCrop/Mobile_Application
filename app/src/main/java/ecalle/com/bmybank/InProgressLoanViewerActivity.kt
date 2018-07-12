@@ -85,6 +85,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
     private lateinit var noteLabel: TextView
     private lateinit var noteButton: TextView
     private lateinit var contactButton: TextView
+    private lateinit var restAmount: TextView
     private lateinit var scrollView: ScrollView
 
     private lateinit var lineChart: LineChart
@@ -112,6 +113,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         repay = find(R.id.repay)
         lineChart = find(R.id.lineChart)
         scrollView = find(R.id.scrollView)
+        restAmount = find(R.id.restAmount)
 
         noteContainer = find(R.id.noteContainer)
         noteLabel = find(R.id.noteLabel)
@@ -132,6 +134,8 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         loan = intent.getSerializableExtra(MyLoansFragment.LOAN_KEY) as Loan
         currentUser = RealmServices.getCurrentUser(this)
         getRefundsThenShow()
+
+        restAmount.text = (loan.getNeededRefund() - loan.totalRefunded).toString()
 
         if (loan.user_requester_id == currentUser?.id)
         {

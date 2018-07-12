@@ -176,10 +176,15 @@
     <string name="personnal_data_email_body">\n\nVoici les informations que nous avons sur vous :\nPrénom : %1$s\nNom : %2$s\nEmail : %3$s\n</string>
     <string name="contact_demand_subject">Demande de contact</string>
     <string name="delete_data">Supprimez mes données</string>
-    <string name="confirm_deleting_user">Confirmez-vous la suppression totale de vos données de l\'application ?\nCette manipulation ne pourra en aucun cas être annulée par la suite</string>
+    <string name="confirm_deleting_user">Confirmez-vous la suppression totale de vos données de l\'application ?\n\nCette manipulation ne pourra en aucun cas être annulée par la suite\n\nNous allons dans un premier temps vérifier que votre compte est élligible à la suppression (aucune dette en cours) puis nous vous indiquerons lorsque nous l\'aurons entièrement supprimé dans un délais de 1 mois, conformément à la loi RGPD</string>
     <string name="deleting_user_loading">Suppression des données en cours...</string>
     <string name="deleting_data_success">Suppression des données effectuée</string>
     <string name="chart_description">Remboursements</string>
+    <string name="rgpd_loans">L\'ensemble des informations sur vos prêts</string>
+    <string name="rgpd_chat">Vos messsages de chat</string>
+    <string name="asking_for_deletion">Demande de suppression de données personnelles</string>
+    <string name="delting_id">\n\n\n---------------\nMerci de ne pas effacer les informations ci-dessous, sans quoi la suppression de vos données ne pourra fonctionner correctement\n\nEmail renseigné dans l\'application : %1$s</string>
+    <string name="loading_personal_data">Chargement de vos données</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>
