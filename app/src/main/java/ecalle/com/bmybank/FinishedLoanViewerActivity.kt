@@ -50,6 +50,7 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
     }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
+    val actions by lazy { find<Toolbar>(R.id.actions) }
 
     private lateinit var amount: TextView
     private lateinit var delay: TextView
@@ -104,6 +105,8 @@ class FinishedLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnC
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
+
+
 
         if (intent == null)
         {

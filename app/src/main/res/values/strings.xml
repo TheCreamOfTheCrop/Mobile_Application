@@ -179,6 +179,7 @@
     <string name="confirm_deleting_user">Confirmez-vous la suppression totale de vos données de l\'application ?\nCette manipulation ne pourra en aucun cas être annulée par la suite</string>
     <string name="deleting_user_loading">Suppression des données en cours...</string>
     <string name="deleting_data_success">Suppression des données effectuée</string>
+    <string name="chart_description">Remboursements</string>
 
     <string-array name="my_loans_states">
         <item>En attente</item>
