@@ -61,6 +61,7 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
     private lateinit var userInformations: LinearLayout
     private lateinit var avatar: CircleImageView
     private lateinit var modifyLoan: Button
+    private lateinit var scrollview: ScrollView
 
     private lateinit var loan: Loan
     private var otherUser: User? = null
@@ -83,9 +84,12 @@ class PendingLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.OnCl
         userInformations = find(R.id.userInformations)
         avatar = find(R.id.avatar)
         modifyLoan = find(R.id.modifyLoan)
+        scrollview = find(R.id.scrollview)
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
+
+        scrollview.fullScroll(ScrollView.FOCUS_UP)
 
         if (intent == null)
         {

@@ -112,35 +112,40 @@ class PublicLoansFragment : Fragment(), View.OnClickListener, PublicLoansAdapter
         {
             override fun onResponse(call: Call<GettingUserLoansResponse>, response: Response<GettingUserLoansResponse>)
             {
-                if (response.code() == 400)
+                if (activity != null)
                 {
-                    showInfo()
-                }
-                else
-                {
-                    loader.visibility = View.GONE
-                    val loansResponse = response.body()
-                    if (loansResponse?.success != null && loansResponse?.success)
+                    if (response.code() == 400)
                     {
-                        if (!loansResponse.loans.isEmpty())
+                        showInfo()
+                    }
+                    else
+                    {
+                        loader.visibility = View.GONE
+                        val loansResponse = response.body()
+                        if (loansResponse?.success != null && loansResponse?.success)
                         {
-                            loans = loansResponse.loans
-                            setupList()
-                        }
-                        else
-                        {
-                            showInfo()
-                        }
+                            if (!loansResponse.loans.isEmpty())
+                            {
+                                loans = loansResponse.loans
+                                setupList()
+                            }
+                            else
+                            {
+                                showInfo()
+                            }
 
+                        }
                     }
                 }
-
 
             }
 
             override fun onFailure(call: Call<GettingUserLoansResponse>, t: Throwable)
             {
-                showInfo(message = getString(R.string.not_internet))
+                if (activity != null)
+                {
+                    showInfo(message = getString(R.string.not_internet))
+                }
             }
         })
     }

@@ -85,6 +85,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
     private lateinit var noteLabel: TextView
     private lateinit var noteButton: TextView
     private lateinit var contactButton: TextView
+    private lateinit var scrollView: ScrollView
 
     private lateinit var lineChart: LineChart
     private lateinit var lineData: LineData
@@ -110,6 +111,7 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
         refundsLoader = find(R.id.refundsLoader)
         repay = find(R.id.repay)
         lineChart = find(R.id.lineChart)
+        scrollView = find(R.id.scrollView)
 
         noteContainer = find(R.id.noteContainer)
         noteLabel = find(R.id.noteLabel)
@@ -118,6 +120,9 @@ class InProgressLoanViewerActivity : AppCompatActivity(), ToolbarManager, View.O
 
         toolbarTitle = getString(R.string.loan_viewver_toolbar_title)
         enableHomeAsUp { onBackPressed() }
+
+        scrollView.smoothScrollTo(0, 0)
+
 
         if (intent == null)
         {

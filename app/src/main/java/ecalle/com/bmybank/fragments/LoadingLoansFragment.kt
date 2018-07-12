@@ -25,7 +25,10 @@ import ecalle.com.bmybank.realm.bo.Loan
 import ecalle.com.bmybank.services.BmyBankApi
 import ecalle.com.bmybank.services_responses_bo.GettingUserLoansResponse
 import org.jetbrains.anko.find
-import org.jetbrains.anko.support.v4.*
+import org.jetbrains.anko.support.v4.act
+import org.jetbrains.anko.support.v4.ctx
+import org.jetbrains.anko.support.v4.onRefresh
+import org.jetbrains.anko.support.v4.startActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -168,35 +171,40 @@ abstract class LoadingLoansFragment : Fragment(), View.OnClickListener
         {
             override fun onResponse(call: Call<GettingUserLoansResponse>, response: Response<GettingUserLoansResponse>)
             {
-                if (response.code() == 400)
+                if (activity != null)
                 {
-                    showInfo()
-                }
-                else
-                {
-                    loader.visibility = View.GONE
-                    val loansResponse = response.body()
-                    if (loansResponse?.loans != null)
+                    if (response.code() == 400)
                     {
-                        if (!loansResponse.loans.isEmpty())
+                        showInfo()
+                    }
+                    else
+                    {
+                        loader.visibility = View.GONE
+                        val loansResponse = response.body()
+                        if (loansResponse?.loans != null)
                         {
-                            loans = loansResponse.loans
-                            setupList()
-                        }
-                        else
-                        {
-                            showInfo()
-                        }
+                            if (!loansResponse.loans.isEmpty())
+                            {
+                                loans = loansResponse.loans
+                                setupList()
+                            }
+                            else
+                            {
+                                showInfo()
+                            }
 
+                        }
                     }
                 }
-
 
             }
 
             override fun onFailure(call: Call<GettingUserLoansResponse>, t: Throwable)
             {
-                showInfo(message = getString(R.string.not_internet))
+                if (activity != null)
+                {
+                    showInfo(message = getString(R.string.not_internet))
+                }
             }
         })
     }
