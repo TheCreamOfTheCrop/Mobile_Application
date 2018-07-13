@@ -251,6 +251,7 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
             if (loan?.user_provider_id != null)
             {
+                publicNegociatedLoan.visibility = View.GONE
                 if (loan?.user_requester_id == currentUser?.id)
                 {
                     privateLastName.text = currentUser?.lastname

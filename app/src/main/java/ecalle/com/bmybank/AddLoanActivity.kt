@@ -54,6 +54,7 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
     private lateinit var otherUserFirstName: TextView
     private var isPublicType = true
     private lateinit var otherUser: User
+    private lateinit var currrentUser: User
 
 
     private var isModifyingMode: Boolean = false
@@ -79,6 +80,8 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
                 otherUser = intent.getSerializableExtra(MODIFYING_LOAN_OTHER_USER_KEY) as User
             }
         }
+
+        currrentUser = RealmServices.getCurrentUser(this) as User
 
         description = find(R.id.description)
         amount = find(R.id.amount)
@@ -330,7 +333,9 @@ class AddLoanActivity : AppCompatActivity(), View.OnClickListener
                         loan.id = negociatedLoan.id
                         loan.delay = repaymentInMonths()
                         loan.loan_type = "prive"
-                        loan.user_provider_id = otherUser?.id
+                        loan.user_provider_id = otherUser.id
+                        loan.user_requester_id = currrentUser.id
+                        loan.state_id = Constants.STATE_WAITING
 
 
                         val resultIntent = Intent()
