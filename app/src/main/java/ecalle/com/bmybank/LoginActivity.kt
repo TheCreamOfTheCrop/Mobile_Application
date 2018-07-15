@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
-import ecalle.com.bmybank.services_responses_bo.LoginResponse
 import ecalle.com.bmybank.custom_components.BeMyDialog
 import ecalle.com.bmybank.extensions.alertError
 import ecalle.com.bmybank.extensions.customAlert
@@ -16,6 +15,7 @@ import ecalle.com.bmybank.extensions.textValue
 import ecalle.com.bmybank.realm.RealmServices
 import ecalle.com.bmybank.realm.bo.User
 import ecalle.com.bmybank.services.BmyBankApi
+import ecalle.com.bmybank.services_responses_bo.LoginResponse
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.startActivity
@@ -44,9 +44,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener
 
         login = find(R.id.login)
         password = find(R.id.password)
-
-        login.setText("thomasecalle@hotmail.fr")
-        password.setText("totoro")
 
         passwordForgotten.setOnClickListener(this)
         inscription.setOnClickListener(this)

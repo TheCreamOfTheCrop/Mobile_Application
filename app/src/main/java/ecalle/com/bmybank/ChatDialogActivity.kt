@@ -442,14 +442,16 @@ class ChatDialogActivity : AppCompatActivity(), ToolbarManager, View.OnClickList
 
         channel.last_message = message.text
 
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
-        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${otherUser?.id}/channels").child("${channel.id_user_1}${channel.id_user_2}").setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${currentUser?.id}/channels").child(getChannelIdentification(channel.id_user_1,channel.id_user_2)).setValue(channel)
+        Utils.getDatabase().getReferenceFromUrl("https://bmybank-2146c.firebaseio.com/user-channels/${otherUser?.id}/channels").child(getChannelIdentification(channel.id_user_1,channel.id_user_2)).setValue(channel)
 
         val notification = Notification(otherUser?.id!!, "Nouveau message de ${otherUser?.firstname}", message.text)
 
         Utils.getDatabase().getReference("/notifications").push().setValue(notification)
 
     }
+
+    private fun getChannelIdentification(userId1: Int, userId2: Int) = if (userId1 > userId2) "$userId1$userId2" else "$userId2$userId1"
 
     private fun loadUserThenDisplayTitle()
     {
